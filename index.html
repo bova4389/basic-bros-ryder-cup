@@ -1278,6 +1278,176 @@
     .course-maps-link:hover { color: var(--color-cream); }
 
     /* ============================================================
+       TOURNAMENT — COURSE DETAIL VIEW
+       Clicking a course card transitions to a full detail page
+       with a banner + photo gallery. Grid fades out, detail fades in.
+    ============================================================ */
+
+    /* Course cards are clickable — pointer cursor + hover lift */
+    .course-card {
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .course-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    /* "Tap to explore" hint text on each course card */
+    .course-explore-hint {
+      margin-top: .75rem;
+      font-size: .78rem;
+      color: var(--color-green-light);
+      letter-spacing: .04em;
+      font-style: italic;
+    }
+
+    /* Grid fades out when a course is opened */
+    .courses-grid {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .courses-grid.fading-out {
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+    }
+
+    /* Detail view: hidden until activated, then fades in */
+    .course-detail {
+      display: none;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .course-detail.visible  { display: block; }
+    .course-detail.fading-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Back button above the banner */
+    .course-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-green-light);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 0 1.1rem 0;
+      transition: color 0.2s;
+    }
+
+    .course-back-btn:hover { color: var(--color-cream); }
+
+    /* Slim banner — compressed version of the course card */
+    .course-detail-banner {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .course-detail-banner .course-day-tag {
+      font-size: 0.65rem;
+    }
+
+    .course-detail-inner {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .course-detail-main { flex: 1; min-width: 200px; }
+
+    .course-detail-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--color-cream);
+      margin-bottom: 0.3rem;
+    }
+
+    .course-detail-address {
+      font-size: 0.88rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .course-detail-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Photo gallery section below the banner */
+    .course-gallery-section {
+      margin-top: 0.5rem;
+    }
+
+    .course-gallery-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-green-light);
+      margin-bottom: 1rem;
+    }
+
+    /* Grid of photo slots — 2 columns */
+    .course-photos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Placeholder slot shown until real photos are added */
+    .course-photo-slot {
+      aspect-ratio: 16 / 9;
+      background: var(--color-surface);
+      border: 1px dashed var(--color-border);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--color-text-muted);
+      font-size: 0.82rem;
+    }
+
+    .course-photo-slot .slot-icon {
+      font-size: 1.75rem;
+      opacity: 0.4;
+    }
+
+    /* Real photos (once added) fill the slot */
+    .course-photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 9px;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .course-photos-grid   { grid-template-columns: 1fr; }
+      .course-detail-inner  { flex-direction: column; gap: 1rem; }
+    }
+
+    /* ============================================================
        TOURNAMENT — 2e PAIRINGS
     ============================================================ */
     .pairings-round-title {
@@ -2076,10 +2246,10 @@
            Hole-by-hole scorecard TBD (data is in the PDF program).
       =================================================== -->
       <div id="t26-courses" class="inner-section">
-        <div class="courses-grid">
+        <div class="courses-grid" id="coursesGrid">
 
           <!-- Course 1: Pawleys Plantation — Friday -->
-          <div class="course-card">
+          <div class="course-card" onclick="openCourseDetail('pawleys')" style="cursor:pointer;">
             <div class="course-day-tag">
               <span>Friday · Day 1</span>
               <span>9:03am</span>
@@ -2101,11 +2271,12 @@
                    href="https://www.pawleysplantation.com"
                    target="_blank" rel="noopener">🌐 Course Website ↗</a>
               </div>
+              <div class="course-explore-hint">Tap to explore →</div>
             </div>
           </div>
 
           <!-- Course 2: True Blue — Saturday -->
-          <div class="course-card">
+          <div class="course-card" onclick="openCourseDetail('trueblue')" style="cursor:pointer;">
             <div class="course-day-tag">
               <span>Saturday · Day 2</span>
               <span>7:57am</span>
@@ -2127,11 +2298,12 @@
                    href="https://www.trueblue-golf.com"
                    target="_blank" rel="noopener">🌐 Course Website ↗</a>
               </div>
+              <div class="course-explore-hint">Tap to explore →</div>
             </div>
           </div>
 
           <!-- Course 3: Caledonia — Sunday -->
-          <div class="course-card">
+          <div class="course-card" onclick="openCourseDetail('caledonia')" style="cursor:pointer;">
             <div class="course-day-tag">
               <span>Sunday · Final Round</span>
               <span>8:06am</span>
@@ -2152,6 +2324,7 @@
                    href="https://www.caledoniagolfandfishclub.com"
                    target="_blank" rel="noopener">🌐 Course Website ↗</a>
               </div>
+              <div class="course-explore-hint">Tap to explore →</div>
             </div>
           </div>
 
@@ -2160,6 +2333,105 @@
         <p style="margin-top: 1.25rem; font-size: 0.82rem; color: var(--color-text-muted);">
           ⓘ Hole-by-hole scorecard data coming soon — will be added from the tournament program PDF.
         </p>
+
+        <!-- ── COURSE DETAIL: Pawleys Plantation ── -->
+        <div id="detail-pawleys" class="course-detail">
+          <button class="course-back-btn" onclick="closeCourseDetail('pawleys')">← Back to Courses</button>
+          <div class="course-detail-banner">
+            <div class="course-day-tag">
+              <span>Friday · Day 1</span>
+              <span>9:03am</span>
+            </div>
+            <div class="course-detail-inner">
+              <div class="course-detail-main">
+                <div class="course-detail-name">Pawleys Plantation</div>
+                <div class="course-detail-address">70 Tanglewood Dr. · Pawleys Island, SC 29585</div>
+                <div class="course-stats" style="margin-top:.75rem;">
+                  <div class="course-stat">Tees: <strong>Red</strong></div>
+                  <div class="course-stat">Par: <strong>72</strong></div>
+                  <div class="course-stat">Rating: <strong>70.6</strong></div>
+                  <div class="course-stat">Slope: <strong>133</strong></div>
+                </div>
+                <div class="course-detail-links">
+                  <a class="course-maps-link" href="https://www.google.com/maps/search/?api=1&query=70+Tanglewood+Dr+Pawleys+Island+SC+29585" target="_blank" rel="noopener">📍 Google Maps ↗</a>
+                  <a class="course-maps-link" href="https://www.pawleysplantation.com" target="_blank" rel="noopener">🌐 Course Website ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Photo gallery — add real photos to img/ folder and replace placeholder slots -->
+          <div class="course-photos-grid">
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+          </div>
+        </div><!-- end detail-pawleys -->
+
+        <!-- ── COURSE DETAIL: True Blue Golf Club ── -->
+        <div id="detail-trueblue" class="course-detail">
+          <button class="course-back-btn" onclick="closeCourseDetail('trueblue')">← Back to Courses</button>
+          <div class="course-detail-banner">
+            <div class="course-day-tag">
+              <span>Saturday · Day 2</span>
+              <span>7:57am</span>
+            </div>
+            <div class="course-detail-inner">
+              <div class="course-detail-main">
+                <div class="course-detail-name">True Blue Golf Club</div>
+                <div class="course-detail-address">900 Blue Stem Dr. · Pawleys Island, SC 29585</div>
+                <div class="course-stats" style="margin-top:.75rem;">
+                  <div class="course-stat">Tees: <strong>White</strong></div>
+                  <div class="course-stat">Par: <strong>72</strong></div>
+                  <div class="course-stat">Rating: <strong>62.7</strong></div>
+                  <div class="course-stat">Slope: <strong>111</strong></div>
+                </div>
+                <div class="course-detail-links">
+                  <a class="course-maps-link" href="https://www.google.com/maps/search/?api=1&query=900+Blue+Stem+Dr+Pawleys+Island+SC+29585" target="_blank" rel="noopener">📍 Google Maps ↗</a>
+                  <a class="course-maps-link" href="https://www.trueblue-golf.com" target="_blank" rel="noopener">🌐 Course Website ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="course-photos-grid">
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+          </div>
+        </div><!-- end detail-trueblue -->
+
+        <!-- ── COURSE DETAIL: Caledonia Golf & Fish Club ── -->
+        <div id="detail-caledonia" class="course-detail">
+          <button class="course-back-btn" onclick="closeCourseDetail('caledonia')">← Back to Courses</button>
+          <div class="course-detail-banner">
+            <div class="course-day-tag">
+              <span>Sunday · Final Round</span>
+              <span>8:06am</span>
+            </div>
+            <div class="course-detail-inner">
+              <div class="course-detail-main">
+                <div class="course-detail-name">Caledonia Golf &amp; Fish Club</div>
+                <div class="course-detail-address">369 Caledonia Dr. · Pawleys Island, SC 29585</div>
+                <div class="course-stats" style="margin-top:.75rem;">
+                  <div class="course-stat">Tees: <strong>Mallard</strong></div>
+                  <div class="course-stat">Par: <strong>70</strong></div>
+                  <div class="course-stat">Yardage: <strong>6,121 yds</strong></div>
+                </div>
+                <div class="course-detail-links">
+                  <a class="course-maps-link" href="https://www.google.com/maps/search/?api=1&query=369+Caledonia+Dr+Pawleys+Island+SC+29585" target="_blank" rel="noopener">📍 Google Maps ↗</a>
+                  <a class="course-maps-link" href="https://www.caledoniagolfandfishclub.com" target="_blank" rel="noopener">🌐 Course Website ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="course-photos-grid">
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+          </div>
+        </div><!-- end detail-caledonia -->
 
       </div><!-- end t26-courses -->
 
@@ -2941,6 +3213,42 @@
         clickedBtn.closest('.inner-tabs').querySelectorAll('.inner-tab').forEach(b => b.classList.remove('active'));
         clickedBtn.classList.add('active');
       }
+    }
+
+
+    // ---- COURSE DETAIL VIEW ----
+    // Fades out the courses grid and fades in the selected course's detail panel.
+    function openCourseDetail(courseId) {
+      const grid   = document.getElementById('coursesGrid');
+      const detail = document.getElementById('detail-' + courseId);
+      if (!grid || !detail) return;
+      // Step 1: fade the grid out
+      grid.classList.add('fading-out');
+      setTimeout(() => {
+        // Step 2: hide grid, reveal detail panel
+        grid.style.display = 'none';
+        detail.classList.add('visible');
+        detail.offsetHeight; // force reflow so the transition fires
+        detail.classList.add('fading-in');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
+    }
+
+    // Fades out the detail panel and restores the courses grid.
+    function closeCourseDetail(courseId) {
+      const grid   = document.getElementById('coursesGrid');
+      const detail = document.getElementById('detail-' + courseId);
+      if (!grid || !detail) return;
+      // Step 1: fade detail out
+      detail.classList.remove('fading-in');
+      setTimeout(() => {
+        // Step 2: hide detail, restore grid
+        detail.classList.remove('visible');
+        grid.style.display = '';
+        grid.offsetHeight; // force reflow
+        grid.classList.remove('fading-out');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
     }
 
 
