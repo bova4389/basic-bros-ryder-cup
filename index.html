@@ -584,6 +584,713 @@
     }
 
     /* ============================================================
+       TOURNAMENT PAGE — INNER TAB NAVIGATION
+       Second-level pill tabs inside the 2026 Tournament section.
+    ============================================================ */
+    .tourney-header {
+      text-align: center;
+      padding: 1.5rem 0 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tourney-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 900;
+      color: var(--color-cream);
+      margin-bottom: 0.35rem;
+    }
+
+    .tourney-header p {
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+    }
+
+    /* Pill-style inner tab strip */
+    .inner-tabs {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      gap: 0.4rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 2rem;
+    }
+
+    .inner-tabs::-webkit-scrollbar { display: none; }
+
+    .inner-tab {
+      flex-shrink: 0;
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      padding: 0.5rem 1.05rem;
+      transition: all 0.2s;
+    }
+
+    .inner-tab:hover {
+      color: var(--color-cream);
+      border-color: var(--color-green-light);
+    }
+
+    .inner-tab.active {
+      background: var(--color-green);
+      color: var(--color-cream);
+      border-color: var(--color-green);
+    }
+
+    /* Each inner sub-section: hidden unless .active */
+    .inner-section         { display: none; }
+    .inner-section.active  { display: block; }
+
+    /* ============================================================
+       TOURNAMENT — 2a OVERVIEW
+    ============================================================ */
+    .overview-hero {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .overview-detail-block h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .overview-detail-block p { font-size: 1rem; color: var(--color-text); line-height: 1.55; }
+
+    .overview-detail-block a {
+      color: var(--color-green-light);
+      text-decoration: none;
+    }
+
+    .overview-detail-block a:hover { text-decoration: underline; }
+
+    /* Prize + entry fee cards */
+    .prize-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .prize-card {
+      flex: 1;
+      min-width: 130px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-gold);
+      border-radius: 10px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.06);
+    }
+
+    .prize-amount {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .prize-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* Condo grid */
+    .condo-section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-green-light);
+      margin-bottom: 1rem;
+    }
+
+    .condo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .condo-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .condo-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 0.6rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .condo-player {
+      font-size: 0.88rem;
+      color: var(--color-text);
+      padding: 0.18rem 0;
+    }
+
+    /* ============================================================
+       TOURNAMENT — 2b TEAMS
+       Two team cards side by side, visually distinct.
+    ============================================================ */
+    .teams-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .team-card {
+      background: var(--color-surface);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+
+    .team-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .team-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--color-cream);
+      margin-bottom: 0.2rem;
+    }
+
+    .team-captain {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    .team-captain strong { color: var(--color-cream); }
+
+    /* Team 1 — Good Vibes Only: forest green accent */
+    .team-gvo { border-color: var(--color-green); }
+    .team-gvo .team-header {
+      background: linear-gradient(135deg, rgba(45,106,79,0.35), rgba(45,106,79,0.08));
+      border-left: 4px solid var(--color-green);
+    }
+
+    /* Team 2 — Luben Dubers: red accent */
+    .team-ld { border-color: var(--color-red); }
+    .team-ld .team-header {
+      background: linear-gradient(135deg, rgba(192,57,43,0.3), rgba(192,57,43,0.06));
+      border-left: 4px solid var(--color-red);
+    }
+
+    /* Tier group divider row */
+    .tier-group-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding: 0.55rem 1.5rem 0.3rem;
+      background: var(--color-surface-2);
+    }
+
+    /* Individual player row */
+    .player-row {
+      display: flex;
+      align-items: center;
+      padding: 0.55rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      gap: 0.55rem;
+    }
+
+    .player-row:last-of-type { border-bottom: none; }
+
+    .player-row-name {
+      flex: 1;
+      font-size: 0.92rem;
+      color: var(--color-text);
+    }
+
+    .player-row-hdcp {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      min-width: 26px;
+      text-align: right;
+    }
+
+    /* Tier badge pill */
+    .tier-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .tier-badge-t1 {
+      background: rgba(82,183,136,0.15);
+      color: var(--color-green-light);
+      border: 1px solid rgba(82,183,136,0.3);
+    }
+
+    .tier-badge-t2 {
+      background: rgba(212,175,55,0.12);
+      color: var(--color-gold);
+      border: 1px solid rgba(212,175,55,0.25);
+    }
+
+    /* Summary row at bottom of each team card */
+    .team-totals {
+      padding: 0.7rem 1.5rem;
+      background: var(--color-surface-2);
+      display: flex;
+      gap: 1.5rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .team-total-item {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+    }
+
+    .team-total-item strong {
+      color: var(--color-cream);
+      font-family: 'Cinzel', serif;
+    }
+
+    /* ============================================================
+       TOURNAMENT — 2c SCHEDULE
+       Vertical timeline: dot + connector line on the left.
+    ============================================================ */
+    .schedule-timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    /* Vertical green line running down the left */
+    .schedule-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.82rem;
+      top: 1.5rem;
+      bottom: 2rem;
+      width: 2px;
+      background: var(--color-green);
+      opacity: 0.35;
+    }
+
+    .schedule-day {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+
+    /* Circle dot on the timeline connector */
+    .schedule-day::before {
+      content: '';
+      position: absolute;
+      left: -2.1rem;
+      top: 1.15rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--color-green);
+      border: 2px solid var(--color-bg);
+      box-shadow: 0 0 0 2px var(--color-green);
+    }
+
+    .schedule-day-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .schedule-day-header {
+      padding: 0.85rem 1.25rem;
+      background: var(--color-surface-2);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .schedule-day-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--color-cream);
+    }
+
+    .schedule-day-date {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+    }
+
+    .schedule-format-badge {
+      margin-left: auto;
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: var(--color-green);
+      color: var(--color-cream);
+    }
+
+    .schedule-items { padding: 0.75rem 1.25rem; }
+
+    .schedule-item {
+      display: flex;
+      gap: 0.85rem;
+      padding: 0.45rem 0;
+      font-size: 0.9rem;
+      color: var(--color-text);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .schedule-item:last-child { border-bottom: none; }
+
+    .schedule-time {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-gold);
+      min-width: 68px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       TOURNAMENT — 2d COURSES
+    ============================================================ */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .course-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* Colored banner at top of each course card */
+    .course-day-tag {
+      padding: 0.55rem 1rem;
+      background: var(--color-green);
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-cream);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .course-body { padding: 1.25rem; }
+
+    .course-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-cream);
+      margin-bottom: 0.55rem;
+    }
+
+    .course-address {
+      font-size: 0.83rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.9rem;
+      line-height: 1.45;
+    }
+
+    /* Stat chips row */
+    .course-stats {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .course-stat {
+      background: var(--color-surface-2);
+      border-radius: 5px;
+      padding: 0.28rem 0.55rem;
+      font-size: 0.74rem;
+      color: var(--color-text-muted);
+    }
+
+    .course-stat strong {
+      color: var(--color-cream);
+      font-family: 'Cinzel', serif;
+    }
+
+    .course-maps-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--color-green-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .course-maps-link:hover { color: var(--color-cream); }
+
+    /* ============================================================
+       TOURNAMENT — 2e PAIRINGS
+    ============================================================ */
+    .pairings-round-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-cream);
+      margin-bottom: 0.3rem;
+    }
+
+    .pairings-round-sub {
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.1rem;
+      line-height: 1.5;
+    }
+
+    /* Wrapper makes the table horizontally scrollable on mobile */
+    .table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 2rem;
+    }
+
+    .pairings-table {
+      width: 100%;
+      min-width: 540px;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .pairings-table thead tr { background: var(--color-surface-2); }
+
+    .pairings-table th {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 2px solid var(--color-border);
+      white-space: nowrap;
+    }
+
+    .pairings-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text);
+    }
+
+    .pairings-table tbody tr:nth-child(even) td {
+      background: rgba(255,255,255,0.018);
+    }
+
+    .pairings-table .vs-cell {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-gold);
+    }
+
+    .pairings-table .hdcp-cell {
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      color: var(--color-green-light);
+      text-align: center;
+    }
+
+    /* TBD placeholder for rounds not yet announced */
+    .tbd-card {
+      background: var(--color-surface);
+      border: 1px dashed var(--color-border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .tbd-card strong {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.92rem;
+      color: var(--color-cream);
+      margin-bottom: 0.35rem;
+    }
+
+    .tbd-card p {
+      font-size: 0.88rem;
+      color: var(--color-text-muted);
+    }
+
+    /* ============================================================
+       TOURNAMENT — 2f SCORING
+    ============================================================ */
+    .scoring-notice {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-left: 4px solid var(--color-gold);
+      border-radius: 10px;
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .scoring-notice h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem;
+      color: var(--color-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .scoring-notice p {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Points available summary grid */
+    .points-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .points-item {
+      background: var(--color-surface);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .points-value {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-cream);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .points-label {
+      font-size: 0.66rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* Per-round result block */
+    .round-result-block {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.1rem;
+    }
+
+    .round-result-header {
+      padding: 0.85rem 1.25rem;
+      background: var(--color-surface-2);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .round-result-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--color-cream);
+    }
+
+    .round-result-status {
+      font-size: 0.66rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .status-pending {
+      background: rgba(136,153,170,0.12);
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-border);
+    }
+
+    .round-result-placeholder {
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--color-text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* ============================================================
+       TOURNAMENT — RESPONSIVE OVERRIDES
+    ============================================================ */
+    @media (max-width: 900px) {
+      .courses-grid        { grid-template-columns: 1fr; }
+      .overview-hero       { grid-template-columns: 1fr; gap: 1.25rem; }
+    }
+
+    @media (max-width: 768px) {
+      .teams-grid          { grid-template-columns: 1fr; }
+      .condo-grid          { grid-template-columns: repeat(2, 1fr); }
+      .points-grid         { grid-template-columns: repeat(2, 1fr); }
+      .schedule-timeline   { padding-left: 1.75rem; }
+      .prize-row           { flex-direction: column; }
+    }
+
+    /* ============================================================
        RESPONSIVE — MOBILE FIRST
        Breakpoint: 768px and below
     ============================================================ */
@@ -782,20 +1489,638 @@
 
 
     <!-- ========================================================
-         2026 TOURNAMENT TAB — placeholder
+         2026 TOURNAMENT TAB — full content
     ======================================================== -->
     <section id="tournament2026" class="tab-section" role="tabpanel">
-      <div class="coming-soon-wrap">
-        <div class="coming-soon-card">
-          <div class="coming-soon-icon">🏆</div>
-          <h2 class="coming-soon-title">2026 Tournament</h2>
-          <p class="coming-soon-body">
-            Teams, pairings, the full schedule, course details, condo assignments, and live scoring for the 2026 Basic Bros Ryder Cup — June 25–28 at Pawleys Island, SC.
-          </p>
-          <span class="coming-soon-badge">Drops Before June 25</span>
-        </div>
+
+      <!-- Page title -->
+      <div class="tourney-header">
+        <h2>2026 Basic Bros Ryder Cup</h2>
+        <p>June 25–28, 2026 &nbsp;·&nbsp; Pawleys Island, SC</p>
       </div>
-    </section>
+
+      <!-- Inner sub-navigation: pill-style tabs -->
+      <div class="inner-tabs" role="tablist">
+        <button class="inner-tab active" role="tab" onclick="showInnerTab('t26', 'overview', this)">Overview</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'teams', this)">Teams</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'schedule', this)">Schedule</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'courses', this)">Courses</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'pairings', this)">Pairings</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'scoring', this)">Scoring</button>
+      </div>
+
+
+      <!-- ===================================================
+           2a — OVERVIEW
+           Tournament info, lodging, prizes, condo assignments.
+      =================================================== -->
+      <div id="t26-overview" class="inner-section active">
+
+        <!-- Tournament details + lodging side by side -->
+        <div class="overview-hero">
+          <div class="overview-detail-block">
+            <h3>Tournament</h3>
+            <p>
+              <strong>2026 Basic Bros Ryder Cup</strong><br>
+              3rd Annual &nbsp;·&nbsp; 24 Players<br>
+              Pawleys Island, South Carolina<br>
+              June 25–28, 2026
+            </p>
+          </div>
+          <div class="overview-detail-block">
+            <h3>Lodging</h3>
+            <p>
+              Litchfield Golf and Beach Resort<br>
+              <a href="https://www.google.com/maps/search/?api=1&query=14276+Ocean+Highway+Pawleys+Island+SC+29585"
+                 target="_blank" rel="noopener">
+                14276 Ocean Highway<br>Pawleys Island, SC 29585 ↗
+              </a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Prize fund and entry fee cards -->
+        <div class="prize-row">
+          <div class="prize-card">
+            <span class="prize-amount">$225</span>
+            <span class="prize-label">Per Player · 1st Place</span>
+          </div>
+          <div class="prize-card">
+            <span class="prize-amount">$75</span>
+            <span class="prize-label">Per Player · 2nd Place</span>
+          </div>
+          <div class="prize-card">
+            <span class="prize-amount">~$900</span>
+            <span class="prize-label">Entry Fee Per Player</span>
+          </div>
+        </div>
+
+        <!-- Condo assignments -->
+        <div class="condo-section-title">🏠 Condo Assignments — Litchfield Golf and Beach Resort</div>
+        <div class="condo-grid">
+          <div class="condo-card">
+            <div class="condo-title">Condo 1</div>
+            <div class="condo-player">Spencer</div>
+            <div class="condo-player">Schumann</div>
+            <div class="condo-player">Ron</div>
+            <div class="condo-player">Jason</div>
+            <div class="condo-player">Max</div>
+            <div class="condo-player">Sharkey</div>
+          </div>
+          <div class="condo-card">
+            <div class="condo-title">Condo 2</div>
+            <div class="condo-player">Taylor</div>
+            <div class="condo-player">Donny</div>
+            <div class="condo-player">Bash</div>
+            <div class="condo-player">Raheem</div>
+            <div class="condo-player">Davis</div>
+            <div class="condo-player">Robert</div>
+          </div>
+          <div class="condo-card">
+            <div class="condo-title">Condo 3</div>
+            <div class="condo-player">Adam</div>
+            <div class="condo-player">Justin</div>
+            <div class="condo-player">Joe</div>
+            <div class="condo-player">Cass</div>
+            <div class="condo-player">Renato</div>
+            <div class="condo-player">Ryne</div>
+          </div>
+          <div class="condo-card">
+            <div class="condo-title">Condo 4</div>
+            <div class="condo-player">Bova</div>
+            <div class="condo-player">Mitch</div>
+            <div class="condo-player">Karsten</div>
+            <div class="condo-player">Teddy</div>
+            <div class="condo-player">Cody</div>
+            <div class="condo-player">Jeremy</div>
+          </div>
+        </div><!-- end condo-grid -->
+
+      </div><!-- end t26-overview -->
+
+
+      <!-- ===================================================
+           2b — TEAMS
+           Good Vibes Only (green) vs Luben Dubers (red).
+           T1 players listed first within each team, sorted by hdcp.
+      =================================================== -->
+      <div id="t26-teams" class="inner-section">
+        <div class="teams-grid">
+
+          <!-- Team 1: Good Vibes Only — forest green accent -->
+          <div class="team-card team-gvo">
+            <div class="team-header">
+              <div class="team-name">Good Vibes Only</div>
+              <div class="team-captain">Captain: <strong>Matt Bova ★</strong></div>
+            </div>
+
+            <div class="tier-group-label">Tier 1</div>
+            <div class="player-row">
+              <span class="player-row-name">Taylor Touchberry</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">12</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Jason Damiani</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">12</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Mitch Pletcher</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">15</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Chris Schumann</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">16</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Sebastian "Bash" Strobel</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">16</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Cody Esbrandt</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">16</span>
+            </div>
+
+            <div class="tier-group-label">Tier 2</div>
+            <div class="player-row">
+              <span class="player-row-name">Joe Sharkey</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">22</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Raheem Bishop</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">26</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Joe Mucha</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">26</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Matt Bova</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">28</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Spencer Schumann</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">42</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Teddy Smith</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">42</span>
+            </div>
+
+            <div class="team-totals">
+              <div class="team-total-item">Players: <strong>12</strong></div>
+              <div class="team-total-item">T1: <strong>6</strong> &nbsp; T2: <strong>6</strong></div>
+            </div>
+          </div><!-- end team-gvo -->
+
+          <!-- Team 2: Luben Dubers — red accent -->
+          <div class="team-card team-ld">
+            <div class="team-header">
+              <div class="team-name">Luben Dubers</div>
+              <div class="team-captain">Captain: <strong>Adam Lewandowski ★</strong></div>
+            </div>
+
+            <div class="tier-group-label">Tier 1</div>
+            <div class="player-row">
+              <span class="player-row-name">Mike Davis</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">3</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Renato</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">11</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Robert Stephenson</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">14</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Ryne Stone</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">18</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Donny Bartlett</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">19</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Justin Reeves</span>
+              <span class="tier-badge tier-badge-t1">T1</span>
+              <span class="player-row-hdcp">20</span>
+            </div>
+
+            <div class="tier-group-label">Tier 2</div>
+            <div class="player-row">
+              <span class="player-row-name">Karsten Meyer</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">24</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Max Harris</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">26</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Ron Pannullo</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">30</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Adam Lewandowski</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">34</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Jeremy Hermanson</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">35</span>
+            </div>
+            <div class="player-row">
+              <span class="player-row-name">Cassady Glenn</span>
+              <span class="tier-badge tier-badge-t2">T2</span>
+              <span class="player-row-hdcp">44</span>
+            </div>
+
+            <div class="team-totals">
+              <div class="team-total-item">Players: <strong>12</strong></div>
+              <div class="team-total-item">T1: <strong>6</strong> &nbsp; T2: <strong>6</strong></div>
+            </div>
+          </div><!-- end team-ld -->
+
+        </div><!-- end teams-grid -->
+      </div><!-- end t26-teams -->
+
+
+      <!-- ===================================================
+           2c — SCHEDULE / ITINERARY
+           Timeline-style display, Thu–Sun.
+           ⚠ Dates below are from REQUIREMENTS section 2c.
+           Section 2a says "June 25–28" but 2c lists June 26–29 —
+           Matt should confirm which set of dates is correct.
+      =================================================== -->
+      <div id="t26-schedule" class="inner-section">
+        <div class="schedule-timeline">
+
+          <!-- Thursday — Arrival / Check-in -->
+          <div class="schedule-day">
+            <div class="schedule-day-card">
+              <div class="schedule-day-header">
+                <span class="schedule-day-name">Thursday</span>
+                <span class="schedule-day-date">June 26</span>
+                <span class="schedule-format-badge">Arrival</span>
+              </div>
+              <div class="schedule-items">
+                <div class="schedule-item">
+                  <span class="schedule-time">4:00pm</span>
+                  <span>Check-in — Litchfield Golf and Beach Resort</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">7:00pm</span>
+                  <span>Team Meeting</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">7:30pm</span>
+                  <span>2027 Captain Selections</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Friday — Day 1: Scramble -->
+          <div class="schedule-day">
+            <div class="schedule-day-card">
+              <div class="schedule-day-header">
+                <span class="schedule-day-name">Friday — Day 1</span>
+                <span class="schedule-day-date">June 27</span>
+                <span class="schedule-format-badge">Scramble</span>
+              </div>
+              <div class="schedule-items">
+                <div class="schedule-item">
+                  <span class="schedule-time">9:03am</span>
+                  <span>First tee — Pawleys Plantation</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">PM</span>
+                  <span>Saturday matchup selection &amp; 2027 date / location discussion</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Saturday — Day 2 -->
+          <div class="schedule-day">
+            <div class="schedule-day-card">
+              <div class="schedule-day-header">
+                <span class="schedule-day-name">Saturday — Day 2</span>
+                <span class="schedule-day-date">June 28</span>
+                <span class="schedule-format-badge">Day 2</span>
+              </div>
+              <div class="schedule-items">
+                <div class="schedule-item">
+                  <span class="schedule-time">7:57am</span>
+                  <span>First tee — True Blue Golf Club</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">PM</span>
+                  <span>Sunday matchup selection</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sunday — Final Round -->
+          <div class="schedule-day">
+            <div class="schedule-day-card">
+              <div class="schedule-day-header">
+                <span class="schedule-day-name">Sunday — Final Round</span>
+                <span class="schedule-day-date">June 29</span>
+                <span class="schedule-format-badge">Final</span>
+              </div>
+              <div class="schedule-items">
+                <div class="schedule-item">
+                  <span class="schedule-time">8:06am</span>
+                  <span>First tee — Caledonia Golf &amp; Fish Club</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">Post-Round</span>
+                  <span>Scores tallied at the clubhouse bar. Putt-off if tied.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end schedule-timeline -->
+      </div><!-- end t26-schedule -->
+
+
+      <!-- ===================================================
+           2d — COURSES
+           One card per course. Google Maps link built from address.
+           Hole-by-hole scorecard TBD (data is in the PDF program).
+      =================================================== -->
+      <div id="t26-courses" class="inner-section">
+        <div class="courses-grid">
+
+          <!-- Course 1: Pawleys Plantation — Friday -->
+          <div class="course-card">
+            <div class="course-day-tag">
+              <span>Friday · Day 1</span>
+              <span>9:03am</span>
+            </div>
+            <div class="course-body">
+              <div class="course-name">Pawleys Plantation</div>
+              <div class="course-address">70 Tanglewood Dr.<br>Pawleys Island, SC 29585</div>
+              <div class="course-stats">
+                <div class="course-stat">Tees: <strong>Red</strong></div>
+                <div class="course-stat">Par: <strong>72</strong></div>
+                <div class="course-stat">Rating: <strong>70.6</strong></div>
+                <div class="course-stat">Slope: <strong>133</strong></div>
+              </div>
+              <a class="course-maps-link"
+                 href="https://www.google.com/maps/search/?api=1&query=70+Tanglewood+Dr+Pawleys+Island+SC+29585"
+                 target="_blank" rel="noopener">
+                📍 Google Maps ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Course 2: True Blue — Saturday -->
+          <div class="course-card">
+            <div class="course-day-tag">
+              <span>Saturday · Day 2</span>
+              <span>7:57am</span>
+            </div>
+            <div class="course-body">
+              <div class="course-name">True Blue Golf Club</div>
+              <div class="course-address">900 Blue Stem Dr.<br>Pawleys Island, SC 29585</div>
+              <div class="course-stats">
+                <div class="course-stat">Tees: <strong>White</strong></div>
+                <div class="course-stat">Par: <strong>72</strong></div>
+                <div class="course-stat">Rating: <strong>62.7</strong></div>
+                <div class="course-stat">Slope: <strong>111</strong></div>
+              </div>
+              <a class="course-maps-link"
+                 href="https://www.google.com/maps/search/?api=1&query=900+Blue+Stem+Dr+Pawleys+Island+SC+29585"
+                 target="_blank" rel="noopener">
+                📍 Google Maps ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Course 3: Caledonia — Sunday -->
+          <div class="course-card">
+            <div class="course-day-tag">
+              <span>Sunday · Final Round</span>
+              <span>8:06am</span>
+            </div>
+            <div class="course-body">
+              <div class="course-name">Caledonia Golf &amp; Fish Club</div>
+              <div class="course-address">369 Caledonia Dr.<br>Pawleys Island, SC 29585</div>
+              <div class="course-stats">
+                <div class="course-stat">Tees: <strong>Mallard</strong></div>
+                <div class="course-stat">Par: <strong>70</strong></div>
+                <div class="course-stat">Yardage: <strong>6,121</strong></div>
+              </div>
+              <a class="course-maps-link"
+                 href="https://www.google.com/maps/search/?api=1&query=369+Caledonia+Dr+Pawleys+Island+SC+29585"
+                 target="_blank" rel="noopener">
+                📍 Google Maps ↗
+              </a>
+            </div>
+          </div>
+
+        </div><!-- end courses-grid -->
+
+        <p style="margin-top: 1.25rem; font-size: 0.82rem; color: var(--color-text-muted);">
+          ⓘ Hole-by-hole scorecard data coming soon — will be added from the tournament program PDF.
+        </p>
+
+      </div><!-- end t26-courses -->
+
+
+      <!-- ===================================================
+           2e — PAIRINGS
+           Round 1 (Friday scramble) is fully populated.
+           Rounds 2 & 3 are TBD — assigned night before each round.
+           Note: REQUIREMENTS 2e lists Cody at hdcp 15; 2b lists him at 16.
+           Using the values exactly as given in each section.
+      =================================================== -->
+      <div id="t26-pairings" class="inner-section">
+
+        <!-- Round 1: full scramble pairings -->
+        <div class="pairings-round-title">Round 1 — Scramble</div>
+        <div class="pairings-round-sub">
+          Friday · Pawleys Plantation &nbsp;·&nbsp; Format: T1 + T2 vs T1 + T2<br>
+          Handicap = 35% of combined total, rounded up
+        </div>
+        <div class="table-scroll">
+          <table class="pairings-table">
+            <thead>
+              <tr>
+                <th>Luben Dubers</th>
+                <th style="text-align:center">HDCP</th>
+                <th style="text-align:center">—</th>
+                <th>Good Vibes Only</th>
+                <th style="text-align:center">HDCP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ryne (18) + Karsten (24)</td>
+                <td class="hdcp-cell">15</td>
+                <td class="vs-cell">VS</td>
+                <td>Cody (15) + Sharkey (22)</td>
+                <td class="hdcp-cell">13</td>
+              </tr>
+              <tr>
+                <td>Cass (44) + Renato (11)</td>
+                <td class="hdcp-cell">19</td>
+                <td class="vs-cell">VS</td>
+                <td>Taylor (12) + Joe M (26)</td>
+                <td class="hdcp-cell">13</td>
+              </tr>
+              <tr>
+                <td>Davis (3) + Adam (34)</td>
+                <td class="hdcp-cell">13</td>
+                <td class="vs-cell">VS</td>
+                <td>Mitch (15) + Raheem (26)</td>
+                <td class="hdcp-cell">14</td>
+              </tr>
+              <tr>
+                <td>Justin (20) + Hermanson (35)</td>
+                <td class="hdcp-cell">19</td>
+                <td class="vs-cell">VS</td>
+                <td>Jason (12) + Bova (28)</td>
+                <td class="hdcp-cell">14</td>
+              </tr>
+              <tr>
+                <td>Donny (19) + Max (26)</td>
+                <td class="hdcp-cell">16</td>
+                <td class="vs-cell">VS</td>
+                <td>Bash (16) + Spencer (42)</td>
+                <td class="hdcp-cell">20</td>
+              </tr>
+              <tr>
+                <td>Robert (14) + Ron (30)</td>
+                <td class="hdcp-cell">15</td>
+                <td class="vs-cell">VS</td>
+                <td>Schumann (16) + Teddy (42)</td>
+                <td class="hdcp-cell">20</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Round 2: TBD placeholder -->
+        <div class="pairings-round-title">Round 2 — Saturday</div>
+        <div class="pairings-round-sub">True Blue Golf Club &nbsp;·&nbsp; Pairings assigned Friday evening after Round 1</div>
+        <div class="tbd-card">
+          <strong>Pairings TBD</strong>
+          <p>Announced the night before — Friday after Round 1 wraps up</p>
+        </div>
+
+        <!-- Round 3: TBD placeholder -->
+        <div class="pairings-round-title">Round 3 — Sunday (Final)</div>
+        <div class="pairings-round-sub">Caledonia Golf &amp; Fish Club &nbsp;·&nbsp; Pairings assigned Saturday evening after Round 2</div>
+        <div class="tbd-card">
+          <strong>Pairings TBD</strong>
+          <p>Announced the night before — Saturday after Round 2 wraps up</p>
+        </div>
+
+      </div><!-- end t26-pairings -->
+
+
+      <!-- ===================================================
+           2f — SCORING / RESULTS
+           Squabbit has no public API — CLAUDE.md confirms this.
+           Results are posted after each round via admin CSV upload.
+           Scoring display skeleton shown here; data fills in post-round.
+      =================================================== -->
+      <div id="t26-scoring" class="inner-section">
+
+        <!-- Explain how scoring works -->
+        <div class="scoring-notice">
+          <h3>📊 How Results Are Posted</h3>
+          <p>
+            Squabbit (the scoring app) has no public API. After each round, the admin exports
+            results and publishes them here. Scores appear post-round — check back after
+            each round wraps up. First team to <strong style="color: var(--color-cream);">36.5 points</strong> wins.
+          </p>
+        </div>
+
+        <!-- Points available by day -->
+        <div style="font-family:'Cinzel',serif; font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--color-text-muted); margin-bottom:0.75rem;">
+          Points Available
+        </div>
+        <div class="points-grid">
+          <div class="points-item">
+            <span class="points-value">12</span>
+            <span class="points-label">Day 1</span>
+          </div>
+          <div class="points-item">
+            <span class="points-value">24</span>
+            <span class="points-label">Day 2</span>
+          </div>
+          <div class="points-item">
+            <span class="points-value">36</span>
+            <span class="points-label">Day 3</span>
+          </div>
+          <div class="points-item">
+            <span class="points-value" style="color:var(--color-gold);">36.5</span>
+            <span class="points-label">To Win</span>
+          </div>
+        </div>
+
+        <!-- Round 1 result block -->
+        <div class="round-result-block">
+          <div class="round-result-header">
+            <span class="round-result-title">Round 1 — Scramble · Pawleys Plantation</span>
+            <span class="round-result-status status-pending">Pending</span>
+          </div>
+          <div class="round-result-placeholder">
+            Results posted after Friday's round wraps up.
+          </div>
+        </div>
+
+        <!-- Round 2 result block -->
+        <div class="round-result-block">
+          <div class="round-result-header">
+            <span class="round-result-title">Round 2 — True Blue Golf Club</span>
+            <span class="round-result-status status-pending">Pending</span>
+          </div>
+          <div class="round-result-placeholder">
+            Results posted after Saturday's round wraps up.
+          </div>
+        </div>
+
+        <!-- Round 3 result block -->
+        <div class="round-result-block">
+          <div class="round-result-header">
+            <span class="round-result-title">Round 3 (Final) — Caledonia Golf &amp; Fish Club</span>
+            <span class="round-result-status status-pending">Pending</span>
+          </div>
+          <div class="round-result-placeholder">
+            Results posted after Sunday's final round wraps up.
+          </div>
+        </div>
+
+      </div><!-- end t26-scoring -->
+
+    </section><!-- end tournament2026 -->
 
 
     <!-- ========================================================
@@ -922,6 +2247,26 @@
 
       // Scroll to top so user isn't stranded mid-page after switching tabs
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+
+    // ---- INNER TAB SWITCHING (2026 Tournament sub-tabs) ----
+    // Works like showTab() but scoped to a prefix namespace (e.g. "t26").
+    // Hides all inner sections whose id starts with that prefix,
+    // shows the target one, and updates the pill button highlight.
+    function showInnerTab(prefix, tabId, clickedBtn) {
+      // Hide every inner section under this prefix
+      document.querySelectorAll(`[id^="${prefix}-"]`).forEach(s => s.classList.remove('active'));
+
+      // Show the one we want
+      const target = document.getElementById(`${prefix}-${tabId}`);
+      if (target) target.classList.add('active');
+
+      // Update active state on the pill buttons in the same .inner-tabs bar
+      if (clickedBtn) {
+        clickedBtn.closest('.inner-tabs').querySelectorAll('.inner-tab').forEach(b => b.classList.remove('active'));
+        clickedBtn.classList.add('active');
+      }
     }
 
 
