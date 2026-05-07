@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -538,6 +538,222 @@
       font-size: 0.65rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+    }
+
+    /* ============================================================
+       RULEBOOK ACCORDION
+    ============================================================ */
+    .rulebook-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .rulebook-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      color: var(--color-gold);
+      margin-bottom: .35rem;
+    }
+    .rulebook-meta {
+      font-size: .8rem;
+      color: var(--color-text-muted);
+      letter-spacing: .06em;
+    }
+    .accordion {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .accordion-item {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .accordion-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .95rem 1.25rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      color: var(--color-cream);
+      font-family: 'Cinzel', serif;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+    .accordion-btn:hover { background: var(--color-surface-2); }
+    .accordion-btn .acc-num {
+      color: var(--color-gold);
+      font-size: .75rem;
+      min-width: 1.4rem;
+    }
+    .accordion-btn .acc-chevron {
+      font-size: .7rem;
+      color: var(--color-text-muted);
+      transition: transform .25s;
+      flex-shrink: 0;
+    }
+    .accordion-item.open .acc-chevron { transform: rotate(180deg); }
+    .accordion-body {
+      display: none;
+      padding: 1rem 1.25rem 1.25rem;
+      border-top: 1px solid var(--color-border);
+      font-size: .9rem;
+      line-height: 1.75;
+      color: var(--color-text-muted);
+    }
+    .accordion-item.open .accordion-body { display: block; }
+    .accordion-body h4 {
+      font-family: 'Cinzel', serif;
+      font-size: .8rem;
+      color: var(--color-green-light);
+      margin: 1rem 0 .4rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .accordion-body ul {
+      padding-left: 1.4rem;
+      margin: .4rem 0 .75rem;
+    }
+    .accordion-body ul li { margin-bottom: .35rem; }
+    .accordion-body ul ul { margin-top: .35rem; }
+    .rulebook-rule {
+      background: var(--color-surface-2);
+      border-left: 3px solid var(--color-green);
+      border-radius: 0 6px 6px 0;
+      padding: .7rem 1rem;
+      margin: .6rem 0;
+    }
+    .rulebook-rule strong { color: var(--color-cream); }
+    .rulebook-clause {
+      background: rgba(212,175,55,.07);
+      border: 1px solid rgba(212,175,55,.2);
+      border-radius: 8px;
+      padding: .7rem 1rem;
+      margin: .5rem 0;
+      color: var(--color-cream);
+    }
+
+    /* ============================================================
+       PLAYER CARD — TEXT BUTTON
+    ============================================================ */
+    .player-text-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      margin-top: .65rem;
+      padding: .35rem .75rem;
+      background: rgba(82,183,136,.12);
+      border: 1px solid rgba(82,183,136,.3);
+      border-radius: 20px;
+      color: var(--color-green-light);
+      font-size: .78rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .player-text-btn:hover { background: rgba(82,183,136,.22); }
+
+    /* ============================================================
+       SCORECARD TABLE
+    ============================================================ */
+    .scorecard-wrap {
+      margin-top: 1.5rem;
+    }
+    .scorecard-title {
+      font-family: 'Cinzel', serif;
+      font-size: .85rem;
+      color: var(--color-gold);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .scorecard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .78rem;
+      overflow-x: auto;
+      display: block;
+    }
+    .scorecard-table th,
+    .scorecard-table td {
+      border: 1px solid var(--color-border);
+      padding: .35rem .4rem;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .scorecard-table thead th {
+      background: var(--color-surface-2);
+      color: var(--color-gold);
+      font-family: 'Cinzel', serif;
+      font-size: .7rem;
+    }
+    .scorecard-table .sc-label {
+      background: var(--color-surface-2);
+      color: var(--color-text-muted);
+      font-weight: 600;
+      text-align: left;
+      padding-left: .6rem;
+    }
+    .scorecard-table .sc-out,
+    .scorecard-table .sc-in,
+    .scorecard-table .sc-total {
+      background: rgba(45,106,79,.15);
+      color: var(--color-green-light);
+      font-weight: 700;
+    }
+    .scorecard-table .sc-par-row td { color: var(--color-cream); font-weight: 700; }
+    .scorecard-table .sc-hdcp-row td { color: var(--color-text-muted); }
+
+    /* ============================================================
+       HOLE PHOTO GRID (18 holes)
+    ============================================================ */
+    .hole-photos-section { margin-top: 2rem; }
+    .hole-photos-title {
+      font-family: 'Cinzel', serif;
+      font-size: .85rem;
+      color: var(--color-gold);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+    .hole-photos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .6rem;
+    }
+    @media (min-width: 600px) { .hole-photos-grid { grid-template-columns: repeat(6, 1fr); } }
+    .hole-photo-slot {
+      aspect-ratio: 4/3;
+      background: var(--color-surface-2);
+      border: 1px dashed rgba(255,255,255,.12);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .2rem;
+      font-size: .65rem;
+      color: var(--color-text-muted);
+    }
+    .hole-photo-slot .hole-num {
+      font-family: 'Cinzel', serif;
+      font-size: .7rem;
+      color: var(--color-green-light);
+      font-weight: 700;
+    }
+    .hole-photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
     }
 
     /* ============================================================
@@ -1849,17 +2065,279 @@
     <!-- ========================================================
          RULEBOOK TAB — placeholder
     ======================================================== -->
+    <!-- ========================================================
+         RULEBOOK TAB — Full By-Laws content
+         Source: Basic Bros Ryder Cup By-Laws, Est. 2024 Rev 6 (1.28.26)
+         Each section is a collapsible accordion panel.
+    ======================================================== -->
     <section id="rulebook" class="tab-section" role="tabpanel">
-      <div class="coming-soon-wrap">
-        <div class="coming-soon-card">
-          <div class="coming-soon-icon">📋</div>
-          <h2 class="coming-soon-title">Rulebook</h2>
-          <p class="coming-soon-body">
-            The full Basic Bros Ryder Cup By-Laws — format, scoring system, handicap rules, special clauses, and everything that makes this tournament what it is.
-          </p>
-          <span class="coming-soon-badge">Coming Soon</span>
-        </div>
+      <div class="rulebook-header">
+        <div class="rulebook-title">Basic Bros Ryder Cup By-Laws</div>
+        <div class="rulebook-meta">Est. 2024 &nbsp;·&nbsp; Rev 6 (1.28.26) &nbsp;·&nbsp; Anything not covered here defaults to current USGA Rules &amp; Regulations</div>
       </div>
+
+      <div class="accordion">
+
+        <!-- 1 — General Items & Course Selection -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">01</span>
+            <span style="flex:1;">General Items &amp; Course Selection</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Rules and play are based on 24 players. If necessary, the Founding Bros will adjust by-laws in accordance with growth.</li>
+              <li>We will play every third year, out of state. <strong>(2026, 29, 32, 35, 38…)</strong></li>
+              <li>Location for the out-of-state tournament will be decided on Saturday night before the final round of the current year's tournament. Out-of-state location will be voted on at the conclusion via Forms; specific locations follow the rules below.</li>
+              <li>In-state course selection will be voted on after suggestions have been presented. Suggestions are due the last week in July. We vote on August 1st via Google Forms.</li>
+              <li>Founding Bros will consider courses in the area and use best judgement (price, location, condition). Starting tees determined after course selection. We try to use <strong>5,500–6,000 yards</strong> for a fair playing field.</li>
+              <li>Overnight accommodations made by <strong>Cody/Ryne</strong> — covers Thursday, Friday &amp; Saturday nights, based on prior commitments unless otherwise informed. Thursday rounds are at each player's own expense.</li>
+              <li>Each player is responsible for their own meals unless otherwise agreed upon.</li>
+              <li>The BBRC/Founding Bros are not responsible for flights or transportation. Those are on each participant.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 2 — Fees & Payments -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">02</span>
+            <span style="flex:1;">Fees &amp; Payments</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>All fees are due <strong>April 1st</strong> of the tournament year.</li>
+              <li>$100 initial reservation fee to secure spot for the following year — can be paid at the conclusion of the current year's tournament. Reservation fees cover any advance deposits required.</li>
+              <li>You can pay in portions throughout the year. Payment plans are available.</li>
+              <li>Fees cover greens fees, shirts, prize fund, and accommodations.</li>
+            </ul>
+            <h4>Estimated Costs</h4>
+            <ul>
+              <li>2026 — $900 (Out of State)</li>
+              <li>2027 — $900</li>
+              <li>2028 — $900</li>
+              <li>2029 — $950 (Out of State)</li>
+            </ul>
+            <ul>
+              <li>You must be <strong>paid-in-full</strong> to participate unless other arrangements have been made with the Founding Bros.</li>
+              <li>Pay via <strong>Venmo or Zelle</strong> to Cody or Ryne.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 3 — Requirements -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">03</span>
+            <span style="flex:1;">Requirements</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Players must fully commit by <strong>February 1st</strong> of the following year to allow for alternates and travel plans.</li>
+              <li>We play on the weekend after Father's Day each year:
+                <ul>
+                  <li>2026 – June 26–28 (South Carolina)</li>
+                  <li>2027 – June 25–27</li>
+                  <li>2028 – June 23–25 (Vote on Out of State Location)</li>
+                  <li>2029 – June 22–24 (Out of State)</li>
+                  <li>2030 – June 21–23</li>
+                </ul>
+              </li>
+              <li>Team selections take place at the beginning of March once all handicaps are received. HDCPs are due <strong>February 28th</strong> and can be adjusted up until the tournament begins. Initial HDCPs are used for draft/tier purposes.</li>
+              <li>You must have a <strong>USGA Handicap</strong> and report it to the Founding Bros by March 1st.</li>
+              <li>Captains are responsible for selecting the shirt design for their team. Sizes and design due to Cody/Ryne by <strong>March 15th</strong> to ensure on-time delivery and embroidery.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 4 — Format -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">04</span>
+            <span style="flex:1;">Format</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <p style="margin-bottom:.75rem;color:var(--color-cream);font-weight:600;">54 holes · 3 rounds · 4 events · 3 days of competition</p>
+            <div class="rulebook-rule">
+              <strong>Day 1 — Friday: Scramble (T1 &amp; T2)</strong>
+              <ul style="margin-top:.5rem;">
+                <li>Teams are comprised of one player from each tier (T1 &amp; T2).</li>
+                <li>Handicap = 35% of the combined team total handicap, rounded UP.</li>
+                <li>You <strong>must take at least 2 drives from each player per 9 holes.</strong> Failure = 4-stroke penalty.</li>
+                <li>Friday matchups are set before the tournament and included in the program.</li>
+              </ul>
+            </div>
+            <div class="rulebook-rule">
+              <strong>Day 2 — Saturday: Match Play Singles</strong>
+              <ul style="margin-top:.5rem;">
+                <li>Can be any mix of tiers.</li>
+                <li>Scores adjusted based on HDCP.</li>
+                <li>Opponents ride in the same cart for integrity purposes.</li>
+              </ul>
+            </div>
+            <div class="rulebook-rule">
+              <strong>Day 3 — Sunday: Doubles &amp; Singles Match Play</strong>
+              <ul style="margin-top:.5rem;">
+                <li>Doubles: teams comprised of players from the same tier (T1 vs T1 / T2 vs T2).</li>
+                <li>Singles: simultaneous — you play singles vs. the opponent you're lined up with on the scorecard.</li>
+                <li>Points awarded for both doubles and singles matches.</li>
+              </ul>
+            </div>
+            <p style="margin-top:.75rem;font-size:.82rem;">Round 2 &amp; 3 matchups assigned Friday and Saturday night after scores are entered. Notifications via Discord or text.</p>
+          </div>
+        </div>
+
+        <!-- 5 — Scoring & Tie-Breaker -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">05</span>
+            <span style="flex:1;">Scoring &amp; Tie-Breaker</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <p>Each player competes in 1 team match (scramble), 2 doubles matches, and 1 singles match.</p>
+            <h4>Ryder Cup Points</h4>
+            <ul>
+              <li><strong style="color:var(--color-green-light);">Win</strong> — 2 points</li>
+              <li><strong style="color:var(--color-gold);">Tie</strong> — 1 point each</li>
+              <li><strong style="color:var(--color-red);">Loss</strong> — 0 points</li>
+            </ul>
+            <ul>
+              <li>72 total points available (adjusted based on # of players).</li>
+              <li><strong>First team to 36.5 points wins the Basic Bros Ryder Cup.</strong></li>
+            </ul>
+            <h4>Tie-Breaker — Putt Off</h4>
+            <ul>
+              <li>Select 3 teammates. Must alternate putts — 1 putt per player.</li>
+              <li>1st putt: 20 ft — most makes wins. Still tied? Move to 2nd putt.</li>
+              <li>2nd putt: 15 ft (if necessary)</li>
+              <li>3rd putt: 10 ft (if necessary)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 6 — Captains & Teams -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">06</span>
+            <span style="flex:1;">Captains &amp; Teams</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>Captains are selected prior to the start of the current year's tournament — typically Thursday night or before 1st tee Friday.</li>
+              <li>Selections are made by the current year captains. Selected captains must be on opposite teams.</li>
+              <li>Winning team's captain gets <strong>1st pick</strong> for next year's draft.</li>
+              <li>Each player will be a captain — no repeat captains unless special circumstances prevail. A list is maintained by the Founding Bros.</li>
+              <li>There is a <strong>tier system</strong> (T1 &amp; T2) based on total handicap to create a fair playing field.</li>
+              <li>Each captain must select an <strong>equal number of T1 and T2 players</strong>.</li>
+              <li>Captains draft players in an alternating snake draft format. Draft takes place no later than the 2nd weekend in March.</li>
+              <li>Tournament Program is sent after team selection and matchups are determined by captains. Matches subject to change for injury/emergency.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 7 — Handicaps -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">07</span>
+            <span style="flex:1;">Handicaps</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>We use the <strong>Squabbit app</strong> for handicap tracking and live scoring during the tournament.</li>
+              <li>Handicap determined by <strong>USGA Handicap rules</strong> — must play and record at least 5 rounds to be eligible. Failure = cannot participate. No refunds unless a qualified replacement is found.</li>
+              <li>Highest allowable handicap: <strong>45</strong> (established after 2024 BBRC due to double par rules).</li>
+              <li><strong>Double par</strong> is the maximum score per hole for scoring purposes. (Example: Par 5 → max score = 10.)</li>
+              <li>All rounds/handicaps must be completed by <strong>February 28th</strong>. Send a screenshot of your current handicap to the Founding Bros for team selection.</li>
+              <li>Handicaps <em>can</em> be adjusted after March 1st up until the tournament begins, but will <strong>not</strong> affect tier ratings.</li>
+              <li>Handicaps are always <strong>rounded UP</strong> to the nearest whole number.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 8 — Players (Odd-Number Rules) -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">08</span>
+            <span style="flex:1;">Players &amp; Odd-Number Rules</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>We make every effort to have an even number of players divisible by 4.</li>
+              <li>If the player count is not divisible by 4, the "odd" player(s) will play formats as listed with the following amendments:
+                <ul>
+                  <li><strong>Doubles &amp; Scramble:</strong> Use the average of other same-team matches for each hole. Use the best score from that hole. HDCP will also be averaged.</li>
+                  <li><strong>Stroke Play:</strong> No changes.</li>
+                </ul>
+              </li>
+              <li><em>Example (10 players):</em> One player from each team plays "by themselves." Their average tier score acts as the 2nd golfer in the group. Best score from each hole wins.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 9 — Injuries & Anomalies -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">09</span>
+            <span style="flex:1;">Injuries &amp; Anomalies</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <ul>
+              <li>If a player cannot make it last minute (family emergency, illness) <em>before play begins</em>, their opponents must score within a set number of shots of that player's average score (adjusted with HDCP).</li>
+              <li>If a player is injured <em>during</em> a round, an average score is calculated from holes already completed:
+                <ul>
+                  <li>Formula: (Total strokes ÷ holes completed) + 1.5, applied to remaining holes. Round up on halves.</li>
+                  <li>Example: 40 strokes through 8 holes → 5-stroke avg + 1.5 = 6.5 per remaining hole → 105 total score.</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 10 — Special Playing Rules -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">10</span>
+            <span style="flex:1;">Special Playing Rules</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <div class="rulebook-rule"><strong>1. Clean &amp; Replace</strong> — In effect throughout the entire event. Bunkers are the exception — play it as it lies.</div>
+            <div class="rulebook-rule"><strong>2. Max Score Per Hole (Double Par)</strong> — No score over double par will be recorded. Example: Par 5 → max score = 10.</div>
+            <div class="rulebook-rule"><strong>3. Gallery / Spectator Balls</strong> — In place for the entire event. Opponent must agree the ball would have been found.</div>
+            <div class="rulebook-rule"><strong>4. Gimme's</strong> — At the discretion of the opposing team. Do not assume a putt is a gimme.</div>
+            <div class="rulebook-rule"><strong>5. Mulligans / Breakfast Balls</strong> — Each player gets 1 mulligan per 9 holes, used only off the tee. On hole 1 only, a breakfast ball may be used without burning the mulligan. If a mulligan is used, that ball is in play. Mulligans do not roll over — use it or lose it.</div>
+            <div class="rulebook-rule"><strong>6. Out of Bounds</strong> — Any ball OB or in water is treated as a lateral hazard. Drop 2 club lengths from where the ball crossed, no closer to the hole.</div>
+            <div class="rulebook-rule"><strong>7. OB Penalty</strong> — 1 penalty stroke assessed. If 2 club lengths puts you in the fairway, that's an OK drop area (other team must approve). Disagreements resolved by: split the difference, flip a coin, or rock-paper-scissors (best of 3).</div>
+            <div class="rulebook-rule"><strong>8. Weather</strong> — Founding Bros will do everything possible to complete the full round. If 18 holes cannot be completed, Founding Bros reserve the right to declare a round OFFICIAL even if fewer than 18 holes were played.</div>
+            <div class="rulebook-rule"><strong>9. Drinking</strong> — Not required. <strong>BUT gambling is highly encouraged.</strong></div>
+          </div>
+        </div>
+
+        <!-- 11 — Special Clauses -->
+        <div class="accordion-item">
+          <button class="accordion-btn" onclick="toggleAccordion(this)">
+            <span class="acc-num">11</span>
+            <span style="flex:1;">Special Clauses</span>
+            <span class="acc-chevron">▼</span>
+          </button>
+          <div class="accordion-body">
+            <div class="rulebook-clause">⛳ <strong>Be a basic bro — not a basic bitch.</strong></div>
+            <div class="rulebook-clause">🏆 There will be no "nuking" of the Basic Bros Ryder Cup Tournament.</div>
+            <div class="rulebook-clause">🚫 <strong>Sandbagging / unethical play will not be tolerated</strong> (inflating HDCP). Players found in violation will be <strong>banned for a minimum of 2 years</strong>.</div>
+            <div class="rulebook-clause">⚖️ <strong>Founding Bros have final say</strong> on all matters including score changes, rule calls &amp; changes. A special vote may be called when necessary.</div>
+          </div>
+        </div>
+
+      </div><!-- end accordion -->
     </section>
 
 
@@ -2359,12 +2837,68 @@
               </div>
             </div>
           </div>
-          <!-- Photo gallery — add real photos to img/ folder and replace placeholder slots -->
-          <div class="course-photos-grid">
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+          <!-- Scorecard — Pawleys Plantation, Red Tees (Redtail Hawk), Rating 70.6 / Slope 133 -->
+          <div class="scorecard-wrap">
+            <div class="scorecard-title">Scorecard — Red Tees (Redtail Hawk)</div>
+            <table class="scorecard-table">
+              <thead>
+                <tr>
+                  <th>Hole</th>
+                  <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th>
+                  <th class="sc-out">OUT</th>
+                  <th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th>
+                  <th class="sc-total">TOT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="sc-par-row">
+                  <td class="sc-label">Par</td>
+                  <td>5</td><td>4</td><td>3</td><td>5</td><td>4</td><td>4</td><td>3</td><td>4</td><td>4</td>
+                  <td class="sc-out">36</td>
+                  <td>4</td><td>5</td><td>4</td><td>3</td><td>5</td><td>4</td><td>4</td><td>3</td><td>4</td>
+                  <td class="sc-total">72</td>
+                </tr>
+                <tr>
+                  <td class="sc-label">Yards</td>
+                  <td>476</td><td>398</td><td>163</td><td>490</td><td>354</td><td>385</td><td>136</td><td>388</td><td>356</td>
+                  <td class="sc-out">3,146</td>
+                  <td>297</td><td>540</td><td>332</td><td>114</td><td>497</td><td>351</td><td>399</td><td>158</td><td>397</td>
+                  <td class="sc-total">6,231</td>
+                </tr>
+                <tr class="sc-hdcp-row">
+                  <td class="sc-label">Hdcp</td>
+                  <td>9</td><td>1</td><td>15</td><td>13</td><td>7</td><td>3</td><td>17</td><td>5</td><td>11</td>
+                  <td class="sc-out">—</td>
+                  <td>10</td><td>4</td><td>16</td><td>18</td><td>6</td><td>12</td><td>2</td><td>14</td><td>8</td>
+                  <td class="sc-total">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 18-hole photo grid — add hole photos to img/ and replace slot divs with <img> tags -->
+          <div class="hole-photos-section">
+            <div class="hole-photos-title">Hole-by-Hole Gallery</div>
+            <div class="hole-photos-grid">
+              <div class="hole-photo-slot"><span class="hole-num">1</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">2</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">3</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">4</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">5</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">6</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">7</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">8</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">9</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">10</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">11</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">12</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">13</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">14</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">15</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">16</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">17</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">18</span><span>Photo coming soon</span></div>
+            </div>
           </div>
         </div><!-- end detail-pawleys -->
 
@@ -2393,11 +2927,67 @@
               </div>
             </div>
           </div>
-          <div class="course-photos-grid">
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+          <!-- Scorecard — True Blue Golf Club, White Tees, Rating 69.2 / Slope 129 -->
+          <div class="scorecard-wrap">
+            <div class="scorecard-title">Scorecard — White Tees</div>
+            <table class="scorecard-table">
+              <thead>
+                <tr>
+                  <th>Hole</th>
+                  <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th>
+                  <th class="sc-out">OUT</th>
+                  <th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th>
+                  <th class="sc-total">TOT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="sc-par-row">
+                  <td class="sc-label">Par</td>
+                  <td>5</td><td>4</td><td>3</td><td>5</td><td>4</td><td>4</td><td>3</td><td>4</td><td>5</td>
+                  <td class="sc-out">37</td>
+                  <td>5</td><td>3</td><td>4</td><td>4</td><td>3</td><td>5</td><td>3</td><td>4</td><td>4</td>
+                  <td class="sc-total">72</td>
+                </tr>
+                <tr>
+                  <td class="sc-label">Yards</td>
+                  <td>499</td><td>316</td><td>141</td><td>503</td><td>392</td><td>346</td><td>151</td><td>335</td><td>517</td>
+                  <td class="sc-out">3,200</td>
+                  <td>559</td><td>130</td><td>371</td><td>375</td><td>138</td><td>506</td><td>181</td><td>395</td><td>350</td>
+                  <td class="sc-total">6,205</td>
+                </tr>
+                <tr class="sc-hdcp-row">
+                  <td class="sc-label">Hdcp</td>
+                  <td>1</td><td>11</td><td>15</td><td>5</td><td>13</td><td>9</td><td>17</td><td>7</td><td>3</td>
+                  <td class="sc-out">—</td>
+                  <td>8</td><td>18</td><td>10</td><td>14</td><td>16</td><td>4</td><td>12</td><td>2</td><td>6</td>
+                  <td class="sc-total">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="hole-photos-section">
+            <div class="hole-photos-title">Hole-by-Hole Gallery</div>
+            <div class="hole-photos-grid">
+              <div class="hole-photo-slot"><span class="hole-num">1</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">2</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">3</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">4</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">5</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">6</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">7</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">8</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">9</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">10</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">11</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">12</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">13</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">14</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">15</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">16</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">17</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">18</span><span>Photo coming soon</span></div>
+            </div>
           </div>
         </div><!-- end detail-trueblue -->
 
@@ -2425,11 +3015,38 @@
               </div>
             </div>
           </div>
-          <div class="course-photos-grid">
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
-            <div class="course-photo-slot"><span class="slot-icon">📷</span><span>Photo coming soon</span></div>
+          <!-- Caledonia scorecard not in program — link to official site scorecard -->
+          <div class="scorecard-wrap">
+            <div class="scorecard-title">Scorecard — Mallard Tees · Par 70</div>
+            <p style="font-size:.82rem;color:var(--color-text-muted);margin-bottom:.5rem;">
+              Full hole-by-hole scorecard available at the course website.
+              <a href="https://caledoniagolfandfishclub.com/scorecard/" target="_blank" rel="noopener"
+                 style="color:var(--color-green-light);">View Scorecard ↗</a>
+            </p>
+          </div>
+
+          <div class="hole-photos-section">
+            <div class="hole-photos-title">Hole-by-Hole Gallery</div>
+            <div class="hole-photos-grid">
+              <div class="hole-photo-slot"><span class="hole-num">1</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">2</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">3</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">4</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">5</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">6</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">7</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">8</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">9</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">10</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">11</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">12</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">13</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">14</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">15</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">16</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">17</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot"><span class="hole-num">18</span><span>Photo coming soon</span></div>
+            </div>
           </div>
         </div><!-- end detail-caledonia -->
 
@@ -2669,6 +3286,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3174402782">&#x1F4AC; Text Matt</a>
         </div>
 
         <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1">
@@ -2686,6 +3304,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3217206144">&#x1F4AC; Text Chris</a>
         </div>
 
         <div class="player-card" id="player-sschumann" data-team="gvo" data-tier="t2">
@@ -2703,6 +3322,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3213609519">&#x1F4AC; Text Spencer</a>
         </div>
 
         <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1">
@@ -2720,6 +3340,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3216980372">&#x1F4AC; Text Taylor</a>
         </div>
 
         <div class="player-card" id="player-strobel" data-team="gvo" data-tier="t1">
@@ -2737,6 +3358,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3212984303">&#x1F4AC; Text Bash</a>
         </div>
 
         <div class="player-card" id="player-smith" data-team="gvo" data-tier="t2">
@@ -2754,6 +3376,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:7128301908">&#x1F4AC; Text Teddy</a>
         </div>
 
         <div class="player-card" id="player-damiani" data-team="gvo" data-tier="t1">
@@ -2771,6 +3394,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3867936916">&#x1F4AC; Text Jason</a>
         </div>
 
         <div class="player-card" id="player-bishop" data-team="gvo" data-tier="t2">
@@ -2788,6 +3412,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3523970237">&#x1F4AC; Text Raheem</a>
         </div>
 
         <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2">
@@ -2805,6 +3430,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:7169691932">&#x1F4AC; Text Joe M.</a>
         </div>
 
         <div class="player-card" id="player-pletcher" data-team="gvo" data-tier="t1">
@@ -2822,6 +3448,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:5745965783">&#x1F4AC; Text Mitch</a>
         </div>
 
         <div class="player-card" id="player-sharkey" data-team="gvo" data-tier="t2">
@@ -2839,6 +3466,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:5614414362">&#x1F4AC; Text Sharkey</a>
         </div>
 
         <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1">
@@ -2856,6 +3484,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:4074912232">&#x1F4AC; Text Cody</a>
         </div>
 
         <!-- ==================== LUBEN DUBERS ==================== -->
@@ -2875,6 +3504,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3212132551">&#x1F4AC; Text Adam</a>
         </div>
 
         <div class="player-card" id="player-hermanson" data-team="ld" data-tier="t2">
@@ -2892,6 +3522,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3215067688">&#x1F4AC; Text Jeremy</a>
         </div>
 
         <div class="player-card" id="player-bartlett" data-team="ld" data-tier="t1">
@@ -2909,6 +3540,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3215447722">&#x1F4AC; Text Donny</a>
         </div>
 
         <div class="player-card" id="player-pannullo" data-team="ld" data-tier="t2">
@@ -2926,6 +3558,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3865691456">&#x1F4AC; Text Ron</a>
         </div>
 
         <div class="player-card" id="player-davis" data-team="ld" data-tier="t1">
@@ -2943,6 +3576,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3862833695">&#x1F4AC; Text Davis</a>
         </div>
 
         <div class="player-card" id="player-stephenson" data-team="ld" data-tier="t1">
@@ -2960,6 +3594,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3862908164">&#x1F4AC; Text Robert</a>
         </div>
 
         <div class="player-card" id="player-reeves" data-team="ld" data-tier="t1">
@@ -2977,6 +3612,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:4783613522">&#x1F4AC; Text Justin</a>
         </div>
 
         <div class="player-card" id="player-stone" data-team="ld" data-tier="t1">
@@ -2994,6 +3630,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:7722015230">&#x1F4AC; Text Ryne</a>
         </div>
 
         <div class="player-card" id="player-glenn" data-team="ld" data-tier="t2">
@@ -3011,6 +3648,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:4043129062">&#x1F4AC; Text Cass</a>
         </div>
 
         <div class="player-card" id="player-renato" data-team="ld" data-tier="t1">
@@ -3028,6 +3666,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:6159951573">&#x1F4AC; Text Renato</a>
         </div>
 
         <div class="player-card" id="player-meyer" data-team="ld" data-tier="t2">
@@ -3045,6 +3684,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3192696727">&#x1F4AC; Text Karsten</a>
         </div>
 
         <div class="player-card" id="player-harris" data-team="ld" data-tier="t2">
@@ -3062,6 +3702,7 @@
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
+          <a class="player-text-btn" href="sms:3214749735">&#x1F4AC; Text Max</a>
         </div>
 
       </div><!-- end players-grid -->
@@ -3098,7 +3739,10 @@
     </div>
     <div class="footer-title">Basic Bros Ryder Cup</div>
     <div class="footer-text">
-      Questions? Find us on Discord.<br>
+      Questions? Find us on
+      <a href="https://discord.com/channels/1234226845092806716/1234226845570830377"
+         target="_blank" rel="noopener"
+         style="color:var(--color-green-light);text-decoration:none;font-weight:600;">Discord ↗</a><br>
       Organized by the Founding Bros:
       <span class="footer-names">Matt Bova · Cody Esbrandt · Ryne Stone</span>
     </div>
@@ -3249,6 +3893,14 @@
         grid.classList.remove('fading-out');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 300);
+    }
+
+
+    // ---- RULEBOOK ACCORDION ----
+    // Toggle open/closed state on the clicked accordion panel.
+    function toggleAccordion(btn) {
+      const item = btn.closest('.accordion-item');
+      item.classList.toggle('open');
     }
 
 
