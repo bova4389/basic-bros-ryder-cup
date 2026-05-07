@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Bros Ryder Cup</title>
+  <meta name="description" content="The official site for the Basic Bros Ryder Cup — an annual 3-day match play golf tournament. Year 3, Pawleys Island SC, June 25–28, 2026.">
+
+  <!-- Google Fonts: Cinzel for display headers, Source Sans 3 for body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       CSS VARIABLES — dark mode is the default
+       All colors, shadows, and borders reference these variables
+       so the entire site flips with one class on <body>
+    ============================================================ */
+    :root {
+      --color-bg:           #0f1923;
+      --color-surface:      #1a2535;
+      --color-surface-2:    #243040;
+      --color-green:        #2d6a4f;
+      --color-green-light:  #52b788;
+      --color-cream:        #f5f0e8;
+      --color-gold:         #d4af37;
+      --color-red:          #c0392b;
+      --color-muted:        #8899aa;
+      --color-border:       rgba(255, 255, 255, 0.08);
+      --color-text:         #f5f0e8;
+      --color-text-muted:   #8899aa;
+      --shadow:             0 4px 24px rgba(0, 0, 0, 0.45);
+      --shadow-sm:          0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Light mode — flips background/text while keeping accent colors */
+    body.light-mode {
+      --color-bg:          #eee8db;
+      --color-surface:     #e2dccf;
+      --color-surface-2:   #d5cfbf;
+      --color-border:      rgba(0, 0, 0, 0.1);
+      --color-text:        #0f1923;
+      --color-text-muted:  #4a5868;
+      --shadow:            0 4px 24px rgba(0, 0, 0, 0.12);
+      --shadow-sm:         0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    img { display: block; max-width: 100%; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ============================================================
+       STICKY HEADER
+       Stays at top while scrolling. Logo + site name + controls.
+    ============================================================ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--color-surface);
+      border-bottom: 2px solid var(--color-green);
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.7rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    /* Logo — src discovered from directory listing, not hardcoded */
+    .header-logo {
+      height: 50px;
+      width: auto;
+      flex-shrink: 0;
+    }
+
+    .header-title {
+      flex: 1;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--color-cream);
+      line-height: 1.2;
+    }
+
+    .header-title .header-sub {
+      display: block;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-top: 0.15rem;
+    }
+
+    /* Light/dark toggle button */
+    .theme-toggle {
+      flex-shrink: 0;
+      background: none;
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      font-size: 1.05rem;
+      line-height: 1;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--color-gold);
+      color: var(--color-gold);
+    }
+
+    /* Hamburger button — only visible on mobile */
+    .hamburger {
+      display: none;
+      flex-shrink: 0;
+      background: none;
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    /* ============================================================
+       DESKTOP NAVIGATION
+       Horizontal tab bar below the header.
+    ============================================================ */
+    .site-nav {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none; /* Firefox */
+    }
+
+    .nav-inner::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+    .nav-tab {
+      flex-shrink: 0;
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      padding: 0.85rem 1.1rem;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .nav-tab:hover {
+      color: var(--color-cream);
+      border-bottom-color: var(--color-green-light);
+    }
+
+    .nav-tab.active {
+      color: var(--color-cream);
+      border-bottom-color: var(--color-green);
+    }
+
+    /* ============================================================
+       MOBILE NAV DROPDOWN
+       Hidden by default, slides in when hamburger is tapped.
+    ============================================================ */
+    .mobile-nav {
+      display: none; /* controlled by JS — only rendered on mobile */
+      flex-direction: column;
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    .mobile-nav .nav-tab {
+      padding: 1rem 1.5rem;
+      border-bottom: none;
+      border-left: 3px solid transparent;
+      text-align: left;
+      width: 100%;
+    }
+
+    .mobile-nav .nav-tab.active {
+      border-left-color: var(--color-green);
+      background: rgba(45, 106, 79, 0.12);
+      color: var(--color-cream);
+    }
+
+    /* ============================================================
+       MAIN CONTENT WRAPPER
+    ============================================================ */
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    /* Each tab section is hidden; only the .active one shows */
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    /* ============================================================
+       HOME — HERO
+       Logo, title, tagline.
+    ============================================================ */
+    .hero {
+      text-align: center;
+      padding: 2.5rem 1rem 2rem;
+    }
+
+    .hero-logo {
+      width: min(260px, 65vw);
+      height: auto;
+      margin: 0 auto 1.75rem;
+      filter: drop-shadow(0 6px 24px rgba(212, 175, 55, 0.25));
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-weight: 900;
+      font-size: clamp(1.9rem, 5.5vw, 3.2rem);
+      color: var(--color-cream);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-tagline {
+      font-size: 1.05rem;
+      color: var(--color-text-muted);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       HOME — QUICK-STAT BAR
+       Four facts displayed in a 4-up card grid.
+    ============================================================ */
+    .stat-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--color-border);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 2rem 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-item {
+      background: var(--color-surface);
+      padding: 1.25rem 0.75rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    /* ============================================================
+       HOME — FOUNDING BROS CALLOUT
+       Gold-bordered card honoring the three founders.
+    ============================================================ */
+    .founding-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-gold);
+      border-radius: 10px;
+      padding: 1.75rem 2rem;
+      text-align: center;
+      margin: 2rem 0;
+      box-shadow: 0 0 32px rgba(212, 175, 55, 0.07);
+    }
+
+    .founding-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 1.1rem;
+    }
+
+    .founding-names {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .founding-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--color-cream);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .founding-star {
+      color: var(--color-gold);
+      font-size: 0.85rem;
+    }
+
+    /* ============================================================
+       HOME — COUNTDOWN TIMER
+       Live JS countdown to tee time. Updates every second.
+    ============================================================ */
+    .countdown-wrapper {
+      text-align: center;
+      margin: 2.25rem 0;
+    }
+
+    .countdown-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-green-light);
+      margin-bottom: 1.1rem;
+    }
+
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .countdown-block {
+      background: var(--color-surface);
+      border: 1px solid var(--color-green);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      min-width: 78px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .countdown-number {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--color-cream);
+      line-height: 1;
+    }
+
+    .countdown-unit {
+      display: block;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* Message shown when tournament has started */
+    .countdown-live {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      color: var(--color-gold);
+      padding: 1rem;
+    }
+
+    /* ============================================================
+       HOME — QUICK-LINK BUTTONS
+    ============================================================ */
+    .quick-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 2.5rem 0 1rem;
+    }
+
+    /* Base button styles */
+    .btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 0.9rem 1.8rem;
+      border-radius: 8px;
+      border: none;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    }
+
+    /* Green primary button */
+    .btn-primary {
+      background: var(--color-green);
+      color: var(--color-cream);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-green-light);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    /* Gold outlined secondary button */
+    .btn-secondary {
+      background: transparent;
+      color: var(--color-gold);
+      border: 1px solid var(--color-gold);
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-gold);
+      color: #0f1923;
+      transform: translateY(-2px);
+    }
+
+    /* Thin divider line */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: 2.5rem 0;
+    }
+
+    /* ============================================================
+       PLACEHOLDER TAB CARDS
+       Shown for sections not yet built (Rulebook, 2026, etc.)
+    ============================================================ */
+    .coming-soon-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+
+    .coming-soon-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      padding: 4rem 2.5rem;
+      text-align: center;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .coming-soon-icon {
+      font-size: 3rem;
+      margin-bottom: 1.1rem;
+      line-height: 1;
+    }
+
+    .coming-soon-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--color-cream);
+      margin-bottom: 0.85rem;
+    }
+
+    .coming-soon-body {
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      line-height: 1.65;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    .coming-soon-badge {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      background: var(--color-green);
+      color: var(--color-cream);
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .site-footer {
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+      padding: 2.25rem 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .footer-logo-wrap {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-logo {
+      height: 44px;
+      width: auto;
+      margin: 0 auto;
+      opacity: 0.75;
+    }
+
+    .footer-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-text {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+
+    .footer-names {
+      color: var(--color-cream);
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       RESPONSIVE — MOBILE FIRST
+       Breakpoint: 768px and below
+    ============================================================ */
+    @media (max-width: 768px) {
+
+      /* Show hamburger, hide desktop nav bar */
+      .hamburger   { display: block; }
+      .site-nav    { display: none; }
+
+      .header-inner { padding: 0.6rem 1rem; gap: 0.65rem; }
+      .header-logo  { height: 40px; }
+      .header-title { font-size: 0.95rem; }
+
+      .main-content { padding: 1.5rem 1rem; }
+
+      .hero { padding: 1.75rem 0.5rem 1.25rem; }
+
+      /* Stat bar drops to 2-column grid on small screens */
+      .stat-bar { grid-template-columns: repeat(2, 1fr); }
+
+      /* Founding names stack vertically */
+      .founding-names {
+        flex-direction: column;
+        gap: 0.65rem;
+      }
+
+      /* Countdown blocks shrink slightly */
+      .countdown-block  { min-width: 64px; padding: 0.75rem 0.85rem; }
+      .countdown-number { font-size: 1.65rem; }
+
+      /* Buttons stack full-width */
+      .quick-links      { flex-direction: column; align-items: center; }
+      .btn              { width: 100%; max-width: 300px; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       STICKY HEADER
+       Visible on every page: logo, site name, theme toggle, hamburger
+  ============================================================ -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <!-- Logo — filename discovered from assets directory, not hardcoded -->
+      <img src="Basic_Bros_Logo.png" alt="Basic Bros Ryder Cup logo" class="header-logo">
+
+      <div class="header-title">
+        Basic Bros Ryder Cup
+        <span class="header-sub">Est. 2024 &nbsp;·&nbsp; Pawleys Island, SC</span>
+      </div>
+
+      <!-- Saves preference to localStorage so it persists across visits -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">🌙</button>
+
+      <!-- Only visible on mobile — toggles the dropdown nav below -->
+      <button class="hamburger" id="hamburger" aria-label="Open menu">☰</button>
+
+    </div>
+  </header>
+
+  <!-- Desktop horizontal tab navigation -->
+  <nav class="site-nav" id="desktopNav">
+    <div class="nav-inner" role="tablist">
+      <button class="nav-tab active" role="tab" onclick="showTab('home', this)">Home</button>
+      <button class="nav-tab" role="tab" onclick="showTab('rulebook', this)">Rulebook</button>
+      <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tournament</button>
+      <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tournament History</button>
+      <button class="nav-tab" role="tab" onclick="showTab('players', this)">Players</button>
+      <button class="nav-tab" role="tab" onclick="showTab('admin', this)">Admin</button>
+    </div>
+  </nav>
+
+  <!-- Mobile dropdown nav — hidden until hamburger is tapped -->
+  <div class="mobile-nav" id="mobileNav">
+    <button class="nav-tab active" onclick="showTab('home', this); closeMobileNav()">Home</button>
+    <button class="nav-tab" onclick="showTab('rulebook', this); closeMobileNav()">Rulebook</button>
+    <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tournament</button>
+    <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tournament History</button>
+    <button class="nav-tab" onclick="showTab('players', this); closeMobileNav()">Players</button>
+    <button class="nav-tab" onclick="showTab('admin', this); closeMobileNav()">Admin</button>
+  </div>
+
+
+  <!-- ============================================================
+       MAIN CONTENT
+       Each tab section is hidden/shown by JS. Only one is active.
+  ============================================================ -->
+  <main class="main-content">
+
+
+    <!-- ========================================================
+         HOME TAB
+    ======================================================== -->
+    <section id="home" class="tab-section active" role="tabpanel">
+
+      <!-- Hero: big logo, title, tagline -->
+      <div class="hero">
+        <img src="Basic_Bros_Logo.png" alt="Basic Bros Ryder Cup" class="hero-logo">
+        <h1 class="hero-title">Basic Bros Ryder Cup</h1>
+        <p class="hero-eyebrow">3rd Annual &nbsp;·&nbsp; June 25–28, 2026</p>
+        <p class="hero-tagline">
+          24 guys. 3 days. 3 courses. One champion team.<br>
+          Welcome to the most prestigious event in none of our backyards.
+        </p>
+      </div>
+
+      <!-- Quick-stat bar: at-a-glance tournament facts -->
+      <div class="stat-bar" aria-label="Tournament quick stats">
+        <div class="stat-item">
+          <span class="stat-value">3rd</span>
+          <span class="stat-label">Annual</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">24</span>
+          <span class="stat-label">Players</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">SC</span>
+          <span class="stat-label">Pawleys Island</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">Jun 25</span>
+          <span class="stat-label">First Tee</span>
+        </div>
+      </div>
+
+      <!-- Founding Bros: gold-bordered callout card -->
+      <div class="founding-card">
+        <div class="founding-eyebrow">⭐ Founding Bros ⭐</div>
+        <div class="founding-names">
+          <span class="founding-name">
+            <span class="founding-star">✦</span> Matt Bova
+          </span>
+          <span class="founding-name">
+            <span class="founding-star">✦</span> Cody Esbrandt
+          </span>
+          <span class="founding-name">
+            <span class="founding-star">✦</span> Ryne Stone
+          </span>
+        </div>
+      </div>
+
+      <!-- Countdown timer: counts down to June 25 2026 9:03am ET -->
+      <div class="countdown-wrapper">
+        <div class="countdown-eyebrow">⛳ Tee Time Countdown — June 25, 2026 · 9:03am ET</div>
+        <div class="countdown-grid" id="countdown">
+          <div class="countdown-block">
+            <span class="countdown-number" id="cd-days">--</span>
+            <span class="countdown-unit">Days</span>
+          </div>
+          <div class="countdown-block">
+            <span class="countdown-number" id="cd-hours">--</span>
+            <span class="countdown-unit">Hours</span>
+          </div>
+          <div class="countdown-block">
+            <span class="countdown-number" id="cd-mins">--</span>
+            <span class="countdown-unit">Mins</span>
+          </div>
+          <div class="countdown-block">
+            <span class="countdown-number" id="cd-secs">--</span>
+            <span class="countdown-unit">Secs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick-link buttons to main sections -->
+      <div class="quick-links">
+        <button class="btn btn-primary" onclick="showTab('tournament2026', null)">⛳ View 2026 Tournament</button>
+        <button class="btn btn-primary" onclick="showTab('rulebook', null)">📋 Read the Rulebook</button>
+        <button class="btn btn-secondary" onclick="showTab('players', null)">👤 Player Bios</button>
+      </div>
+
+      <hr class="divider">
+
+    </section>
+
+
+    <!-- ========================================================
+         RULEBOOK TAB — placeholder
+    ======================================================== -->
+    <section id="rulebook" class="tab-section" role="tabpanel">
+      <div class="coming-soon-wrap">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">📋</div>
+          <h2 class="coming-soon-title">Rulebook</h2>
+          <p class="coming-soon-body">
+            The full Basic Bros Ryder Cup By-Laws — format, scoring system, handicap rules, special clauses, and everything that makes this tournament what it is.
+          </p>
+          <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         2026 TOURNAMENT TAB — placeholder
+    ======================================================== -->
+    <section id="tournament2026" class="tab-section" role="tabpanel">
+      <div class="coming-soon-wrap">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">🏆</div>
+          <h2 class="coming-soon-title">2026 Tournament</h2>
+          <p class="coming-soon-body">
+            Teams, pairings, the full schedule, course details, condo assignments, and live scoring for the 2026 Basic Bros Ryder Cup — June 25–28 at Pawleys Island, SC.
+          </p>
+          <span class="coming-soon-badge">Drops Before June 25</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         TOURNAMENT HISTORY TAB — placeholder
+    ======================================================== -->
+    <section id="history" class="tab-section" role="tabpanel">
+      <div class="coming-soon-wrap">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">📖</div>
+          <h2 class="coming-soon-title">Tournament History</h2>
+          <p class="coming-soon-body">
+            Year 1 (2024) and Year 2 (2025) results, final scores, MVPs, memorable moments, and the full record books.
+          </p>
+          <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         PLAYERS TAB — placeholder
+    ======================================================== -->
+    <section id="players" class="tab-section" role="tabpanel">
+      <div class="coming-soon-wrap">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">👤</div>
+          <h2 class="coming-soon-title">Players</h2>
+          <p class="coming-soon-body">
+            Player bios, career records, handicaps, tiers, and stats for all 24 competing bros. Bio submission form coming soon.
+          </p>
+          <span class="coming-soon-badge">Coming Soon</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         ADMIN TAB — placeholder
+    ======================================================== -->
+    <section id="admin" class="tab-section" role="tabpanel">
+      <div class="coming-soon-wrap">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">🔐</div>
+          <h2 class="coming-soon-title">Admin</h2>
+          <p class="coming-soon-body">
+            Password-protected commissioner panel for CSV score uploads, bio approvals, roster edits, and tournament management.
+          </p>
+          <span class="coming-soon-badge">Commissioner Only</span>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="site-footer">
+    <div class="footer-logo-wrap">
+      <img src="Basic_Bros_Logo.png" alt="" class="footer-logo" aria-hidden="true">
+    </div>
+    <div class="footer-title">Basic Bros Ryder Cup</div>
+    <div class="footer-text">
+      Questions? Find us on Discord.<br>
+      Organized by the Founding Bros:
+      <span class="footer-names">Matt Bova · Cody Esbrandt · Ryne Stone</span>
+    </div>
+  </footer>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+
+    // ---- THEME TOGGLE ----
+    // Reads saved preference from localStorage on every page load.
+    // Defaults to dark if nothing is saved.
+    const themeToggle = document.getElementById('themeToggle');
+
+    function applyTheme(mode) {
+      if (mode === 'light') {
+        document.body.classList.add('light-mode');
+        themeToggle.textContent = '☀️';
+      } else {
+        document.body.classList.remove('light-mode');
+        themeToggle.textContent = '🌙';
+      }
+    }
+
+    // Apply saved theme immediately (before paint to avoid flash)
+    applyTheme(localStorage.getItem('bbrc-theme') || 'dark');
+
+    themeToggle.addEventListener('click', () => {
+      const isLight = document.body.classList.contains('light-mode');
+      const next = isLight ? 'dark' : 'light';
+      localStorage.setItem('bbrc-theme', next);
+      applyTheme(next);
+    });
+
+
+    // ---- TAB SWITCHING ----
+    // Hides all tab sections and shows the one matching tabId.
+    // Updates active highlight on both desktop and mobile nav buttons.
+    function showTab(tabId, clickedBtn) {
+
+      // Hide every section
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+
+      // Show the selected one
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+
+      // Remove active class from all nav tabs in both navbars
+      document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+
+      // Mark the matching buttons active (there are two mirrors: desktop + mobile)
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        const oc = btn.getAttribute('onclick') || '';
+        if (oc.includes(`'${tabId}'`)) btn.classList.add('active');
+      });
+
+      // Scroll to top so user isn't stranded mid-page after switching tabs
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+
+    // ---- MOBILE HAMBURGER ----
+    const hamburger  = document.getElementById('hamburger');
+    const mobileNav  = document.getElementById('mobileNav');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('open');
+      hamburger.textContent = isOpen ? '✕' : '☰';
+    });
+
+    function closeMobileNav() {
+      mobileNav.classList.remove('open');
+      hamburger.textContent = '☰';
+    }
+
+
+    // ---- COUNTDOWN TIMER ----
+    // Target: June 25, 2026 at 9:03am Eastern Daylight Time.
+    // EDT = UTC-4, so that converts to 13:03:00 UTC.
+    const TEE_TIME = new Date('2026-06-25T13:03:00Z');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function updateCountdown() {
+      const diff = TEE_TIME - Date.now();
+
+      // If tee time has passed, replace the blocks with a live message
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML =
+          '<span class="countdown-live">🏌️ We\'re live at Pawleys Plantation. Fore!</span>';
+        return;
+      }
+
+      const days  = Math.floor(diff / 864e5);
+      const hours = Math.floor((diff % 864e5) / 36e5);
+      const mins  = Math.floor((diff % 36e5)  / 6e4);
+      const secs  = Math.floor((diff % 6e4)   / 1e3);
+
+      document.getElementById('cd-days').textContent  = pad(days);
+      document.getElementById('cd-hours').textContent = pad(hours);
+      document.getElementById('cd-mins').textContent  = pad(mins);
+      document.getElementById('cd-secs').textContent  = pad(secs);
+    }
+
+    // Run once immediately so numbers appear before the first second ticks
+    updateCountdown();
+    // Then update every second
+    setInterval(updateCountdown, 1000);
+
+  </script>
+
+</body>
+</html>
