@@ -1881,6 +1881,454 @@
     }
 
     /* ============================================================
+       BIO SUBMISSION FORM
+    ============================================================ */
+    .bio-form-wrap {
+      max-width: 680px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .bio-form-intro {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-left: 4px solid var(--color-green);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .bio-form-intro h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--color-cream);
+      margin-bottom: 0.5rem;
+    }
+
+    .bio-form-intro p {
+      font-size: 0.88rem;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+
+    .bio-form {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .form-required {
+      color: var(--color-gold);
+      margin-left: 2px;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      color: var(--color-text);
+      font-family: inherit;
+      font-size: 1rem;
+      padding: 0.7rem 0.95rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: var(--color-green-light);
+      box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.12);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .form-hint {
+      font-size: 0.76rem;
+      color: var(--color-text-muted);
+      margin-top: 0.35rem;
+      line-height: 1.4;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: 1.75rem 0;
+    }
+
+    .form-section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .bio-submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--color-green);
+      color: var(--color-cream);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      margin-top: 0.5rem;
+    }
+
+    .bio-submit-btn:hover:not(:disabled) {
+      background: var(--color-green-light);
+      color: #0f1923;
+    }
+
+    .bio-submit-btn:active:not(:disabled) { transform: scale(0.98); }
+
+    .bio-submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .bio-success {
+      display: none;
+      background: rgba(45, 106, 79, 0.15);
+      border: 1px solid var(--color-green);
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    .bio-success-icon  { font-size: 3rem; margin-bottom: 0.75rem; }
+
+    .bio-success-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      color: var(--color-green-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .bio-success-body {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    .bio-error-msg {
+      display: none;
+      background: rgba(192, 57, 43, 0.1);
+      border: 1px solid var(--color-red);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      font-size: 0.85rem;
+      color: var(--color-red);
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .bio-form   { padding: 1.25rem; }
+      .form-row-2 { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       ADMIN PANEL
+    ============================================================ */
+    .admin-gate {
+      max-width: 420px;
+      margin: 3rem auto;
+      text-align: center;
+    }
+
+    .admin-gate-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: var(--color-cream);
+      margin-bottom: 0.5rem;
+    }
+
+    .admin-gate-sub {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-gate-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .admin-gate-row .form-input { flex: 1; }
+
+    .admin-gate-btn {
+      padding: 0.7rem 1.1rem;
+      background: var(--color-green);
+      color: var(--color-cream);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .admin-gate-btn:hover { background: var(--color-green-light); color: #0f1923; }
+
+    .admin-gate-error {
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--color-red);
+    }
+
+    .admin-content { display: none; }
+    .admin-content.unlocked { display: block; }
+
+    .admin-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .admin-header-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--color-cream);
+    }
+
+    .admin-logout-btn {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      background: none;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+    }
+
+    .admin-logout-btn:hover { color: var(--color-red); border-color: var(--color-red); }
+
+    /* Bio form open/close toggle */
+    .admin-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .admin-toggle-label {
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+
+    .admin-toggle-label span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--color-border);
+      border-radius: 26px;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.25s;
+    }
+
+    .toggle-switch input:checked + .toggle-track { background: var(--color-green-light); }
+    .toggle-switch input:checked + .toggle-track::after { transform: translateX(22px); }
+
+    /* Submissions section */
+    .admin-section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .admin-filter-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .admin-filter-btn {
+      font-size: 0.78rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      border: 1px solid var(--color-border);
+      background: none;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .admin-filter-btn.active,
+    .admin-filter-btn:hover {
+      background: var(--color-green);
+      color: var(--color-cream);
+      border-color: var(--color-green);
+    }
+
+    .sub-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .sub-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0.9rem 1.25rem;
+      background: var(--color-surface-2);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .sub-card-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--color-cream);
+    }
+
+    .sub-status-badge {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+    }
+
+    .badge-pending  { background: rgba(212,175,55,0.15);  color: var(--color-gold);        border: 1px solid rgba(212,175,55,0.3); }
+    .badge-approved { background: rgba(82,183,136,0.15);  color: var(--color-green-light); border: 1px solid rgba(82,183,136,0.3); }
+    .badge-rejected { background: rgba(192,57,43,0.12);   color: var(--color-red);         border: 1px solid rgba(192,57,43,0.3); }
+
+    .sub-card-body {
+      padding: 1rem 1.25rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.6rem 1.25rem;
+    }
+
+    .sub-field-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.1rem;
+    }
+
+    .sub-field-value {
+      font-size: 0.88rem;
+      color: var(--color-text);
+    }
+
+    .sub-field-full { grid-column: 1 / -1; }
+
+    .sub-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+
+    .sub-approve-btn, .sub-reject-btn, .sub-delete-btn {
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .sub-approve-btn { background: var(--color-green);  color: var(--color-cream); }
+    .sub-reject-btn  { background: rgba(192,57,43,0.15); color: var(--color-red);  border: 1px solid rgba(192,57,43,0.3); }
+    .sub-delete-btn  { background: rgba(136,153,170,0.1); color: var(--color-text-muted); border: 1px solid var(--color-border); margin-left: auto; }
+
+    .sub-approve-btn:hover { opacity: 0.85; }
+    .sub-reject-btn:hover  { background: var(--color-red); color: #fff; }
+    .sub-delete-btn:hover  { border-color: var(--color-red); color: var(--color-red); }
+
+    .admin-empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ============================================================
        RESPONSIVE — MOBILE FIRST
        Breakpoint: 768px and below
     ============================================================ */
@@ -1953,6 +2401,8 @@
       <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tournament</button>
       <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tournament History</button>
       <button class="nav-tab" role="tab" onclick="showTab('players', this)">Players</button>
+      <!-- Submit Bio tab — hidden until admin enables it via the admin panel -->
+      <button class="nav-tab" role="tab" id="bioFormTab" style="display:none;" onclick="showTab('submitbio', this)">Submit Bio</button>
       <button class="nav-tab" role="tab" onclick="showTab('admin', this)">Admin</button>
     </div>
   </nav>
@@ -1964,6 +2414,8 @@
     <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tournament</button>
     <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tournament History</button>
     <button class="nav-tab" onclick="showTab('players', this); closeMobileNav()">Players</button>
+    <!-- Submit Bio tab — hidden until admin enables it -->
+    <button class="nav-tab" id="bioFormTabMobile" style="display:none;" onclick="showTab('submitbio', this); closeMobileNav()">Submit Bio</button>
     <button class="nav-tab" onclick="showTab('admin', this); closeMobileNav()">Admin</button>
   </div>
 
@@ -3260,12 +3712,6 @@
         <button class="player-filter" onclick="filterPlayers('t2', this)">Tier 2</button>
       </div>
 
-      <!-- Bio form notice -->
-      <div class="scoring-notice" style="margin-bottom:1.75rem;">
-        <h3>📝 Submit Your Bio</h3>
-        <p>Player bios, hometowns, and career records will appear here once submitted. Bio submission form coming soon — Matt will send the link when it's ready.</p>
-      </div>
-
       <!-- 24-player grid -->
       <div class="players-grid">
 
@@ -3711,18 +4157,175 @@
 
 
     <!-- ========================================================
-         ADMIN TAB — placeholder
+         SUBMIT BIO TAB
+         Hidden by default — admin enables it via toggle in admin panel.
+         Members navigate here via the "Submit Bio" nav tab.
+    ======================================================== -->
+    <section id="submitbio" class="tab-section" role="tabpanel">
+      <div class="tourney-header">
+        <h2>Submit Your Bio</h2>
+        <p>Takes about 2 minutes · Matt reviews before publishing</p>
+      </div>
+
+      <div class="bio-form-wrap">
+
+        <div class="bio-form-intro">
+          <h3>Player Bio Form</h3>
+          <p>
+            Fill this out so your card has real info when the site goes live.
+            Optional fields are genuinely optional — don't overthink it.
+          </p>
+        </div>
+
+        <!-- Shown after a successful submit, replaces the form -->
+        <div class="bio-success" id="bioSuccess">
+          <div class="bio-success-icon">⛳</div>
+          <div class="bio-success-title">Bio Submitted!</div>
+          <div class="bio-success-body">Matt will review and publish it before June 25. You're locked in.</div>
+        </div>
+
+        <!-- Already submitted notice — shown if localStorage flag is set -->
+        <div class="bio-success" id="bioAlreadySubmitted" style="display:none;">
+          <div class="bio-success-icon">✓</div>
+          <div class="bio-success-title">Already Submitted</div>
+          <div class="bio-success-body">Looks like you already sent a bio from this device. If you need to update something, message Matt directly on Discord.</div>
+        </div>
+
+        <form class="bio-form" id="bioForm" novalidate>
+
+          <div class="form-section-label">Required Info</div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="bio-first">First Name <span class="form-required">*</span></label>
+              <input class="form-input" type="text" id="bio-first" name="firstName" required autocomplete="given-name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bio-last">Last Name <span class="form-required">*</span></label>
+              <input class="form-input" type="text" id="bio-last" name="lastName" required autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bio-discord">Discord Username <span class="form-required">*</span></label>
+            <input class="form-input" type="text" id="bio-discord" name="discordUsername" required placeholder="e.g., mattbova or mattbova#1234">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bio-hometown">Hometown / Where You Live Now <span class="form-required">*</span></label>
+            <input class="form-input" type="text" id="bio-hometown" name="hometown" required placeholder="e.g., Charlotte, NC">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bio-years">Years in BBRC <span class="form-required">*</span></label>
+            <select class="form-select" id="bio-years" name="yearsParticipated" required>
+              <option value="" disabled selected>Select years played</option>
+              <option value="2026 only">2026 only — Year 3 (first time)</option>
+              <option value="2025, 2026">2025 + 2026 — Years 2–3</option>
+              <option value="2024, 2025, 2026">2024 + 2025 + 2026 — all three years</option>
+            </select>
+          </div>
+
+          <hr class="form-divider">
+          <div class="form-section-label">Optional Info</div>
+
+          <div class="form-group">
+            <label class="form-label" for="bio-nickname">Nickname / Display Name</label>
+            <input class="form-input" type="text" id="bio-nickname" name="nickname" placeholder="What the guys call you">
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="bio-occupation">Occupation</label>
+              <input class="form-input" type="text" id="bio-occupation" name="occupation">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bio-family">Family Status</label>
+              <input class="form-input" type="text" id="bio-family" name="familyStatus" placeholder="e.g., Married, 2 kids">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bio-yearbook">If you had a yearbook quote, what would it say?</label>
+            <textarea class="form-textarea" id="bio-yearbook" name="yearbookQuote" rows="2"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bio-walkup">Walk-up song on the first tee</label>
+            <input class="form-input" type="text" id="bio-walkup" name="walkUpSong" placeholder="Song · Artist">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bio-funfact">Fun Fact About You</label>
+            <textarea class="form-textarea" id="bio-funfact" name="funFact" rows="2"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Profile Photo</label>
+            <div class="bio-form-intro" style="margin-bottom:0;">
+              <p>📷 Text or Discord your photo directly to Matt — <strong style="color:var(--color-cream);">317-440-2782</strong>. We need to be able to see your face. Any photo works — action shot, smug face, whatever.</p>
+            </div>
+          </div>
+
+          <button type="submit" class="bio-submit-btn" id="bioSubmitBtn">Submit Bio</button>
+          <div class="bio-error-msg" id="bioErrorMsg">Something went wrong — try again or message Matt on Discord.</div>
+
+        </form>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         ADMIN TAB — password-gated commissioner panel
     ======================================================== -->
     <section id="admin" class="tab-section" role="tabpanel">
-      <div class="coming-soon-wrap">
-        <div class="coming-soon-card">
-          <div class="coming-soon-icon">🔐</div>
-          <h2 class="coming-soon-title">Admin</h2>
-          <p class="coming-soon-body">
-            Password-protected commissioner panel for CSV score uploads, bio approvals, roster edits, and tournament management.
-          </p>
-          <span class="coming-soon-badge">Commissioner Only</span>
+
+      <!-- Password gate — shown until correct password entered -->
+      <div class="admin-gate" id="adminGate">
+        <div class="admin-gate-title">Commissioner Access</div>
+        <div class="admin-gate-sub">Enter the admin password to continue.</div>
+        <div class="admin-gate-row">
+          <input class="form-input" type="password" id="adminPwInput" placeholder="Password" onkeydown="if(event.key==='Enter') checkAdminPw()">
+          <button class="admin-gate-btn" onclick="checkAdminPw()">Unlock</button>
         </div>
+        <div class="admin-gate-error" id="adminGateError"></div>
+      </div>
+
+      <!-- Admin content — hidden until unlocked -->
+      <div class="admin-content" id="adminContent">
+
+        <div class="admin-header-bar">
+          <div class="admin-header-title">Admin Panel</div>
+          <button class="admin-logout-btn" onclick="adminLogout()">Log out</button>
+        </div>
+
+        <!-- Toggle: open/close the Submit Bio nav tab -->
+        <div class="admin-toggle-row">
+          <div class="admin-toggle-label">
+            Bio Form — Public Access
+            <span>Controls whether the "Submit Bio" tab is visible to members</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="bioFormToggle" onchange="toggleBioForm(this.checked)">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+
+        <!-- Bio submissions list -->
+        <div class="admin-section-title">Bio Submissions</div>
+
+        <div class="admin-filter-row">
+          <button class="admin-filter-btn active" onclick="filterSubmissions('all', this)">All</button>
+          <button class="admin-filter-btn" onclick="filterSubmissions('pending', this)">Pending</button>
+          <button class="admin-filter-btn" onclick="filterSubmissions('approved', this)">Approved</button>
+          <button class="admin-filter-btn" onclick="filterSubmissions('rejected', this)">Rejected</button>
+          <button class="admin-filter-btn" style="margin-left:auto;" onclick="loadSubmissions()">↻ Refresh</button>
+        </div>
+
+        <div id="submissionsList">
+          <div class="admin-empty">Loading submissions…</div>
+        </div>
+
       </div>
     </section>
 
@@ -3748,6 +4351,14 @@
     </div>
   </footer>
 
+
+  <!-- ============================================================
+       FIREBASE SDK — loaded from Google CDN before our script runs
+       Using compat (v8-style) API so we can call firebase.firestore()
+       without ES module imports.
+  ============================================================ -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
   <!-- ============================================================
        JAVASCRIPT
@@ -3951,6 +4562,272 @@
     updateCountdown();
     // Then update every second
     setInterval(updateCountdown, 1000);
+
+
+    // ---- FIREBASE INIT ----
+    // Config copied from Firebase console → Project settings → Your apps.
+    const firebaseConfig = {
+      apiKey:            "AIzaSyDMzWDV6Lg91u7M4L-M6jq4g7UGSCUvGBg",
+      authDomain:        "basic-bros-ryder-cup.firebaseapp.com",
+      databaseURL:       "https://basic-bros-ryder-cup-default-rtdb.firebaseio.com",
+      projectId:         "basic-bros-ryder-cup",
+      storageBucket:     "basic-bros-ryder-cup.firebasestorage.app",
+      messagingSenderId: "185220917562",
+      appId:             "1:185220917562:web:fa72e9433a5d375c5ac803"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+
+    // ---- BIO FORM: DUPLICATE PREVENTION ----
+    // If this device has already submitted, hide the form and show the "already submitted" card.
+    // localStorage key 'bbrc-bio-submitted' is set to 'true' after a successful submit.
+    const bioForm             = document.getElementById('bioForm');
+    const bioSuccess          = document.getElementById('bioSuccess');
+    const bioAlreadySubmitted = document.getElementById('bioAlreadySubmitted');
+    const bioErrorMsg         = document.getElementById('bioErrorMsg');
+    const bioSubmitBtn        = document.getElementById('bioSubmitBtn');
+
+    if (bioForm && localStorage.getItem('bbrc-bio-submitted') === 'true') {
+      bioForm.style.display = 'none';
+      if (bioAlreadySubmitted) bioAlreadySubmitted.style.display = 'block';
+    }
+
+    if (bioForm) {
+      bioForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Validate required fields before touching the database
+        const firstName = document.getElementById('bio-first').value.trim();
+        const lastName  = document.getElementById('bio-last').value.trim();
+        const discord   = document.getElementById('bio-discord').value.trim();
+        const hometown  = document.getElementById('bio-hometown').value.trim();
+        const years     = document.getElementById('bio-years').value;
+
+        if (!firstName || !lastName || !discord || !hometown || !years) {
+          bioErrorMsg.textContent = 'Please fill in all required fields (marked with *).';
+          bioErrorMsg.style.display = 'block';
+          return;
+        }
+
+        // Lock the button so they can't double-tap
+        bioSubmitBtn.disabled = true;
+        bioSubmitBtn.textContent = 'Submitting…';
+        bioErrorMsg.style.display = 'none';
+
+        try {
+          // Save to Realtime Database — status starts as "pending" until admin approves
+          await db.ref('bio_submissions').push({
+            firstName,
+            lastName,
+            discordUsername:  discord,
+            hometown,
+            yearsParticipated: years,
+            nickname:        document.getElementById('bio-nickname').value.trim(),
+            occupation:      document.getElementById('bio-occupation').value.trim(),
+            familyStatus:    document.getElementById('bio-family').value.trim(),
+            yearbookQuote:   document.getElementById('bio-yearbook').value.trim(),
+            walkUpSong:      document.getElementById('bio-walkup').value.trim(),
+            funFact:         document.getElementById('bio-funfact').value.trim(),
+            photoUrl:        '',   // Matt adds manually after member texts/Discords a photo
+            status:          'pending',
+            submittedAt:     firebase.database.ServerValue.TIMESTAMP
+          });
+
+          // Flag this device as submitted so they can't resubmit
+          localStorage.setItem('bbrc-bio-submitted', 'true');
+
+          // Swap form for success card
+          bioForm.style.display = 'none';
+          if (bioSuccess) bioSuccess.style.display = 'block';
+
+        } catch (err) {
+          console.error('Bio submission error:', err);
+          bioErrorMsg.textContent = 'Something went wrong — try again or message Matt on Discord.';
+          bioErrorMsg.style.display = 'block';
+          bioSubmitBtn.disabled = false;
+          bioSubmitBtn.textContent = 'Submit Bio';
+        }
+      });
+    }
+
+
+    // ---- BIO FORM VISIBILITY: read settings from database on page load ----
+    // Admin sets settings/bioFormOpen = true to show the "Submit Bio" nav tab.
+    // The tab stays hidden until that flag is set.
+    db.ref('settings/bioFormOpen').once('value').then(snap => {
+      const isOpen = snap.val() === true;
+      const tabDesktop = document.getElementById('bioFormTab');
+      const tabMobile  = document.getElementById('bioFormTabMobile');
+      if (isOpen && tabDesktop) tabDesktop.style.display = '';
+      if (isOpen && tabMobile)  tabMobile.style.display  = '';
+    });
+
+
+    // ---- ADMIN PANEL ----
+    // Simple password gate — stored in localStorage so you stay logged in.
+    // Password can be changed below. All submission reads/writes go through db.ref().
+    const ADMIN_PW = 'bbrcadmin';
+
+    function checkAdminPw() {
+      const entered = document.getElementById('adminPwInput').value;
+      if (entered === ADMIN_PW) {
+        localStorage.setItem('bbrc-admin', 'true');
+        unlockAdmin();
+      } else {
+        document.getElementById('adminGateError').textContent = 'Wrong password. Try again.';
+      }
+    }
+
+    function unlockAdmin() {
+      document.getElementById('adminGate').style.display    = 'none';
+      document.getElementById('adminContent').classList.add('unlocked');
+      // Sync the bio form toggle with current database value
+      db.ref('settings/bioFormOpen').once('value').then(snap => {
+        document.getElementById('bioFormToggle').checked = snap.val() === true;
+      });
+      loadSubmissions();
+    }
+
+    function adminLogout() {
+      localStorage.removeItem('bbrc-admin');
+      document.getElementById('adminGate').style.display = '';
+      document.getElementById('adminContent').classList.remove('unlocked');
+      document.getElementById('adminPwInput').value = '';
+    }
+
+    // Auto-unlock if they were already logged in from a previous visit
+    if (localStorage.getItem('bbrc-admin') === 'true') {
+      // Wait until the DOM has the admin tab rendered before unlocking
+      document.addEventListener('DOMContentLoaded', unlockAdmin);
+      // Also try immediately in case DOMContentLoaded already fired
+      if (document.readyState !== 'loading') unlockAdmin();
+    }
+
+    // Toggle bioFormOpen in database and show/hide the nav tab live
+    function toggleBioForm(isOpen) {
+      db.ref('settings/bioFormOpen').set(isOpen);
+      const tabDesktop = document.getElementById('bioFormTab');
+      const tabMobile  = document.getElementById('bioFormTabMobile');
+      if (tabDesktop) tabDesktop.style.display = isOpen ? '' : 'none';
+      if (tabMobile)  tabMobile.style.display  = isOpen ? '' : 'none';
+    }
+
+    // Load all submissions from the database and render them
+    let allSubmissions = {};   // keyed by Firebase push ID
+    let currentFilter  = 'all';
+
+    function loadSubmissions() {
+      const list = document.getElementById('submissionsList');
+      if (!list) return;
+      list.innerHTML = '<div class="admin-empty">Loading…</div>';
+      db.ref('bio_submissions').once('value').then(snap => {
+        allSubmissions = snap.val() || {};
+        renderSubmissions();
+      }).catch(() => {
+        list.innerHTML = '<div class="admin-empty">Could not load submissions. Check database rules.</div>';
+      });
+    }
+
+    function filterSubmissions(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderSubmissions();
+    }
+
+    function renderSubmissions() {
+      const list = document.getElementById('submissionsList');
+      if (!list) return;
+
+      const entries = Object.entries(allSubmissions).filter(([, s]) =>
+        currentFilter === 'all' || s.status === currentFilter
+      );
+
+      if (entries.length === 0) {
+        list.innerHTML = `<div class="admin-empty">No ${currentFilter === 'all' ? '' : currentFilter + ' '}submissions yet.</div>`;
+        return;
+      }
+
+      // Sort newest first
+      entries.sort(([, a], [, b]) => (b.submittedAt || 0) - (a.submittedAt || 0));
+
+      list.innerHTML = entries.map(([id, s]) => {
+        const badgeClass = s.status === 'approved' ? 'badge-approved'
+                         : s.status === 'rejected' ? 'badge-rejected'
+                         : 'badge-pending';
+        const val = (v) => v ? v : '<span style="color:var(--color-text-muted)">—</span>';
+
+        return `
+          <div class="sub-card" id="sub-${id}">
+            <div class="sub-card-header">
+              <div class="sub-card-name">${s.firstName || ''} ${s.lastName || ''}</div>
+              <span class="sub-status-badge ${badgeClass}">${s.status || 'pending'}</span>
+            </div>
+            <div class="sub-card-body">
+              <div>
+                <div class="sub-field-label">Discord</div>
+                <div class="sub-field-value">${val(s.discordUsername)}</div>
+              </div>
+              <div>
+                <div class="sub-field-label">Hometown</div>
+                <div class="sub-field-value">${val(s.hometown)}</div>
+              </div>
+              <div>
+                <div class="sub-field-label">Years in BBRC</div>
+                <div class="sub-field-value">${val(s.yearsParticipated)}</div>
+              </div>
+              <div>
+                <div class="sub-field-label">Nickname</div>
+                <div class="sub-field-value">${val(s.nickname)}</div>
+              </div>
+              <div>
+                <div class="sub-field-label">Occupation</div>
+                <div class="sub-field-value">${val(s.occupation)}</div>
+              </div>
+              <div>
+                <div class="sub-field-label">Family</div>
+                <div class="sub-field-value">${val(s.familyStatus)}</div>
+              </div>
+              <div class="sub-field-full">
+                <div class="sub-field-label">Walk-up Song</div>
+                <div class="sub-field-value">${val(s.walkUpSong)}</div>
+              </div>
+              <div class="sub-field-full">
+                <div class="sub-field-label">Yearbook Quote</div>
+                <div class="sub-field-value">${val(s.yearbookQuote)}</div>
+              </div>
+              <div class="sub-field-full">
+                <div class="sub-field-label">Fun Fact</div>
+                <div class="sub-field-value">${val(s.funFact)}</div>
+              </div>
+            </div>
+            <div class="sub-card-actions">
+              <button class="sub-approve-btn" onclick="setSubmissionStatus('${id}', 'approved')">Approve</button>
+              <button class="sub-reject-btn"  onclick="setSubmissionStatus('${id}', 'rejected')">Reject</button>
+              <button class="sub-delete-btn"  onclick="deleteSubmission('${id}')">Delete</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    // Update a submission's status in the database and re-render the card
+    function setSubmissionStatus(id, status) {
+      db.ref(`bio_submissions/${id}`).update({ status }).then(() => {
+        allSubmissions[id].status = status;
+        renderSubmissions();
+      });
+    }
+
+    // Permanently delete a submission
+    function deleteSubmission(id) {
+      if (!confirm('Permanently delete this submission? This cannot be undone.')) return;
+      db.ref(`bio_submissions/${id}`).remove().then(() => {
+        delete allSubmissions[id];
+        renderSubmissions();
+      });
+    }
 
   </script>
 
