@@ -735,6 +735,8 @@
       background: var(--color-surface-2);
       border: 1px dashed rgba(255,255,255,.12);
       border-radius: 8px;
+      position: relative;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -743,17 +745,61 @@
       font-size: .65rem;
       color: var(--color-text-muted);
     }
+    .hole-photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Overlay bar at bottom of each hole photo */
+    .hole-info-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,.78));
+      padding: .3rem .4rem .3rem .4rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: .2rem;
+    }
+    .hole-info-overlay .hole-num {
+      font-family: 'Cinzel', serif;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .hole-info-stats {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: .05rem;
+      line-height: 1.1;
+    }
+    .hole-info-stats .stat-par {
+      font-family: 'Cinzel', serif;
+      font-size: .6rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .hole-info-stats .stat-yards {
+      font-size: .58rem;
+      color: var(--color-gold);
+      font-weight: 600;
+    }
+    .hole-info-stats .stat-hdcp {
+      font-size: .52rem;
+      color: rgba(255,255,255,.65);
+    }
+    /* Placeholder slot when no photo exists */
     .hole-photo-slot .hole-num {
       font-family: 'Cinzel', serif;
       font-size: .7rem;
       color: var(--color-green-light);
       font-weight: 700;
-    }
-    .hole-photo-slot img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 8px;
     }
 
     /* ============================================================
@@ -3332,24 +3378,204 @@
           <div class="hole-photos-section">
             <div class="hole-photos-title">Hole-by-Hole Gallery</div>
             <div class="hole-photos-grid">
-              <div class="hole-photo-slot"><span class="hole-num">1</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">2</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">3</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">4</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">5</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">6</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">7</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">8</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">9</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">10</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">11</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">12</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">13</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">14</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">15</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">16</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">17</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">18</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole01.png" alt="Hole 1 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">1</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 5</span>
+                    <span class="stat-yards">476 yds</span>
+                    <span class="stat-hdcp">Hdcp 9</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole02.png" alt="Hole 2 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">2</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">398 yds</span>
+                    <span class="stat-hdcp">Hdcp 1</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole03.png" alt="Hole 3 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">3</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">163 yds</span>
+                    <span class="stat-hdcp">Hdcp 15</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole04.png" alt="Hole 4 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">4</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 5</span>
+                    <span class="stat-yards">490 yds</span>
+                    <span class="stat-hdcp">Hdcp 13</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole05.png" alt="Hole 5 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">5</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">354 yds</span>
+                    <span class="stat-hdcp">Hdcp 7</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole06.png" alt="Hole 6 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">6</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">385 yds</span>
+                    <span class="stat-hdcp">Hdcp 3</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole07.png" alt="Hole 7 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">7</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">136 yds</span>
+                    <span class="stat-hdcp">Hdcp 17</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole08.png" alt="Hole 8 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">8</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">388 yds</span>
+                    <span class="stat-hdcp">Hdcp 5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole09.png" alt="Hole 9 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">9</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">356 yds</span>
+                    <span class="stat-hdcp">Hdcp 11</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole10.png" alt="Hole 10 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">10</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">297 yds</span>
+                    <span class="stat-hdcp">Hdcp 10</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole11.png" alt="Hole 11 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">11</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 5</span>
+                    <span class="stat-yards">540 yds</span>
+                    <span class="stat-hdcp">Hdcp 4</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole12.png" alt="Hole 12 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">12</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">332 yds</span>
+                    <span class="stat-hdcp">Hdcp 16</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole13.png" alt="Hole 13 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">13</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">114 yds</span>
+                    <span class="stat-hdcp">Hdcp 18</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole14.png" alt="Hole 14 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">14</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 5</span>
+                    <span class="stat-yards">497 yds</span>
+                    <span class="stat-hdcp">Hdcp 6</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole15.png" alt="Hole 15 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">15</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">351 yds</span>
+                    <span class="stat-hdcp">Hdcp 12</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole16.png" alt="Hole 16 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">16</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">399 yds</span>
+                    <span class="stat-hdcp">Hdcp 2</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole17.png" alt="Hole 17 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">17</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">158 yds</span>
+                    <span class="stat-hdcp">Hdcp 14</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Pawleys/Pawleys_Hole18.png" alt="Hole 18 — Pawleys Plantation">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">18</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">397 yds</span>
+                    <span class="stat-hdcp">Hdcp 8</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div><!-- end detail-pawleys -->
@@ -3467,37 +3693,246 @@
               </div>
             </div>
           </div>
-          <!-- Caledonia scorecard not in program — link to official site scorecard -->
+          <!-- Scorecard — Caledonia Golf & Fish Club, Mallard Tees, Par 70 -->
           <div class="scorecard-wrap">
-            <div class="scorecard-title">Scorecard — Mallard Tees · Par 70</div>
-            <p style="font-size:.82rem;color:var(--color-text-muted);margin-bottom:.5rem;">
-              Full hole-by-hole scorecard available at the course website.
-              <a href="https://caledoniagolfandfishclub.com/scorecard/" target="_blank" rel="noopener"
-                 style="color:var(--color-green-light);">View Scorecard ↗</a>
-            </p>
+            <div class="scorecard-title">Scorecard — Mallard Tees</div>
+            <table class="scorecard-table">
+              <thead>
+                <tr>
+                  <th>Hole</th>
+                  <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th>
+                  <th class="sc-out">OUT</th>
+                  <th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th>
+                  <th class="sc-total">TOT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="sc-par-row">
+                  <td class="sc-label">Par</td>
+                  <td>4</td><td>5</td><td>3</td><td>4</td><td>4</td><td>3</td><td>4</td><td>5</td><td>3</td>
+                  <td class="sc-out">35</td>
+                  <td>5</td><td>3</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>3</td><td>4</td>
+                  <td class="sc-total">70</td>
+                </tr>
+                <tr>
+                  <td class="sc-label">Yards</td>
+                  <td>350</td><td>553</td><td>175</td><td>357</td><td>387</td><td>135</td><td>346</td><td>512</td><td>110</td>
+                  <td class="sc-out">2,925</td>
+                  <td>531</td><td>153</td><td>395</td><td>380</td><td>363</td><td>441</td><td>400</td><td>156</td><td>377</td>
+                  <td class="sc-total">6,121</td>
+                </tr>
+                <tr class="sc-hdcp-row">
+                  <td class="sc-label">Hdcp</td>
+                  <td>12</td><td>8</td><td>14</td><td>6</td><td>2</td><td>16</td><td>4</td><td>10</td><td>18</td>
+                  <td class="sc-out">—</td>
+                  <td>15</td><td>13</td><td>9</td><td>5</td><td>7</td><td>3</td><td>1</td><td>17</td><td>11</td>
+                  <td class="sc-total">—</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
           <div class="hole-photos-section">
             <div class="hole-photos-title">Hole-by-Hole Gallery</div>
             <div class="hole-photos-grid">
-              <div class="hole-photo-slot"><span class="hole-num">1</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">2</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">3</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">4</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">5</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">6</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">7</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">8</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">9</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">10</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">11</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">12</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">13</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">14</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">15</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">16</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">17</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">18</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole01.png" alt="Hole 1 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">1</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">350 yds</span>
+                    <span class="stat-hdcp">Hdcp 12</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole02.png" alt="Hole 2 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">2</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 5</span>
+                    <span class="stat-yards">553 yds</span>
+                    <span class="stat-hdcp">Hdcp 8</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole03.png" alt="Hole 3 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">3</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">175 yds</span>
+                    <span class="stat-hdcp">Hdcp 14</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole04.png" alt="Hole 4 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">4</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">357 yds</span>
+                    <span class="stat-hdcp">Hdcp 6</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole05.png" alt="Hole 5 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">5</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">387 yds</span>
+                    <span class="stat-hdcp">Hdcp 2</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole06.png" alt="Hole 6 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">6</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">135 yds</span>
+                    <span class="stat-hdcp">Hdcp 16</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole07.png" alt="Hole 7 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">7</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">346 yds</span>
+                    <span class="stat-hdcp">Hdcp 4</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole08.png" alt="Hole 8 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">8</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 5</span>
+                    <span class="stat-yards">512 yds</span>
+                    <span class="stat-hdcp">Hdcp 10</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole09.png" alt="Hole 9 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">9</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">110 yds</span>
+                    <span class="stat-hdcp">Hdcp 18</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole10.png" alt="Hole 10 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">10</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 5</span>
+                    <span class="stat-yards">531 yds</span>
+                    <span class="stat-hdcp">Hdcp 15</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole11.png" alt="Hole 11 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">11</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">153 yds</span>
+                    <span class="stat-hdcp">Hdcp 13</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole12.png" alt="Hole 12 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">12</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">395 yds</span>
+                    <span class="stat-hdcp">Hdcp 9</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole13.png" alt="Hole 13 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">13</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">380 yds</span>
+                    <span class="stat-hdcp">Hdcp 5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole14.png" alt="Hole 14 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">14</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">363 yds</span>
+                    <span class="stat-hdcp">Hdcp 7</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole15.png" alt="Hole 15 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">15</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">441 yds</span>
+                    <span class="stat-hdcp">Hdcp 3</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole16.png" alt="Hole 16 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">16</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">400 yds</span>
+                    <span class="stat-hdcp">Hdcp 1</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole17.png" alt="Hole 17 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">17</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 3</span>
+                    <span class="stat-yards">156 yds</span>
+                    <span class="stat-hdcp">Hdcp 17</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/Caledonia/Caledonia_Hole18.png" alt="Hole 18 — Caledonia Golf & Fish Club">
+                <div class="hole-info-overlay">
+                  <span class="hole-num">18</span>
+                  <div class="hole-info-stats">
+                    <span class="stat-par">Par 4</span>
+                    <span class="stat-yards">377 yds</span>
+                    <span class="stat-hdcp">Hdcp 11</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div><!-- end detail-caledonia -->
