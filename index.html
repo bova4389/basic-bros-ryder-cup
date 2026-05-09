@@ -1,4 +1,9 @@
 ﻿<!DOCTYPE html>
+<!--
+  Basic Bros Ryder Cup — basic-bros-ryder-cup.com
+  Deployment: push to main → GitHub Actions (.github/workflows/deploy.yml) → DreamHost SFTP
+  Server path: /home/mattbova/basic-bros-ryder-cup.com
+-->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -42,6 +47,7 @@
       --color-border:      rgba(0, 0, 0, 0.1);
       --color-text:        #0f1923;
       --color-text-muted:  #4a5868;
+      --color-cream:       #111111; /* keeps cream-colored text readable on light backgrounds */
       --shadow:            0 4px 24px rgba(0, 0, 0, 0.12);
       --shadow-sm:         0 2px 10px rgba(0, 0, 0, 0.08);
     }
@@ -951,7 +957,7 @@
     /* GVO cards get a subtle green left border */
     .player-card[data-team="gvo"] { border-left: 3px solid var(--color-green); }
     /* LD cards get a subtle red left border */
-    .player-card[data-team="ld"]  { border-left: 3px solid var(--color-red); }
+    .player-card[data-team="ti"]  { border-left: 3px solid #7b2d8b; }
 
     .player-card-top {
       display: flex;
@@ -981,10 +987,10 @@
       border: 1px solid rgba(82,183,136,0.3);
     }
 
-    .player-avatar-ld {
-      background: rgba(192,57,43,0.2);
-      color: #e67e6b;
-      border: 1px solid rgba(192,57,43,0.3);
+    .player-avatar-ti {
+      background: rgba(123,45,139,0.25);
+      color: #c07ad0;
+      border: 1px solid rgba(123,45,139,0.4);
     }
 
     .player-card-info { flex: 1; min-width: 0; }
@@ -1048,6 +1054,43 @@
     /* Responsive: 2-col on tablet, 1-col on phone */
     @media (max-width: 900px) { .players-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 500px) { .players-grid { grid-template-columns: 1fr; } }
+
+    /* ============================================================
+       TEAM HISTORY CHIPS
+       Colored pill badges showing which team each bro was on per year.
+       Always visible at the bottom of each player card.
+    ============================================================ */
+    .player-history-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding: 0.6rem 1.1rem 0.85rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .team-chip {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.6rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* 2026 Good Vibes Only — tropical green */
+    .chip-2026-gvo  { background: rgba(62,180,137,0.18); color: #3eb489; border: 1px solid rgba(62,180,137,0.4); }
+    /* 2026 Transfusion Intrusion — purple */
+    .chip-2026-ti   { background: rgba(123,45,139,0.18); color: #b06bc0; border: 1px solid rgba(123,45,139,0.4); }
+    /* 2025 The Mighty Cluster Ducks — blue with yellow accent */
+    .chip-2025-ducks   { background: rgba(26,110,181,0.18); color: #4a9de0; border: 1px solid rgba(26,110,181,0.4); }
+    /* 2025 Tee Baggers — pink */
+    .chip-2025-baggers { background: rgba(232,82,154,0.18); color: #e8529a; border: 1px solid rgba(232,82,154,0.4); }
+    /* 2024 Patrick Reed's Burner Account — green */
+    .chip-2024-prba    { background: rgba(45,106,79,0.25); color: var(--color-green-light); border: 1px solid rgba(45,106,79,0.5); }
+    /* 2024 Putt Pirates — navy */
+    .chip-2024-pirates { background: rgba(26,45,90,0.35); color: #7a9fd4; border: 1px solid rgba(26,45,90,0.6); }
 
     /* ============================================================
        TOURNAMENT PAGE — INNER TAB NAVIGATION
@@ -1270,11 +1313,11 @@
       border-left: 4px solid var(--color-green);
     }
 
-    /* Team 2 — Luben Dubers: red accent */
-    .team-ld { border-color: var(--color-red); }
-    .team-ld .team-header {
-      background: linear-gradient(135deg, rgba(192,57,43,0.3), rgba(192,57,43,0.06));
-      border-left: 4px solid var(--color-red);
+    /* Team 2 — Transfusion Intrusion: purple accent */
+    .team-ti { border-color: #7b2d8b; }
+    .team-ti .team-header {
+      background: linear-gradient(135deg, rgba(123,45,139,0.3), rgba(123,45,139,0.06));
+      border-left: 4px solid #7b2d8b;
     }
 
     /* Tier group divider row */
@@ -2446,7 +2489,7 @@
       <button class="nav-tab" role="tab" onclick="showTab('rulebook', this)">Rulebook</button>
       <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tournament</button>
       <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tournament History</button>
-      <button class="nav-tab" role="tab" onclick="showTab('players', this)">Players</button>
+      <button class="nav-tab" role="tab" onclick="showTab('players', this)">The Bros</button>
       <!-- Submit Bio tab — hidden until admin enables it via the admin panel -->
       <button class="nav-tab" role="tab" id="bioFormTab" style="display:none;" onclick="showTab('submitbio', this)">Submit Bio</button>
       <button class="nav-tab" role="tab" onclick="showTab('admin', this)">Admin</button>
@@ -2459,7 +2502,7 @@
     <button class="nav-tab" onclick="showTab('rulebook', this); closeMobileNav()">Rulebook</button>
     <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tournament</button>
     <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tournament History</button>
-    <button class="nav-tab" onclick="showTab('players', this); closeMobileNav()">Players</button>
+    <button class="nav-tab" onclick="showTab('players', this); closeMobileNav()">The Bros</button>
     <!-- Submit Bio tab — hidden until admin enables it -->
     <button class="nav-tab" id="bioFormTabMobile" style="display:none;" onclick="showTab('submitbio', this); closeMobileNav()">Submit Bio</button>
     <button class="nav-tab" onclick="showTab('admin', this); closeMobileNav()">Admin</button>
@@ -2489,43 +2532,7 @@
         </p>
       </div>
 
-      <!-- Quick-stat bar: at-a-glance tournament facts -->
-      <div class="stat-bar" aria-label="Tournament quick stats">
-        <div class="stat-item">
-          <span class="stat-value">3rd</span>
-          <span class="stat-label">Annual</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">24</span>
-          <span class="stat-label">Players</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">SC</span>
-          <span class="stat-label">Pawleys Island</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">Jun 27</span>
-          <span class="stat-label">First Tee</span>
-        </div>
-      </div>
-
-      <!-- Founding Bros: gold-bordered callout card -->
-      <div class="founding-card">
-        <div class="founding-eyebrow">⭐ Founding Bros ⭐</div>
-        <div class="founding-names">
-          <span class="founding-name">
-            <span class="founding-star">✦</span> Matt Bova
-          </span>
-          <span class="founding-name">
-            <span class="founding-star">✦</span> Cody Esbrandt
-          </span>
-          <span class="founding-name">
-            <span class="founding-star">✦</span> Ryne Stone
-          </span>
-        </div>
-      </div>
-
-      <!-- Countdown timer: counts down to June 27 2026 9:03am ET (Day 1 first tee) -->
+      <!-- Countdown timer: hero element — sits directly below tagline -->
       <div class="countdown-wrapper">
         <div class="countdown-eyebrow">⛳ Tee Time Countdown — June 27, 2026 · 9:03am ET</div>
         <div class="countdown-grid" id="countdown">
@@ -2548,11 +2555,44 @@
         </div>
       </div>
 
+      <!-- Quick-stat bar: at-a-glance tournament facts -->
+      <div class="stat-bar" aria-label="Tournament quick stats">
+        <div class="stat-item">
+          <span class="stat-value">3rd</span>
+          <span class="stat-label">Annual</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">24</span>
+          <span class="stat-label">Players</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">SC</span>
+          <span class="stat-label">Pawleys Island</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">Jun 27</span>
+          <span class="stat-label">First Tee</span>
+        </div>
+      </div>
+
+      <!-- Founding Bros: gold-bordered callout card — Cody and Ryne only -->
+      <div class="founding-card">
+        <div class="founding-eyebrow">⭐ Founding Bros ⭐</div>
+        <div class="founding-names">
+          <span class="founding-name">
+            <span class="founding-star">✦</span> Cody Esbrandt
+          </span>
+          <span class="founding-name">
+            <span class="founding-star">✦</span> Ryne Stone
+          </span>
+        </div>
+      </div>
+
       <!-- Quick-link buttons to main sections -->
       <div class="quick-links">
         <button class="btn btn-primary" onclick="showTab('tournament2026', null)">⛳ View 2026 Tournament</button>
         <button class="btn btn-primary" onclick="showTab('rulebook', null)">📋 Read the Rulebook</button>
-        <button class="btn btn-secondary" onclick="showTab('players', null)">👤 Player Bios</button>
+        <button class="btn btn-secondary" onclick="showTab('players', null)">👤 The Bros</button>
       </div>
 
       <hr class="divider">
@@ -2855,8 +2895,8 @@
         <button class="inner-tab active" role="tab" onclick="showInnerTab('t26', 'overview', this)">Overview</button>
         <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'teams', this)">Teams</button>
         <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'schedule', this)">Schedule</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'matchups', this)">Matchups</button>
         <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'courses', this)">Courses</button>
-        <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'pairings', this)">Pairings</button>
         <button class="inner-tab" role="tab" onclick="showInnerTab('t26', 'scoring', this)">Scoring</button>
       </div>
 
@@ -2952,7 +2992,7 @@
 
       <!-- ===================================================
            2b — TEAMS
-           Good Vibes Only (green) vs Luben Dubers (red).
+           Good Vibes Only (green) vs Transfusion Intrusion (red).
            T1 players listed first within each team, sorted by hdcp.
       =================================================== -->
       <div id="t26-teams" class="inner-section">
@@ -2961,7 +3001,7 @@
           <!-- Team 1: Good Vibes Only — forest green accent -->
           <div class="team-card team-gvo">
             <div class="team-header">
-              <div class="team-name">Good Vibes Only</div>
+              <div class="team-name">Good Vibes Only (2026)</div>
               <div class="team-captain">Captain: <strong>Matt Bova ★</strong></div>
             </div>
 
@@ -3035,10 +3075,10 @@
             </div>
           </div><!-- end team-gvo -->
 
-          <!-- Team 2: Luben Dubers — red accent -->
-          <div class="team-card team-ld">
+          <!-- Team 2: Transfusion Intrusion — red accent -->
+          <div class="team-card team-ti">
             <div class="team-header">
-              <div class="team-name">Luben Dubers</div>
+              <div class="team-name">Transfusion Intrusion (2026)</div>
               <div class="team-captain">Captain: <strong>Adam Lewandowski ★</strong></div>
             </div>
 
@@ -3110,7 +3150,7 @@
               <div class="team-total-item">Players: <strong>12</strong></div>
               <div class="team-total-item">T1: <strong>6</strong> &nbsp; T2: <strong>6</strong></div>
             </div>
-          </div><!-- end team-ld -->
+          </div><!-- end team-ti -->
 
         </div><!-- end teams-grid -->
       </div><!-- end t26-teams -->
@@ -3160,7 +3200,27 @@
               <div class="schedule-items">
                 <div class="schedule-item">
                   <span class="schedule-time">9:03am</span>
-                  <span>First tee — Pawleys Plantation</span>
+                  <span>Group 1 — Pawleys Plantation</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">9:13am</span>
+                  <span>Group 2</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">9:23am</span>
+                  <span>Group 3</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">9:33am</span>
+                  <span>Group 4</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">9:43am</span>
+                  <span>Group 5</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">9:53am</span>
+                  <span>Group 6</span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">PM</span>
@@ -3184,6 +3244,10 @@
                   <span>First tee — True Blue Golf Club</span>
                 </div>
                 <div class="schedule-item">
+                  <span class="schedule-time" style="font-size:0.72rem;">Groups</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">Group tee times TBD — assigned the night before</span>
+                </div>
+                <div class="schedule-item">
                   <span class="schedule-time">PM</span>
                   <span>Sunday matchup selection</span>
                 </div>
@@ -3203,6 +3267,10 @@
                 <div class="schedule-item">
                   <span class="schedule-time">8:06am</span>
                   <span>First tee — Caledonia Golf &amp; Fish Club</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time" style="font-size:0.72rem;">Groups</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">Group tee times TBD — assigned the night before</span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">Post-Round</span>
@@ -3271,7 +3339,7 @@
                    href="https://www.google.com/maps/search/?api=1&query=900+Blue+Stem+Dr+Pawleys+Island+SC+29585"
                    target="_blank" rel="noopener">📍 Google Maps ↗</a>
                 <a class="course-maps-link"
-                   href="https://www.trueblue-golf.com"
+                   href="https://www.truebluegolf.com"
                    target="_blank" rel="noopener">🌐 Course Website ↗</a>
               </div>
               <div class="course-explore-hint">Tap to explore →</div>
@@ -3600,7 +3668,7 @@
                 </div>
                 <div class="course-detail-links">
                   <a class="course-maps-link" href="https://www.google.com/maps/search/?api=1&query=900+Blue+Stem+Dr+Pawleys+Island+SC+29585" target="_blank" rel="noopener">📍 Google Maps ↗</a>
-                  <a class="course-maps-link" href="https://www.trueblue-golf.com" target="_blank" rel="noopener">🌐 Course Website ↗</a>
+                  <a class="course-maps-link" href="https://www.truebluegolf.com" target="_blank" rel="noopener">🌐 Course Website ↗</a>
                 </div>
               </div>
             </div>
@@ -3947,9 +4015,9 @@
            Note: REQUIREMENTS 2e lists Cody at hdcp 15; 2b lists him at 16.
            Using the values exactly as given in each section.
       =================================================== -->
-      <div id="t26-pairings" class="inner-section">
+      <div id="t26-matchups" class="inner-section">
 
-        <!-- Round 1: full scramble pairings -->
+        <!-- Round 1: full scramble matchups -->
         <div class="pairings-round-title">Round 1 — Scramble</div>
         <div class="pairings-round-sub">
           Friday · Pawleys Plantation &nbsp;·&nbsp; Format: T1 + T2 vs T1 + T2<br>
@@ -3959,10 +4027,10 @@
           <table class="pairings-table">
             <thead>
               <tr>
-                <th>Luben Dubers</th>
+                <th>Transfusion Intrusion (2026)</th>
                 <th style="text-align:center">HDCP</th>
                 <th style="text-align:center">—</th>
-                <th>Good Vibes Only</th>
+                <th>Good Vibes Only (2026)</th>
                 <th style="text-align:center">HDCP</th>
               </tr>
             </thead>
@@ -4013,23 +4081,61 @@
           </table>
         </div>
 
-        <!-- Round 2: TBD placeholder -->
+        <!-- Round 2: TBD — tee times estimated, matchups assigned Friday night -->
         <div class="pairings-round-title">Round 2 — Saturday</div>
-        <div class="pairings-round-sub">True Blue Golf Club &nbsp;·&nbsp; Pairings assigned Friday evening after Round 1</div>
-        <div class="tbd-card">
-          <strong>Pairings TBD</strong>
-          <p>Announced the night before — Friday after Round 1 wraps up</p>
+        <div class="pairings-round-sub">
+          True Blue Golf Club &nbsp;·&nbsp; Matchups assigned Friday evening after Round 1<br>
+          Format: Singles Match Play
+        </div>
+        <div class="table-scroll">
+          <table class="pairings-table">
+            <thead>
+              <tr>
+                <th>Tee Time</th>
+                <th>Transfusion Intrusion (2026)</th>
+                <th style="text-align:center">—</th>
+                <th>Good Vibes Only (2026)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="hdcp-cell">7:57am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD — announced Friday night</td></tr>
+              <tr><td class="hdcp-cell">8:07am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr><td class="hdcp-cell">8:17am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr><td class="hdcp-cell">8:27am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr><td class="hdcp-cell">8:37am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr><td class="hdcp-cell">8:47am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+            </tbody>
+          </table>
         </div>
 
-        <!-- Round 3: TBD placeholder -->
+        <!-- Round 3: TBD — tee times estimated, matchups assigned Saturday night -->
         <div class="pairings-round-title">Round 3 — Sunday (Final)</div>
-        <div class="pairings-round-sub">Caledonia Golf &amp; Fish Club &nbsp;·&nbsp; Pairings assigned Saturday evening after Round 2</div>
-        <div class="tbd-card">
-          <strong>Pairings TBD</strong>
-          <p>Announced the night before — Saturday after Round 2 wraps up</p>
+        <div class="pairings-round-sub">
+          Caledonia Golf &amp; Fish Club &nbsp;·&nbsp; Matchups assigned Saturday evening after Round 2<br>
+          Format: Pods / Doubles + Singles
+        </div>
+        <div class="table-scroll">
+          <table class="pairings-table">
+            <thead>
+              <tr>
+                <th>Tee Time</th>
+                <th>Transfusion Intrusion (2026)</th>
+                <th style="text-align:center">—</th>
+                <th>Good Vibes Only (2026)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="hdcp-cell">8:06am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD — announced Saturday night</td></tr>
+              <tr><td class="hdcp-cell">8:16am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr><td class="hdcp-cell">8:26am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr><td class="hdcp-cell">8:36am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr><td class="hdcp-cell">8:46am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr><td class="hdcp-cell">8:56am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+            </tbody>
+          </table>
         </div>
 
-      </div><!-- end t26-pairings -->
+      </div><!-- end t26-matchups -->
 
 
       <!-- ===================================================
@@ -4134,17 +4240,19 @@
     <section id="players" class="tab-section" role="tabpanel">
 
       <div class="tourney-header">
-        <h2>Players</h2>
+        <h2>The Bros</h2>
         <p>2026 · 24 Competitors · Two Teams</p>
       </div>
 
-      <!-- Filter buttons: show all, by team, or by tier -->
+      <!-- Filter buttons: All or by year/team — no tier separation -->
       <div class="player-filters">
-        <button class="player-filter active" onclick="filterPlayers('all', this)">All (24)</button>
-        <button class="player-filter" onclick="filterPlayers('gvo', this)">Good Vibes Only</button>
-        <button class="player-filter" onclick="filterPlayers('ld', this)">Luben Dubers</button>
-        <button class="player-filter" onclick="filterPlayers('t1', this)">Tier 1</button>
-        <button class="player-filter" onclick="filterPlayers('t2', this)">Tier 2</button>
+        <button class="player-filter active" onclick="filterPlayers('all', this)">All Bros</button>
+        <button class="player-filter" onclick="filterPlayers('2026-gvo', this)">2026: Good Vibes Only</button>
+        <button class="player-filter" onclick="filterPlayers('2026-ti', this)">2026: Transfusion Intrusion</button>
+        <button class="player-filter" onclick="filterPlayers('2025-ducks', this)">2025: The Mighty Cluster Ducks</button>
+        <button class="player-filter" onclick="filterPlayers('2025-baggers', this)">2025: Tee Baggers</button>
+        <button class="player-filter" onclick="filterPlayers('2024-prba', this)">2024: Patrick Reed's Burner Account</button>
+        <button class="player-filter" onclick="filterPlayers('2024-pirates', this)">2024: Putt Pirates</button>
       </div>
 
       <!-- 24-player grid -->
@@ -4370,12 +4478,12 @@
 
         <!-- ==================== LUBEN DUBERS ==================== -->
 
-        <div class="player-card" id="player-lewandowski" data-team="ld" data-tier="t2">
+        <div class="player-card" id="player-lewandowski" data-team="ti" data-tier="t2">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">AL</div>
+            <div class="player-avatar player-avatar-ti">AL</div>
             <div class="player-card-info">
               <div class="player-card-name">Adam Lewandowski ★</div>
-              <div class="player-card-team">Luben Dubers · Captain</div>
+              <div class="player-card-team">Transfusion Intrusion · Captain</div>
             </div>
             <span class="tier-badge tier-badge-t2">T2</span>
           </div>
@@ -4388,12 +4496,12 @@
           <a class="player-text-btn" href="sms:3212132551">&#x1F4AC; Text Adam</a>
         </div>
 
-        <div class="player-card" id="player-hermanson" data-team="ld" data-tier="t2">
+        <div class="player-card" id="player-hermanson" data-team="ti" data-tier="t2">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">JH</div>
+            <div class="player-avatar player-avatar-ti">JH</div>
             <div class="player-card-info">
               <div class="player-card-name">Jeremy Hermanson</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t2">T2</span>
           </div>
@@ -4406,12 +4514,12 @@
           <a class="player-text-btn" href="sms:3215067688">&#x1F4AC; Text Jeremy</a>
         </div>
 
-        <div class="player-card" id="player-bartlett" data-team="ld" data-tier="t1">
+        <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">DB</div>
+            <div class="player-avatar player-avatar-ti">DB</div>
             <div class="player-card-info">
               <div class="player-card-name">Donny Bartlett</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t1">T1</span>
           </div>
@@ -4424,12 +4532,12 @@
           <a class="player-text-btn" href="sms:3215447722">&#x1F4AC; Text Donny</a>
         </div>
 
-        <div class="player-card" id="player-pannullo" data-team="ld" data-tier="t2">
+        <div class="player-card" id="player-pannullo" data-team="ti" data-tier="t2">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">RP</div>
+            <div class="player-avatar player-avatar-ti">RP</div>
             <div class="player-card-info">
               <div class="player-card-name">Ron Pannullo</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t2">T2</span>
           </div>
@@ -4442,12 +4550,12 @@
           <a class="player-text-btn" href="sms:3865691456">&#x1F4AC; Text Ron</a>
         </div>
 
-        <div class="player-card" id="player-davis" data-team="ld" data-tier="t1">
+        <div class="player-card" id="player-davis" data-team="ti" data-tier="t1">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">MD</div>
+            <div class="player-avatar player-avatar-ti">MD</div>
             <div class="player-card-info">
               <div class="player-card-name">Mike Davis</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t1">T1</span>
           </div>
@@ -4460,12 +4568,12 @@
           <a class="player-text-btn" href="sms:3862833695">&#x1F4AC; Text Davis</a>
         </div>
 
-        <div class="player-card" id="player-stephenson" data-team="ld" data-tier="t1">
+        <div class="player-card" id="player-stephenson" data-team="ti" data-tier="t1">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">RS</div>
+            <div class="player-avatar player-avatar-ti">RS</div>
             <div class="player-card-info">
               <div class="player-card-name">Robert Stephenson</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t1">T1</span>
           </div>
@@ -4478,12 +4586,12 @@
           <a class="player-text-btn" href="sms:3862908164">&#x1F4AC; Text Robert</a>
         </div>
 
-        <div class="player-card" id="player-reeves" data-team="ld" data-tier="t1">
+        <div class="player-card" id="player-reeves" data-team="ti" data-tier="t1">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">JR</div>
+            <div class="player-avatar player-avatar-ti">JR</div>
             <div class="player-card-info">
               <div class="player-card-name">Justin Reeves</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t1">T1</span>
           </div>
@@ -4496,12 +4604,12 @@
           <a class="player-text-btn" href="sms:4783613522">&#x1F4AC; Text Justin</a>
         </div>
 
-        <div class="player-card" id="player-stone" data-team="ld" data-tier="t1">
+        <div class="player-card" id="player-stone" data-team="ti" data-tier="t1">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">RS</div>
+            <div class="player-avatar player-avatar-ti">RS</div>
             <div class="player-card-info">
               <div class="player-card-name">Ryne Stone</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t1">T1</span>
           </div>
@@ -4514,12 +4622,12 @@
           <a class="player-text-btn" href="sms:7722015230">&#x1F4AC; Text Ryne</a>
         </div>
 
-        <div class="player-card" id="player-glenn" data-team="ld" data-tier="t2">
+        <div class="player-card" id="player-glenn" data-team="ti" data-tier="t2">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">CG</div>
+            <div class="player-avatar player-avatar-ti">CG</div>
             <div class="player-card-info">
               <div class="player-card-name">Cassady Glenn</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t2">T2</span>
           </div>
@@ -4532,12 +4640,12 @@
           <a class="player-text-btn" href="sms:4043129062">&#x1F4AC; Text Cass</a>
         </div>
 
-        <div class="player-card" id="player-renato" data-team="ld" data-tier="t1">
+        <div class="player-card" id="player-renato" data-team="ti" data-tier="t1">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">R</div>
+            <div class="player-avatar player-avatar-ti">R</div>
             <div class="player-card-info">
               <div class="player-card-name">Renato</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t1">T1</span>
           </div>
@@ -4550,12 +4658,12 @@
           <a class="player-text-btn" href="sms:6159951573">&#x1F4AC; Text Renato</a>
         </div>
 
-        <div class="player-card" id="player-meyer" data-team="ld" data-tier="t2">
+        <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">KM</div>
+            <div class="player-avatar player-avatar-ti">KM</div>
             <div class="player-card-info">
               <div class="player-card-name">Karsten Meyer</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t2">T2</span>
           </div>
@@ -4568,12 +4676,12 @@
           <a class="player-text-btn" href="sms:3192696727">&#x1F4AC; Text Karsten</a>
         </div>
 
-        <div class="player-card" id="player-harris" data-team="ld" data-tier="t2">
+        <div class="player-card" id="player-harris" data-team="ti" data-tier="t2">
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ld">MH</div>
+            <div class="player-avatar player-avatar-ti">MH</div>
             <div class="player-card-info">
               <div class="player-card-name">Max Harris</div>
-              <div class="player-card-team">Luben Dubers</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
             <span class="tier-badge tier-badge-t2">T2</span>
           </div>
@@ -4871,17 +4979,80 @@
 
     // ---- PLAYER FILTER ----
     // Shows/hides player cards based on team or tier selection.
+    // ---- TEAM HISTORY CHIPS ----
+    // Generates colored year-team chips for each player card at page load.
+    // Reads data-team (2026) and data-history JSON (prior years) from each card.
+    const CHIP_CONFIG = {
+      '2026-gvo':     { label: "2026 · Good Vibes Only",              cls: 'chip-2026-gvo'     },
+      '2026-ti':      { label: "2026 · Transfusion Intrusion",        cls: 'chip-2026-ti'      },
+      '2025-ducks':   { label: "2025 · The Mighty Cluster Ducks",     cls: 'chip-2025-ducks'   },
+      '2025-baggers': { label: "2025 · Tee Baggers",                  cls: 'chip-2025-baggers' },
+      '2024-prba':    { label: "2024 · Patrick Reed's Burner Account", cls: 'chip-2024-prba'    },
+      '2024-pirates': { label: "2024 · Putt Pirates",                 cls: 'chip-2024-pirates' },
+    };
+
+    function buildTeamChips() {
+      document.querySelectorAll('.player-card').forEach(card => {
+        const chips = [];
+
+        // 2026 team from data-team attribute
+        if (card.dataset.team) {
+          const key = '2026-' + card.dataset.team;
+          if (CHIP_CONFIG[key]) chips.push(key);
+        }
+
+        // Prior years from data-history JSON attribute (added per card when data is available)
+        if (card.dataset.history) {
+          try {
+            const history = JSON.parse(card.dataset.history);
+            Object.entries(history).forEach(([year, team]) => {
+              const key = year + '-' + team;
+              if (CHIP_CONFIG[key]) chips.push(key);
+            });
+          } catch(e) {}
+        }
+
+        if (chips.length === 0) return;
+
+        const wrap = document.createElement('div');
+        wrap.className = 'player-history-chips';
+        chips.forEach(key => {
+          const cfg = CHIP_CONFIG[key];
+          const span = document.createElement('span');
+          span.className = 'team-chip ' + cfg.cls;
+          span.textContent = cfg.label;
+          wrap.appendChild(span);
+        });
+        card.appendChild(wrap);
+      });
+    }
+
+    // Run chip builder after DOM is ready
+    document.addEventListener('DOMContentLoaded', buildTeamChips);
+
     function filterPlayers(filter, btn) {
       // Update which filter button looks active
       document.querySelectorAll('.player-filter').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      // Show or hide each card based on its data attributes
+      // Show or hide each card based on data-team (2026) or data-history (prior years)
       document.querySelectorAll('.player-card').forEach(card => {
-        const matchAll  = filter === 'all';
-        const matchTeam = (filter === 'gvo' || filter === 'ld') && card.dataset.team === filter;
-        const matchTier = (filter === 't1'  || filter === 't2') && card.dataset.tier === filter;
-        card.style.display = (matchAll || matchTeam || matchTier) ? '' : 'none';
+        let show = false;
+        if (filter === 'all') {
+          show = true;
+        } else if (filter === '2026-gvo') {
+          show = card.dataset.team === 'gvo';
+        } else if (filter === '2026-ti') {
+          show = card.dataset.team === 'ti';
+        } else {
+          // Historical year filters use data-history JSON attribute
+          const history = card.dataset.history ? JSON.parse(card.dataset.history) : {};
+          if (filter === '2025-ducks')   show = history['2025'] === 'ducks';
+          else if (filter === '2025-baggers') show = history['2025'] === 'baggers';
+          else if (filter === '2024-prba')    show = history['2024'] === 'prba';
+          else if (filter === '2024-pirates') show = history['2024'] === 'pirates';
+        }
+        card.style.display = show ? '' : 'none';
       });
     }
 
