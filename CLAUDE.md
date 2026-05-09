@@ -26,8 +26,14 @@ basic-bros-ryder-cup/
 - Frontend: Single-file HTML + vanilla JS (no frameworks, no build step)
 - Backend: Google Firebase Firestore (player bios, bio form submissions, tournament data)
 - Scoring data: Squabbit CSV export → admin upload panel (no public API exists)
-- Hosting: DreamHost (static)
-- Version control: GitHub
+- Hosting: DreamHost (static) — deploys automatically via GitHub Actions on every push to `main`
+- Version control: GitHub (`https://github.com/bova4389/basic-bros-ryder-cup`)
+
+**Deployment:**
+- Push to `main` → GitHub Actions runs `.github/workflows/deploy.yml` → files upload to DreamHost via SFTP (port 22)
+- DreamHost server path: `/home/mattbova/basic-bros-ryder-cup.com`
+- GitHub secrets required: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD` (stored under Settings → Secrets → Actions)
+- Uses `wlixcc/SFTP-Deploy-Action@v1.2.4` — DreamHost requires SFTP, plain FTP and FTPS do not work
 
 **Rules — do not change without asking:**
 - Keep everything in one HTML file — no separate CSS or JS files
