@@ -59,11 +59,14 @@
     body.light-mode .btn-primary:hover,
     body.light-mode .inner-tab.active,
     body.light-mode .player-filter.active,
-    body.light-mode .nav-tab.active,
     body.light-mode .coming-soon-badge,
     body.light-mode .schedule-format-badge,
     body.light-mode .tier-badge {
       color: #f5f0e8;
+    }
+    /* Nav tab active: keep text dark in light mode — underline indicator handles the selection cue */
+    body.light-mode .nav-tab.active {
+      color: #0f1923;
     }
 
     /* Green-light text elements — make bolder so they're readable at the darkened color */
@@ -1018,6 +1021,17 @@
       background: rgba(123,45,139,0.25);
       color: #c07ad0;
       border: 1px solid rgba(123,45,139,0.4);
+    }
+
+    .player-avatar-alumni {
+      background: rgba(136,153,170,0.15);
+      color: var(--color-muted);
+      border: 1px solid rgba(136,153,170,0.3);
+    }
+
+    .player-card[data-team="alumni"] {
+      border-left: 3px solid var(--color-muted);
+      opacity: 0.85;
     }
 
     .player-card-info { flex: 1; min-width: 0; }
@@ -2602,7 +2616,14 @@
         </div>
       </div>
 
-      <!-- Founding Bros: gold-bordered callout card — Cody and Ryne only -->
+      <!-- Quick-link buttons to main sections -->
+      <div class="quick-links">
+        <button class="btn btn-primary" onclick="showTab('tournament2026', null)">⛳ View 2026 Tournament</button>
+        <button class="btn btn-primary" onclick="showTab('rulebook', null)">📋 Read the Rulebook</button>
+        <button class="btn btn-secondary" onclick="showTab('players', null)">👤 The Bros</button>
+      </div>
+
+      <!-- Founding Bros: gold-bordered callout card — sits at bottom of home page above footer -->
       <div class="founding-card">
         <div class="founding-eyebrow">⭐ Founding Bros ⭐</div>
         <div class="founding-names">
@@ -2613,13 +2634,6 @@
             <span class="founding-star">✦</span> Ryne Stone
           </span>
         </div>
-      </div>
-
-      <!-- Quick-link buttons to main sections -->
-      <div class="quick-links">
-        <button class="btn btn-primary" onclick="showTab('tournament2026', null)">⛳ View 2026 Tournament</button>
-        <button class="btn btn-primary" onclick="showTab('rulebook', null)">📋 Read the Rulebook</button>
-        <button class="btn btn-secondary" onclick="showTab('players', null)">👤 The Bros</button>
       </div>
 
       <hr class="divider">
@@ -3401,9 +3415,6 @@
 
         </div><!-- end courses-grid -->
 
-        <p style="margin-top: 1.25rem; font-size: 0.82rem; color: var(--color-text-muted);">
-          ⓘ Hole-by-hole scorecard data coming soon — will be added from the tournament program PDF.
-        </p>
 
         <!-- ── COURSE DETAIL: Pawleys Plantation ── -->
         <div id="detail-pawleys" class="course-detail">
@@ -3742,24 +3753,78 @@
           <div class="hole-photos-section">
             <div class="hole-photos-title">Hole-by-Hole Gallery</div>
             <div class="hole-photos-grid">
-              <div class="hole-photo-slot"><span class="hole-num">1</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">2</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">3</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">4</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">5</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">6</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">7</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">8</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">9</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">10</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">11</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">12</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">13</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">14</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">15</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">16</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">17</span><span>Photo coming soon</span></div>
-              <div class="hole-photo-slot"><span class="hole-num">18</span><span>Photo coming soon</span></div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole01.png" alt="Hole 1 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">1</span><div class="hole-info-stats"><span class="stat-par">Par 5</span><span class="stat-yards">499 yds</span><span class="stat-hdcp">Hdcp 1</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole02.png" alt="Hole 2 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">2</span><div class="hole-info-stats"><span class="stat-par">Par 4</span><span class="stat-yards">316 yds</span><span class="stat-hdcp">Hdcp 11</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole03.png" alt="Hole 3 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">3</span><div class="hole-info-stats"><span class="stat-par">Par 3</span><span class="stat-yards">141 yds</span><span class="stat-hdcp">Hdcp 15</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole04.png" alt="Hole 4 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">4</span><div class="hole-info-stats"><span class="stat-par">Par 5</span><span class="stat-yards">503 yds</span><span class="stat-hdcp">Hdcp 5</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole05.png" alt="Hole 5 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">5</span><div class="hole-info-stats"><span class="stat-par">Par 4</span><span class="stat-yards">392 yds</span><span class="stat-hdcp">Hdcp 13</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole06.png" alt="Hole 6 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">6</span><div class="hole-info-stats"><span class="stat-par">Par 4</span><span class="stat-yards">346 yds</span><span class="stat-hdcp">Hdcp 9</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole07.png" alt="Hole 7 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">7</span><div class="hole-info-stats"><span class="stat-par">Par 3</span><span class="stat-yards">151 yds</span><span class="stat-hdcp">Hdcp 17</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole08.png" alt="Hole 8 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">8</span><div class="hole-info-stats"><span class="stat-par">Par 4</span><span class="stat-yards">335 yds</span><span class="stat-hdcp">Hdcp 7</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole09.png" alt="Hole 9 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">9</span><div class="hole-info-stats"><span class="stat-par">Par 5</span><span class="stat-yards">517 yds</span><span class="stat-hdcp">Hdcp 3</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole10.png" alt="Hole 10 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">10</span><div class="hole-info-stats"><span class="stat-par">Par 5</span><span class="stat-yards">559 yds</span><span class="stat-hdcp">Hdcp 8</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole11.png" alt="Hole 11 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">11</span><div class="hole-info-stats"><span class="stat-par">Par 3</span><span class="stat-yards">130 yds</span><span class="stat-hdcp">Hdcp 18</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole12.png" alt="Hole 12 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">12</span><div class="hole-info-stats"><span class="stat-par">Par 4</span><span class="stat-yards">371 yds</span><span class="stat-hdcp">Hdcp 10</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole13.png" alt="Hole 13 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">13</span><div class="hole-info-stats"><span class="stat-par">Par 4</span><span class="stat-yards">375 yds</span><span class="stat-hdcp">Hdcp 14</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole14.png" alt="Hole 14 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">14</span><div class="hole-info-stats"><span class="stat-par">Par 3</span><span class="stat-yards">138 yds</span><span class="stat-hdcp">Hdcp 16</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole15.png" alt="Hole 15 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">15</span><div class="hole-info-stats"><span class="stat-par">Par 5</span><span class="stat-yards">506 yds</span><span class="stat-hdcp">Hdcp 4</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole16.png" alt="Hole 16 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">16</span><div class="hole-info-stats"><span class="stat-par">Par 3</span><span class="stat-yards">181 yds</span><span class="stat-hdcp">Hdcp 12</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole17.png" alt="Hole 17 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">17</span><div class="hole-info-stats"><span class="stat-par">Par 4</span><span class="stat-yards">395 yds</span><span class="stat-hdcp">Hdcp 2</span></div></div>
+              </div>
+              <div class="hole-photo-slot">
+                <img src="img/True Blue/TrueBlue_Hole18.png" alt="Hole 18 — True Blue Golf Club" loading="lazy">
+                <div class="hole-info-overlay"><span class="hole-num">18</span><div class="hole-info-stats"><span class="stat-par">Par 4</span><span class="stat-yards">350 yds</span><span class="stat-hdcp">Hdcp 6</span></div></div>
+              </div>
             </div>
           </div>
         </div><!-- end detail-trueblue -->
@@ -4287,7 +4352,7 @@
 
         <!-- ==================== GOOD VIBES ONLY ==================== -->
 
-        <div class="player-card" id="player-bova" data-team="gvo" data-tier="t2">
+        <div class="player-card" id="player-bova" data-team="gvo" data-tier="t2" data-history='["2025-baggers","2024-pirates"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">MB</div>
             <div class="player-card-info">
@@ -4304,7 +4369,7 @@
           <a class="player-text-btn" href="sms:3174402782">&#x1F4AC; Text Matt</a>
         </div>
 
-        <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1">
+        <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">CS</div>
             <div class="player-card-info">
@@ -4338,7 +4403,7 @@
           <a class="player-text-btn" href="sms:3213609519">&#x1F4AC; Text Spencer</a>
         </div>
 
-        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1">
+        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">TT</div>
             <div class="player-card-info">
@@ -4423,7 +4488,7 @@
           <a class="player-text-btn" href="sms:3523970237">&#x1F4AC; Text Raheem</a>
         </div>
 
-        <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2">
+        <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2" data-history='["2025-ducks","2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JM</div>
             <div class="player-card-info">
@@ -4474,7 +4539,7 @@
           <a class="player-text-btn" href="sms:5614414362">&#x1F4AC; Text Sharkey</a>
         </div>
 
-        <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1">
+        <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">CE</div>
             <div class="player-card-info">
@@ -4493,7 +4558,7 @@
 
         <!-- ==================== LUBEN DUBERS ==================== -->
 
-        <div class="player-card" id="player-lewandowski" data-team="ti" data-tier="t2">
+        <div class="player-card" id="player-lewandowski" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">AL</div>
             <div class="player-card-info">
@@ -4527,7 +4592,7 @@
           <a class="player-text-btn" href="sms:3215067688">&#x1F4AC; Text Jeremy</a>
         </div>
 
-        <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1">
+        <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-pirates"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">DB</div>
             <div class="player-card-info">
@@ -4544,7 +4609,7 @@
           <a class="player-text-btn" href="sms:3215447722">&#x1F4AC; Text Donny</a>
         </div>
 
-        <div class="player-card" id="player-pannullo" data-team="ti" data-tier="t2">
+        <div class="player-card" id="player-pannullo" data-team="ti" data-tier="t2" data-history='["2025-baggers"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">RP</div>
             <div class="player-card-info">
@@ -4595,7 +4660,7 @@
           <a class="player-text-btn" href="sms:3862908164">&#x1F4AC; Text Robert</a>
         </div>
 
-        <div class="player-card" id="player-reeves" data-team="ti" data-tier="t1">
+        <div class="player-card" id="player-reeves" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">JR</div>
             <div class="player-card-info">
@@ -4612,7 +4677,7 @@
           <a class="player-text-btn" href="sms:4783613522">&#x1F4AC; Text Justin</a>
         </div>
 
-        <div class="player-card" id="player-stone" data-team="ti" data-tier="t1">
+        <div class="player-card" id="player-stone" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">RS</div>
             <div class="player-card-info">
@@ -4629,7 +4694,7 @@
           <a class="player-text-btn" href="sms:7722015230">&#x1F4AC; Text Ryne</a>
         </div>
 
-        <div class="player-card" id="player-glenn" data-team="ti" data-tier="t2">
+        <div class="player-card" id="player-glenn" data-team="ti" data-tier="t2" data-history='["2025-baggers"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">CG</div>
             <div class="player-card-info">
@@ -4663,7 +4728,7 @@
           <a class="player-text-btn" href="sms:6159951573">&#x1F4AC; Text Renato</a>
         </div>
 
-        <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2">
+        <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-pirates"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">KM</div>
             <div class="player-card-info">
@@ -4695,6 +4760,132 @@
           </div>
           <div class="player-card-bio">Bio coming soon</div>
           <a class="player-text-btn" href="sms:3214749735">&#x1F4AC; Text Max</a>
+        </div>
+
+        <!-- ── ALUMNI CARDS ──
+             Players who competed in 2024 or 2025 but are not in the 2026 field.
+             data-team="alumni" keeps them out of the 2026 team filters.
+             data-history drives which year/team tabs they appear under.
+        -->
+
+        <div class="player-card" id="player-pullman" data-team="alumni" data-history='["2025-baggers"]'>
+          <div class="player-card-top">
+            <div class="player-avatar player-avatar-alumni">JP</div>
+            <div class="player-card-info">
+              <div class="player-card-name">Johnny Pullman</div>
+              <div class="player-card-team">Not competing in 2026</div>
+            </div>
+          </div>
+          <div class="player-card-stats">
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2025</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+          </div>
+          <div class="player-card-bio">Bio coming soon</div>
+        </div>
+
+        <div class="player-card" id="player-partou" data-team="alumni" data-history='["2025-baggers","2024-pirates"]'>
+          <div class="player-card-top">
+            <div class="player-avatar player-avatar-alumni">JP</div>
+            <div class="player-card-info">
+              <div class="player-card-name">Jordan Partou</div>
+              <div class="player-card-team">Not competing in 2026</div>
+            </div>
+          </div>
+          <div class="player-card-stats">
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2024–25</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+          </div>
+          <div class="player-card-bio">Bio coming soon</div>
+        </div>
+
+        <div class="player-card" id="player-heath" data-team="alumni" data-history='["2025-baggers"]'>
+          <div class="player-card-top">
+            <div class="player-avatar player-avatar-alumni">BH</div>
+            <div class="player-card-info">
+              <div class="player-card-name">Bennett Heath</div>
+              <div class="player-card-team">Not competing in 2026</div>
+            </div>
+          </div>
+          <div class="player-card-stats">
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2025</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+          </div>
+          <div class="player-card-bio">Bio coming soon</div>
+        </div>
+
+        <div class="player-card" id="player-burleson" data-team="alumni" data-history='["2025-baggers","2024-prba"]'>
+          <div class="player-card-top">
+            <div class="player-avatar player-avatar-alumni">SB</div>
+            <div class="player-card-info">
+              <div class="player-card-name">Stephen Burleson</div>
+              <div class="player-card-team">Not competing in 2026</div>
+            </div>
+          </div>
+          <div class="player-card-stats">
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2024–25</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+          </div>
+          <div class="player-card-bio">Bio coming soon</div>
+        </div>
+
+        <div class="player-card" id="player-hammer" data-team="alumni" data-history='["2025-ducks"]'>
+          <div class="player-card-top">
+            <div class="player-avatar player-avatar-alumni">JH</div>
+            <div class="player-card-info">
+              <div class="player-card-name">Jake Hammer</div>
+              <div class="player-card-team">Not competing in 2026</div>
+            </div>
+          </div>
+          <div class="player-card-stats">
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2025</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+          </div>
+          <div class="player-card-bio">Bio coming soon</div>
+        </div>
+
+        <div class="player-card" id="player-cschneider" data-team="alumni" data-history='["2025-ducks","2024-prba"]'>
+          <div class="player-card-top">
+            <div class="player-avatar player-avatar-alumni">CS</div>
+            <div class="player-card-info">
+              <div class="player-card-name">Chris Schneider</div>
+              <div class="player-card-team">Not competing in 2026</div>
+            </div>
+          </div>
+          <div class="player-card-stats">
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2024–25</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+          </div>
+          <div class="player-card-bio">Bio coming soon</div>
+        </div>
+
+        <div class="player-card" id="player-bowman" data-team="alumni" data-history='["2025-ducks"]'>
+          <div class="player-card-top">
+            <div class="player-avatar player-avatar-alumni">MB</div>
+            <div class="player-card-info">
+              <div class="player-card-name">Mark Bowman</div>
+              <div class="player-card-team">Not competing in 2026</div>
+            </div>
+          </div>
+          <div class="player-card-stats">
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2025</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+          </div>
+          <div class="player-card-bio">Bio coming soon</div>
+        </div>
+
+        <div class="player-card" id="player-gaudet" data-team="alumni" data-history='["2025-ducks"]'>
+          <div class="player-card-top">
+            <div class="player-avatar player-avatar-alumni">MG</div>
+            <div class="player-card-info">
+              <div class="player-card-name">Mike Gaudet</div>
+              <div class="player-card-team">Not competing in 2026</div>
+            </div>
+          </div>
+          <div class="player-card-stats">
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2025</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+          </div>
+          <div class="player-card-bio">Bio coming soon</div>
         </div>
 
       </div><!-- end players-grid -->
@@ -5038,7 +5229,7 @@
       document.querySelectorAll('.player-filter').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      // Show or hide each card based on data-team (2026) or data-history (prior years)
+      // Show or hide each card based on data-team (2026) or data-history (prior years JSON array)
       document.querySelectorAll('.player-card').forEach(card => {
         let show = false;
         if (filter === 'all') {
@@ -5048,12 +5239,9 @@
         } else if (filter === '2026-ti') {
           show = card.dataset.team === 'ti';
         } else {
-          // Historical year filters use data-history JSON attribute
-          const history = card.dataset.history ? JSON.parse(card.dataset.history) : {};
-          if (filter === '2025-ducks')   show = history['2025'] === 'ducks';
-          else if (filter === '2025-baggers') show = history['2025'] === 'baggers';
-          else if (filter === '2024-prba')    show = history['2024'] === 'prba';
-          else if (filter === '2024-pirates') show = history['2024'] === 'pirates';
+          // Historical filters: data-history is a JSON array like ["2025-ducks","2024-prba"]
+          const history = card.dataset.history ? JSON.parse(card.dataset.history) : [];
+          show = history.includes(filter);
         }
         card.style.display = show ? '' : 'none';
       });
