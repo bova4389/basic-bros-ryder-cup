@@ -73,10 +73,26 @@
     body.light-mode .countdown-eyebrow,
     body.light-mode .condo-section-title,
     body.light-mode .accordion-body h4,
-    body.light-mode .player-text-btn,
     body.light-mode .course-maps-link,
     body.light-mode .inner-tabs .inner-tab:not(.active) {
       font-weight: 700;
+    }
+
+    /* Light mode contrast fixes — colored chips/labels become unreadable on light backgrounds */
+    body.light-mode .chip-2024-pirates {
+      background: rgba(26,45,90,0.12);
+      color: #1a3a7a;
+      border-color: rgba(26,45,90,0.4);
+    }
+    body.light-mode .name-gvo,
+    body.light-mode .team-gvo .player-row-name {
+      background: rgba(0,150,170,0.15);
+      color: #006070;
+    }
+    body.light-mode .name-ti,
+    body.light-mode .team-ti .player-row-name {
+      background: rgba(100,20,115,0.12);
+      color: #6b1f7a;
     }
 
     /* ============================================================
@@ -675,26 +691,6 @@
     }
 
     /* ============================================================
-       PLAYER CARD — TEXT BUTTON
-    ============================================================ */
-    .player-text-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: .35rem;
-      margin-top: .65rem;
-      padding: .35rem .75rem;
-      background: rgba(82,183,136,.12);
-      border: 1px solid rgba(82,183,136,.3);
-      border-radius: 20px;
-      color: var(--color-green-light);
-      font-size: .78rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background .2s;
-    }
-    .player-text-btn:hover { background: rgba(82,183,136,.22); }
-
-    /* ============================================================
        SCORECARD TABLE
     ============================================================ */
     .scorecard-wrap {
@@ -842,16 +838,16 @@
       background: var(--color-surface);
       border-top: 1px solid var(--color-border);
       text-align: center;
-      padding: 2.25rem 1.5rem;
-      margin-top: 3rem;
+      padding: 1.25rem 1.5rem 1rem;
+      margin-top: 2rem;
     }
 
     .footer-logo-wrap {
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.4rem;
     }
 
     .footer-logo {
-      height: 44px;
+      height: 32px;
       width: auto;
       margin: 0 auto;
       opacity: 0.75;
@@ -859,18 +855,18 @@
 
     .footer-title {
       font-family: 'Cinzel', serif;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--color-gold);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
     }
 
     .footer-text {
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       color: var(--color-text-muted);
-      line-height: 1.7;
+      line-height: 1.6;
     }
 
     .footer-names {
@@ -981,8 +977,8 @@
       animation: playerHighlight 1.8s ease-out forwards;
     }
 
-    /* GVO cards get a subtle green left border */
-    .player-card[data-team="gvo"] { border-left: 3px solid var(--color-green); }
+    /* GVO cards get an aqua blue left border */
+    .player-card[data-team="gvo"] { border-left: 3px solid #00BCD4; }
     /* TI cards get a subtle purple left border */
     .player-card[data-team="ti"]  { border-left: 3px solid #7b2d8b; }
 
@@ -1012,9 +1008,9 @@
     }
 
     .player-avatar-gvo {
-      background: rgba(45,106,79,0.25);
-      color: var(--color-green-light);
-      border: 1px solid rgba(82,183,136,0.3);
+      background: rgba(0,188,212,0.2);
+      color: #00BCD4;
+      border: 1px solid rgba(0,188,212,0.4);
     }
 
     .player-avatar-ti {
@@ -1120,8 +1116,8 @@
       white-space: nowrap;
     }
 
-    /* 2026 Good Vibes Only — tropical green */
-    .chip-2026-gvo  { background: rgba(62,180,137,0.18); color: #3eb489; border: 1px solid rgba(62,180,137,0.4); }
+    /* 2026 Good Vibes Only — aqua blue */
+    .chip-2026-gvo  { background: rgba(0,188,212,0.15); color: #00BCD4; border: 1px solid rgba(0,188,212,0.4); }
     /* 2026 Transfusion Intrusion — purple */
     .chip-2026-ti   { background: rgba(123,45,139,0.18); color: #b06bc0; border: 1px solid rgba(123,45,139,0.4); }
     /* 2025 The Mighty Cluster Ducks — blue with yellow accent */
@@ -1347,11 +1343,11 @@
 
     .team-captain strong { color: var(--color-cream); }
 
-    /* Team 1 — Good Vibes Only: forest green accent */
-    .team-gvo { border-color: var(--color-green); }
+    /* Team 1 — Good Vibes Only: aqua blue accent */
+    .team-gvo { border-color: #00BCD4; }
     .team-gvo .team-header {
-      background: linear-gradient(135deg, rgba(45,106,79,0.35), rgba(45,106,79,0.08));
-      border-left: 4px solid var(--color-green);
+      background: linear-gradient(135deg, rgba(0,188,212,0.28), rgba(0,188,212,0.06));
+      border-left: 4px solid #00BCD4;
     }
 
     /* Team 2 — Transfusion Intrusion: purple accent */
@@ -1419,6 +1415,48 @@
       color: var(--color-gold);
       border: 1px solid rgba(212,175,55,0.25);
     }
+
+    /* Player name color highlights — used in team roster and schedule */
+    .team-gvo .player-row-name {
+      background: rgba(0,188,212,0.12);
+      color: #00BCD4;
+      padding: 0.12rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .team-ti .player-row-name {
+      background: rgba(123,45,139,0.15);
+      color: #b06bc0;
+      padding: 0.12rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    /* Inline name chips inside schedule groups */
+    .name-gvo {
+      display: inline-block;
+      background: rgba(0,188,212,0.15);
+      color: #00BCD4;
+      padding: 0.08rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .name-ti {
+      display: inline-block;
+      background: rgba(123,45,139,0.18);
+      color: #c07ad0;
+      padding: 0.08rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    /* Course link in schedule header */
+    .schedule-course-link {
+      font-size: 0.8rem;
+      color: var(--color-green-light);
+      text-decoration: none;
+      font-style: italic;
+      cursor: pointer;
+    }
+    .schedule-course-link:hover { text-decoration: underline; }
 
     /* Summary row at bottom of each team card */
     .team-totals {
@@ -2527,10 +2565,10 @@
   <nav class="site-nav" id="desktopNav">
     <div class="nav-inner" role="tablist">
       <button class="nav-tab active" role="tab" onclick="showTab('home', this)">Home</button>
-      <button class="nav-tab" role="tab" onclick="showTab('rulebook', this)">Rulebook</button>
       <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tournament</button>
-      <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tournament History</button>
       <button class="nav-tab" role="tab" onclick="showTab('players', this)">The Bros</button>
+      <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tournament History</button>
+      <button class="nav-tab" role="tab" onclick="showTab('rulebook', this)">Rulebook</button>
       <!-- Submit Bio tab — hidden until admin enables it via the admin panel -->
       <button class="nav-tab" role="tab" id="bioFormTab" style="display:none;" onclick="showTab('submitbio', this)">Submit Bio</button>
       <button class="nav-tab" role="tab" onclick="showTab('admin', this)">Admin</button>
@@ -2540,10 +2578,10 @@
   <!-- Mobile dropdown nav — hidden until hamburger is tapped -->
   <div class="mobile-nav" id="mobileNav">
     <button class="nav-tab active" onclick="showTab('home', this); closeMobileNav()">Home</button>
-    <button class="nav-tab" onclick="showTab('rulebook', this); closeMobileNav()">Rulebook</button>
     <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tournament</button>
-    <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tournament History</button>
     <button class="nav-tab" onclick="showTab('players', this); closeMobileNav()">The Bros</button>
+    <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tournament History</button>
+    <button class="nav-tab" onclick="showTab('rulebook', this); closeMobileNav()">Rulebook</button>
     <!-- Submit Bio tab — hidden until admin enables it -->
     <button class="nav-tab" id="bioFormTabMobile" style="display:none;" onclick="showTab('submitbio', this); closeMobileNav()">Submit Bio</button>
     <button class="nav-tab" onclick="showTab('admin', this); closeMobileNav()">Admin</button>
@@ -2992,39 +3030,39 @@
         <div class="condo-grid">
           <div class="condo-card">
             <div class="condo-title">Condo 1</div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-sschumann')">Spencer Schumann</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-cschumann')">Chris Schumann</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-pannullo')">Ron Pannullo</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-damiani')">Jason Damiani</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-harris')">Max Harris</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-sharkey')">Joe Sharkey</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-sschumann')">Spencer Schumann</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-cschumann')">Chris Schumann</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-pannullo')">Ron Pannullo</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-damiani')">Jason Damiani</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-harris')">Max Harris</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-sharkey')">Joe Sharkey</span></div>
           </div>
           <div class="condo-card">
             <div class="condo-title">Condo 2</div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-touchberry')">Taylor Touchberry</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-bartlett')">Donny Bartlett</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-strobel')">Bash Strobel</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-bishop')">Raheem Bishop</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-davis')">Mike Davis</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-stephenson')">Robert Stephenson</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-touchberry')">Taylor Touchberry</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-bartlett')">Donny Bartlett</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-strobel')">Bash Strobel</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-bishop')">Raheem Bishop</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-davis')">Mike Davis</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-stephenson')">Robert Stephenson</span></div>
           </div>
           <div class="condo-card">
             <div class="condo-title">Condo 3</div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-lewandowski')">Adam Lewandowski</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-reeves')">Justin Reeves</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-mucha')">Joe Mucha</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-glenn')">Cassady Glenn</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-renato')">Renato</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-stone')">Ryne Stone</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-lewandowski')">Adam Lewandowski</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-reeves')">Justin Reeves</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-mucha')">Joe Mucha</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-glenn')">Cassady Glenn</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-renato')">Renato</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-stone')">Ryne Stone</span></div>
           </div>
           <div class="condo-card">
             <div class="condo-title">Condo 4</div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-bova')">Matt Bova</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-pletcher')">Mitch Pletcher</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-meyer')">Karsten Meyer</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-smith')">Teddy Smith</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-esbrandt')">Cody Esbrandt</span></div>
-            <div class="condo-player"><span class="player-link" onclick="goToPlayer('player-hermanson')">Jeremy Hermanson</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-bova')">Matt Bova</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-pletcher')">Mitch Pletcher</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-meyer')">Karsten Meyer</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-smith')">Teddy Smith</span></div>
+            <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-esbrandt')">Cody Esbrandt</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-hermanson')">Jeremy Hermanson</span></div>
           </div>
         </div><!-- end condo-grid -->
 
@@ -3238,30 +3276,33 @@
                 <span class="schedule-day-date">June 26</span>
                 <span class="schedule-format-badge">Scramble</span>
               </div>
+              <div style="padding:0.3rem 1.1rem 0.5rem; border-bottom:1px solid var(--color-border);">
+                <a class="schedule-course-link" onclick="showInnerTab('t26','t26-courses',null);setTimeout(()=>openCourseDetail('pawleys'),100);">📍 Pawleys Plantation ↗</a>
+              </div>
               <div class="schedule-items">
                 <div class="schedule-item">
                   <span class="schedule-time">9:03am</span>
-                  <span>Group 1 — Ryne + Karsten vs. Cody + Sharkey</span>
+                  <span>Group 1 — <span class="name-ti">Ryne</span> + <span class="name-ti">Karsten</span> vs. <span class="name-gvo">Cody</span> + <span class="name-gvo">Sharkey</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:13am</span>
-                  <span>Group 2 — Cass + Renato vs. Taylor + Joe M</span>
+                  <span>Group 2 — <span class="name-ti">Cass</span> + <span class="name-ti">Renato</span> vs. <span class="name-gvo">Taylor</span> + <span class="name-gvo">Joe M</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:23am</span>
-                  <span>Group 3 — Davis + Adam vs. Mitch + Raheem</span>
+                  <span>Group 3 — <span class="name-ti">Davis</span> + <span class="name-ti">Adam</span> vs. <span class="name-gvo">Mitch</span> + <span class="name-gvo">Raheem</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:33am</span>
-                  <span>Group 4 — Justin + Hermanson vs. Jason + Bova</span>
+                  <span>Group 4 — <span class="name-ti">Justin</span> + <span class="name-ti">Hermanson</span> vs. <span class="name-gvo">Jason</span> + <span class="name-gvo">Bova</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:43am</span>
-                  <span>Group 5 — Donny + Max vs. Bash + Spencer</span>
+                  <span>Group 5 — <span class="name-ti">Donny</span> + <span class="name-ti">Max</span> vs. <span class="name-gvo">Bash</span> + <span class="name-gvo">Spencer</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:53am</span>
-                  <span>Group 6 — Robert + Ron vs. Schumann + Teddy</span>
+                  <span>Group 6 — <span class="name-ti">Robert</span> + <span class="name-ti">Ron</span> vs. <span class="name-gvo">Schumann</span> + <span class="name-gvo">Teddy</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">PM</span>
@@ -3279,14 +3320,33 @@
                 <span class="schedule-day-date">June 27</span>
                 <span class="schedule-format-badge">Day 2</span>
               </div>
+              <div style="padding:0.3rem 1.1rem 0.5rem; border-bottom:1px solid var(--color-border);">
+                <a class="schedule-course-link" onclick="showInnerTab('t26','t26-courses',null);setTimeout(()=>openCourseDetail('trueblue'),100);">📍 True Blue Golf Club ↗</a>
+              </div>
               <div class="schedule-items">
                 <div class="schedule-item">
                   <span class="schedule-time">7:57am</span>
-                  <span>First tee — True Blue Golf Club</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD — matchups assigned Friday night</span>
                 </div>
                 <div class="schedule-item">
-                  <span class="schedule-time" style="font-size:0.72rem;">Groups</span>
-                  <span style="color:var(--color-text-muted);font-style:italic;">Group tee times TBD — assigned the night before</span>
+                  <span class="schedule-time">8:07am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">8:17am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">8:27am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">8:37am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">8:47am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">PM</span>
@@ -3304,14 +3364,33 @@
                 <span class="schedule-day-date">June 28</span>
                 <span class="schedule-format-badge">Final</span>
               </div>
+              <div style="padding:0.3rem 1.1rem 0.5rem; border-bottom:1px solid var(--color-border);">
+                <a class="schedule-course-link" onclick="showInnerTab('t26','t26-courses',null);setTimeout(()=>openCourseDetail('caledonia'),100);">📍 Caledonia Golf &amp; Fish Club ↗</a>
+              </div>
               <div class="schedule-items">
                 <div class="schedule-item">
                   <span class="schedule-time">8:06am</span>
-                  <span>First tee — Caledonia Golf &amp; Fish Club</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD — matchups assigned Saturday night</span>
                 </div>
                 <div class="schedule-item">
-                  <span class="schedule-time" style="font-size:0.72rem;">Groups</span>
-                  <span style="color:var(--color-text-muted);font-style:italic;">Group tee times TBD — assigned the night before</span>
+                  <span class="schedule-time">8:16am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">8:26am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">8:36am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">8:46am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item">
+                  <span class="schedule-time">8:56am</span>
+                  <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">Post-Round</span>
@@ -4119,6 +4198,7 @@
           <table class="pairings-table">
             <thead>
               <tr>
+                <th>Tee Time</th>
                 <th>Transfusion Intrusion (2026)</th>
                 <th style="text-align:center">HDCP</th>
                 <th style="text-align:center">—</th>
@@ -4128,45 +4208,51 @@
             </thead>
             <tbody>
               <tr>
-                <td><span class="player-link" onclick="goToPlayer('player-stone')">Ryne</span> (18) + <span class="player-link" onclick="goToPlayer('player-meyer')">Karsten</span> (24)</td>
+                <td class="hdcp-cell">9:03am</td>
+                <td><span class="name-ti player-link" onclick="goToPlayer('player-stone')">Ryne</span> (18) + <span class="name-ti player-link" onclick="goToPlayer('player-meyer')">Karsten</span> (24)</td>
                 <td class="hdcp-cell">15</td>
                 <td class="vs-cell">VS</td>
-                <td><span class="player-link" onclick="goToPlayer('player-esbrandt')">Cody</span> (16) + <span class="player-link" onclick="goToPlayer('player-sharkey')">Sharkey</span> (22)</td>
+                <td><span class="name-gvo player-link" onclick="goToPlayer('player-esbrandt')">Cody</span> (16) + <span class="name-gvo player-link" onclick="goToPlayer('player-sharkey')">Sharkey</span> (22)</td>
                 <td class="hdcp-cell">13</td>
               </tr>
               <tr>
-                <td><span class="player-link" onclick="goToPlayer('player-glenn')">Cass</span> (44) + <span class="player-link" onclick="goToPlayer('player-renato')">Renato</span> (11)</td>
+                <td class="hdcp-cell">9:13am</td>
+                <td><span class="name-ti player-link" onclick="goToPlayer('player-glenn')">Cass</span> (44) + <span class="name-ti player-link" onclick="goToPlayer('player-renato')">Renato</span> (11)</td>
                 <td class="hdcp-cell">19</td>
                 <td class="vs-cell">VS</td>
-                <td><span class="player-link" onclick="goToPlayer('player-touchberry')">Taylor</span> (12) + <span class="player-link" onclick="goToPlayer('player-mucha')">Joe M</span> (26)</td>
+                <td><span class="name-gvo player-link" onclick="goToPlayer('player-touchberry')">Taylor</span> (12) + <span class="name-gvo player-link" onclick="goToPlayer('player-mucha')">Joe M</span> (26)</td>
                 <td class="hdcp-cell">13</td>
               </tr>
               <tr>
-                <td><span class="player-link" onclick="goToPlayer('player-davis')">Davis</span> (3) + <span class="player-link" onclick="goToPlayer('player-lewandowski')">Adam</span> (34)</td>
+                <td class="hdcp-cell">9:23am</td>
+                <td><span class="name-ti player-link" onclick="goToPlayer('player-davis')">Davis</span> (3) + <span class="name-ti player-link" onclick="goToPlayer('player-lewandowski')">Adam</span> (34)</td>
                 <td class="hdcp-cell">13</td>
                 <td class="vs-cell">VS</td>
-                <td><span class="player-link" onclick="goToPlayer('player-pletcher')">Mitch</span> (15) + <span class="player-link" onclick="goToPlayer('player-bishop')">Raheem</span> (26)</td>
+                <td><span class="name-gvo player-link" onclick="goToPlayer('player-pletcher')">Mitch</span> (15) + <span class="name-gvo player-link" onclick="goToPlayer('player-bishop')">Raheem</span> (26)</td>
                 <td class="hdcp-cell">14</td>
               </tr>
               <tr>
-                <td><span class="player-link" onclick="goToPlayer('player-reeves')">Justin</span> (20) + <span class="player-link" onclick="goToPlayer('player-hermanson')">Hermanson</span> (35)</td>
+                <td class="hdcp-cell">9:33am</td>
+                <td><span class="name-ti player-link" onclick="goToPlayer('player-reeves')">Justin</span> (20) + <span class="name-ti player-link" onclick="goToPlayer('player-hermanson')">Hermanson</span> (35)</td>
                 <td class="hdcp-cell">19</td>
                 <td class="vs-cell">VS</td>
-                <td><span class="player-link" onclick="goToPlayer('player-damiani')">Jason</span> (12) + <span class="player-link" onclick="goToPlayer('player-bova')">Bova</span> (28)</td>
+                <td><span class="name-gvo player-link" onclick="goToPlayer('player-damiani')">Jason</span> (12) + <span class="name-gvo player-link" onclick="goToPlayer('player-bova')">Bova</span> (28)</td>
                 <td class="hdcp-cell">14</td>
               </tr>
               <tr>
-                <td><span class="player-link" onclick="goToPlayer('player-bartlett')">Donny</span> (19) + <span class="player-link" onclick="goToPlayer('player-harris')">Max</span> (26)</td>
+                <td class="hdcp-cell">9:43am</td>
+                <td><span class="name-ti player-link" onclick="goToPlayer('player-bartlett')">Donny</span> (19) + <span class="name-ti player-link" onclick="goToPlayer('player-harris')">Max</span> (26)</td>
                 <td class="hdcp-cell">16</td>
                 <td class="vs-cell">VS</td>
-                <td><span class="player-link" onclick="goToPlayer('player-strobel')">Bash</span> (16) + <span class="player-link" onclick="goToPlayer('player-sschumann')">Spencer</span> (42)</td>
+                <td><span class="name-gvo player-link" onclick="goToPlayer('player-strobel')">Bash</span> (16) + <span class="name-gvo player-link" onclick="goToPlayer('player-sschumann')">Spencer</span> (42)</td>
                 <td class="hdcp-cell">20</td>
               </tr>
               <tr>
-                <td><span class="player-link" onclick="goToPlayer('player-stephenson')">Robert</span> (14) + <span class="player-link" onclick="goToPlayer('player-pannullo')">Ron</span> (30)</td>
+                <td class="hdcp-cell">9:53am</td>
+                <td><span class="name-ti player-link" onclick="goToPlayer('player-stephenson')">Robert</span> (14) + <span class="name-ti player-link" onclick="goToPlayer('player-pannullo')">Ron</span> (30)</td>
                 <td class="hdcp-cell">15</td>
                 <td class="vs-cell">VS</td>
-                <td><span class="player-link" onclick="goToPlayer('player-cschumann')">Schumann</span> (16) + <span class="player-link" onclick="goToPlayer('player-smith')">Teddy</span> (42)</td>
+                <td><span class="name-gvo player-link" onclick="goToPlayer('player-cschumann')">Schumann</span> (16) + <span class="name-gvo player-link" onclick="goToPlayer('player-smith')">Teddy</span> (42)</td>
                 <td class="hdcp-cell">20</td>
               </tr>
             </tbody>
@@ -4184,9 +4270,9 @@
             <thead>
               <tr>
                 <th>Tee Time</th>
-                <th>Transfusion Intrusion (2026)</th>
+                <th style="background:rgba(123,45,139,0.25);color:#c07ad0;">Transfusion Intrusion (2026)</th>
                 <th style="text-align:center">—</th>
-                <th>Good Vibes Only (2026)</th>
+                <th style="background:rgba(0,188,212,0.2);color:#00BCD4;">Good Vibes Only (2026)</th>
               </tr>
             </thead>
             <tbody>
@@ -4211,9 +4297,9 @@
             <thead>
               <tr>
                 <th>Tee Time</th>
-                <th>Transfusion Intrusion (2026)</th>
+                <th style="background:rgba(123,45,139,0.25);color:#c07ad0;">Transfusion Intrusion (2026)</th>
                 <th style="text-align:center">—</th>
-                <th>Good Vibes Only (2026)</th>
+                <th style="background:rgba(0,188,212,0.2);color:#00BCD4;">Good Vibes Only (2026)</th>
               </tr>
             </thead>
             <tbody>
@@ -4366,7 +4452,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3174402782">&#x1F4AC; Text Matt</a>
         </div>
 
         <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]'>
@@ -4383,7 +4468,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3217206144">&#x1F4AC; Text Chris</a>
         </div>
 
         <div class="player-card" id="player-sschumann" data-team="gvo" data-tier="t2">
@@ -4400,7 +4484,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3213609519">&#x1F4AC; Text Spencer</a>
         </div>
 
         <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]'>
@@ -4417,7 +4500,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3216980372">&#x1F4AC; Text Taylor</a>
         </div>
 
         <div class="player-card" id="player-strobel" data-team="gvo" data-tier="t1">
@@ -4434,7 +4516,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3212984303">&#x1F4AC; Text Bash</a>
         </div>
 
         <div class="player-card" id="player-smith" data-team="gvo" data-tier="t2">
@@ -4451,7 +4532,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:7128301908">&#x1F4AC; Text Teddy</a>
         </div>
 
         <div class="player-card" id="player-damiani" data-team="gvo" data-tier="t1">
@@ -4468,7 +4548,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3867936916">&#x1F4AC; Text Jason</a>
         </div>
 
         <div class="player-card" id="player-bishop" data-team="gvo" data-tier="t2">
@@ -4485,7 +4564,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3523970237">&#x1F4AC; Text Raheem</a>
         </div>
 
         <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2" data-history='["2025-ducks","2024-prba"]'>
@@ -4502,7 +4580,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:7169691932">&#x1F4AC; Text Joe M.</a>
         </div>
 
         <div class="player-card" id="player-pletcher" data-team="gvo" data-tier="t1">
@@ -4519,7 +4596,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:5745965783">&#x1F4AC; Text Mitch</a>
         </div>
 
         <div class="player-card" id="player-sharkey" data-team="gvo" data-tier="t2">
@@ -4536,7 +4612,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:5614414362">&#x1F4AC; Text Sharkey</a>
         </div>
 
         <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]'>
@@ -4553,7 +4628,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:4074912232">&#x1F4AC; Text Cody</a>
         </div>
 
         <!-- ==================== LUBEN DUBERS ==================== -->
@@ -4572,7 +4646,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3212132551">&#x1F4AC; Text Adam</a>
         </div>
 
         <div class="player-card" id="player-hermanson" data-team="ti" data-tier="t2">
@@ -4589,7 +4662,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3215067688">&#x1F4AC; Text Jeremy</a>
         </div>
 
         <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-pirates"]'>
@@ -4606,7 +4678,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3215447722">&#x1F4AC; Text Donny</a>
         </div>
 
         <div class="player-card" id="player-pannullo" data-team="ti" data-tier="t2" data-history='["2025-baggers"]'>
@@ -4623,7 +4694,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3865691456">&#x1F4AC; Text Ron</a>
         </div>
 
         <div class="player-card" id="player-davis" data-team="ti" data-tier="t1">
@@ -4640,7 +4710,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3862833695">&#x1F4AC; Text Davis</a>
         </div>
 
         <div class="player-card" id="player-stephenson" data-team="ti" data-tier="t1">
@@ -4657,7 +4726,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3862908164">&#x1F4AC; Text Robert</a>
         </div>
 
         <div class="player-card" id="player-reeves" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]'>
@@ -4674,7 +4742,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:4783613522">&#x1F4AC; Text Justin</a>
         </div>
 
         <div class="player-card" id="player-stone" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]'>
@@ -4691,7 +4758,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:7722015230">&#x1F4AC; Text Ryne</a>
         </div>
 
         <div class="player-card" id="player-glenn" data-team="ti" data-tier="t2" data-history='["2025-baggers"]'>
@@ -4708,7 +4774,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:4043129062">&#x1F4AC; Text Cass</a>
         </div>
 
         <div class="player-card" id="player-renato" data-team="ti" data-tier="t1">
@@ -4725,7 +4790,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:6159951573">&#x1F4AC; Text Renato</a>
         </div>
 
         <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-pirates"]'>
@@ -4742,7 +4806,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3192696727">&#x1F4AC; Text Karsten</a>
         </div>
 
         <div class="player-card" id="player-harris" data-team="ti" data-tier="t2">
@@ -4759,7 +4822,6 @@
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
-          <a class="player-text-btn" href="sms:3214749735">&#x1F4AC; Text Max</a>
         </div>
 
         <!-- ── ALUMNI CARDS ──
@@ -5083,9 +5145,9 @@
       <a href="https://discord.com/channels/1234226845092806716/1234226845570830377"
          target="_blank" rel="noopener"
          style="color:var(--color-green-light);text-decoration:none;font-weight:600;">Discord ↗</a><br>
-      Organized by the Founding Bros:
-      <span class="footer-names">Matt Bova · Cody Esbrandt · Ryne Stone</span>
+      Website designed by the Website Vibes Guy: <strong style="color:var(--color-cream);">Matt Bova</strong>
     </div>
+    <div class="footer-quote" id="footerQuote" style="margin-top:0.4rem;font-size:0.82rem;color:var(--color-text-muted);font-style:italic;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5;"></div>
   </footer>
 
 
@@ -5195,12 +5257,11 @@
           if (CHIP_CONFIG[key]) chips.push(key);
         }
 
-        // Prior years from data-history JSON attribute (added per card when data is available)
+        // Prior years from data-history JSON attribute (e.g. '["2025-baggers","2024-prba"]')
         if (card.dataset.history) {
           try {
             const history = JSON.parse(card.dataset.history);
-            Object.entries(history).forEach(([year, team]) => {
-              const key = year + '-' + team;
+            history.forEach(key => {
               if (CHIP_CONFIG[key]) chips.push(key);
             });
           } catch(e) {}
@@ -5223,6 +5284,36 @@
 
     // Run chip builder after DOM is ready
     document.addEventListener('DOMContentLoaded', buildTeamChips);
+
+    // ---- ROTATING FOOTER QUOTES ----
+    // Picks a random quote on page load and again any time the tab becomes visible.
+    const FOOTER_QUOTES = [
+      '"We\'re all just one triple bogey away from questioning every life decision."',
+      '"If your buddy says \'I figured something out at the range,\' prepare for a long round."',
+      '"The only thing less reliable than my driver is my lower back."',
+      '"Every foursome has one guy who keeps score like it\'s under FBI investigation."',
+      '"You can tell a lot about a man by how many provisional balls he \'finds.\'"',
+      '"The cart girl has heard more fake confidence than a Vegas blackjack dealer."',
+      '"Most men peak emotionally after a flushed 7-iron."',
+      '"Marriage teaches patience. Golf tests whether you actually learned it."',
+      '"Nothing exposes a man\'s true character faster than missing a 2-foot putt for bogey."',
+      '"Golf: where 30 handicaps give swing advice with full confidence."',
+      '"A bad day golfing still beats pretending to enjoy your kid\'s travel baseball tournament."',
+      '"Most guys don\'t actually want peace and quiet. They just want 4 hours away from group texts and responsibilities."',
+    ];
+
+    function setRandomQuote() {
+      const el = document.getElementById('footerQuote');
+      if (!el) return;
+      const idx = Math.floor(Math.random() * FOOTER_QUOTES.length);
+      el.textContent = FOOTER_QUOTES[idx];
+    }
+
+    // Set quote on load and whenever the tab becomes visible again
+    document.addEventListener('DOMContentLoaded', setRandomQuote);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') setRandomQuote();
+    });
 
     function filterPlayers(filter, btn) {
       // Update which filter button looks active
