@@ -1088,6 +1088,17 @@
       line-height: 1.45;
     }
 
+    /* Bio fields rendered from approved Firebase submissions */
+    .player-card-bio.has-bio { font-style: normal; }
+    .bio-row { margin-bottom: 0.25rem; }
+    .bio-lbl { font-weight: 600; color: var(--color-cream); }
+    .bio-quote {
+      margin-top: 0.5rem;
+      font-style: italic;
+      border-left: 2px solid var(--color-green-light);
+      padding-left: 0.5rem;
+    }
+
     /* Responsive: 2-col on tablet, 1-col on phone */
     @media (max-width: 900px) { .players-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 500px) { .players-grid { grid-template-columns: 1fr; } }
@@ -4518,7 +4529,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-smith" data-team="gvo" data-tier="t2">
+        <div class="player-card" id="player-smith" data-team="gvo" data-tier="t2" data-history='["2025-ducks"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">TS</div>
             <div class="player-card-info">
@@ -4875,7 +4886,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-burleson" data-team="alumni" data-history='["2025-baggers","2024-prba"]'>
+        <div class="player-card" id="player-burleson" data-team="alumni" data-history='["2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">SB</div>
             <div class="player-card-info">
@@ -4884,7 +4895,7 @@
             </div>
           </div>
           <div class="player-card-stats">
-            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2024–25</span></div>
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2024</span></div>
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
@@ -4935,7 +4946,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-gaudet" data-team="alumni" data-history='["2025-ducks"]'>
+        <div class="player-card" id="player-gaudet" data-team="alumni" data-history='["2025-baggers"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">MG</div>
             <div class="player-card-info">
@@ -5716,6 +5727,63 @@
         renderSubmissions();
       });
     }
+
+
+    // ---- BIO DISPLAY ON PLAYER CARDS ----
+    // Reads all approved bio submissions from Firebase and injects bio content
+    // into the matching player card on The Bros page.
+    // Matching is done by "First Last" name (case-insensitive) against .player-card-name text.
+    function loadApprovedBios() {
+      db.ref('bio_submissions').once('value').then(snap => {
+        const all = snap.val();
+        if (!all) return;
+
+        // Build a lookup map: "full name lowercase" → bio object
+        const approvedMap = {};
+        Object.values(all).forEach(s => {
+          if (s.status === 'approved' && s.firstName && s.lastName) {
+            const key = (s.firstName + ' ' + s.lastName).toLowerCase().trim();
+            approvedMap[key] = s;
+          }
+        });
+
+        // Walk every player card and inject bio if there's a match
+        document.querySelectorAll('.player-card').forEach(card => {
+          const nameEl = card.querySelector('.player-card-name');
+          const bioEl  = card.querySelector('.player-card-bio');
+          if (!nameEl || !bioEl) return;
+
+          const bio = approvedMap[nameEl.textContent.toLowerCase().trim()];
+          if (!bio) return;
+
+          const lines = [];
+          if (bio.nickname)      lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(bio.nickname)}</div>`);
+          if (bio.hometown)      lines.push(`<div class="bio-row"><span class="bio-lbl">Hometown:</span> ${escHtml(bio.hometown)}</div>`);
+          if (bio.occupation)    lines.push(`<div class="bio-row"><span class="bio-lbl">Job:</span> ${escHtml(bio.occupation)}</div>`);
+          if (bio.familyStatus)  lines.push(`<div class="bio-row"><span class="bio-lbl">Family:</span> ${escHtml(bio.familyStatus)}</div>`);
+          if (bio.walkUpSong)    lines.push(`<div class="bio-row"><span class="bio-lbl">Walk-up:</span> ${escHtml(bio.walkUpSong)}</div>`);
+          if (bio.funFact)       lines.push(`<div class="bio-row"><span class="bio-lbl">Fun fact:</span> ${escHtml(bio.funFact)}</div>`);
+          if (bio.yearbookQuote) lines.push(`<div class="bio-quote">&ldquo;${escHtml(bio.yearbookQuote)}&rdquo;</div>`);
+
+          if (lines.length > 0) {
+            bioEl.innerHTML = lines.join('');
+            bioEl.classList.add('has-bio');
+          }
+        });
+      });
+    }
+
+    // HTML-escape helper to prevent XSS from user-submitted bio content
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Load approved bios on page load so player cards are populated immediately
+    loadApprovedBios();
 
   </script>
 
