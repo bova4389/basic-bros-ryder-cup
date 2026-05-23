@@ -5035,7 +5035,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]' data-photo="TaylorPic.PNG">
+        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]' data-photo="TaylorPic.PNG" data-photo-position="top">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">TT</div>
             <div class="player-card-info">
@@ -6369,7 +6369,8 @@
       // --- Photo or large initials circle ---
       const photoWrap = document.getElementById('bioModalPhotoWrap');
       if (photo) {
-        photoWrap.innerHTML = `<img src="${photo}" alt="${nameEl ? escHtml(nameEl.textContent.trim()) : ''}">`;
+        const photoPos = cardEl.dataset.photoPosition || 'center 25%';
+        photoWrap.innerHTML = `<img src="${photo}" alt="${nameEl ? escHtml(nameEl.textContent.trim()) : ''}" style="object-position:${photoPos}">`;
         photoWrap.style.display = 'flex';
       } else {
         const fullName = nameEl ? nameEl.textContent.replace(/★/g, '').trim() : '';
@@ -6434,24 +6435,39 @@
       let stats = null;
       try { stats = cardEl.dataset.statsJson ? JSON.parse(cardEl.dataset.statsJson) : null; } catch(e) {}
 
-      if (stats && stats.length > 0) {
-        let h = '<hr class="bio-modal-divider"><div class="bio-modal-history-title">Career History</div>';
-        h += '<table class="bio-modal-history-table"><thead><tr><th>Year</th><th>Team</th><th>Hdcp</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead><tbody>';
-        stats.forEach(s => {
-          const tLabel = s.team.charAt(0).toUpperCase() + s.team.slice(1);
-          const hdcpDisplay = s.year === '2024' ? 'N/A' : (s.hdcp !== undefined ? s.hdcp : '—');
-          // 2025 uses r_res fields for W/L/T; 2024 r1-r4 are already W/L/T
-          const r1 = s.year === '2025' ? (s.r1_res || '—') : (s.r1 || '—');
-          const r2 = s.year === '2025' ? (s.r2_res || '—') : (s.r2 || '—');
-          const r3 = s.year === '2025' ? (s.r3_res || '—') : (s.r3 || '—');
-          const r4 = s.year === '2025' ? (s.r4_res || '—') : (s.r4 || '—');
-          h += `<tr><td>${s.year}</td><td>${escHtml(tLabel)}</td><td>${hdcpDisplay}</td><td>${escHtml(r1)}</td><td>${escHtml(r2)}</td><td>${escHtml(r3)}</td><td>${escHtml(r4)}</td></tr>`;
-        });
-        h += '</tbody></table>';
-        histWrap.innerHTML = h;
+      // Always show career history — include both years, "Did not participate" if absent
+      const stat25row = stats && stats.find(s => s.year === '2025');
+      const stat24row = stats && stats.find(s => s.year === '2024');
+
+      const calcTotal = (r1, r2, r3, r4) => {
+        let w = 0, l = 0, t = 0;
+        [r1, r2, r3, r4].forEach(r => { if (r === 'W') w++; else if (r === 'L') l++; else if (r === 'T') t++; });
+        return w + l + t > 0 ? (w + '–' + l + (t ? '–' + t : '')) : '—';
+      };
+
+      let h = '<hr class="bio-modal-divider"><div class="bio-modal-history-title">Career History</div>';
+      h += '<table class="bio-modal-history-table"><thead><tr><th>Year</th><th>Team</th><th>Hdcp</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>Total</th></tr></thead><tbody>';
+
+      if (stat25row) {
+        const s = stat25row;
+        const tLabel = s.team.charAt(0).toUpperCase() + s.team.slice(1);
+        const r1 = s.r1_res || '—', r2 = s.r2_res || '—', r3 = s.r3_res || '—', r4 = s.r4_res || '—';
+        h += `<tr><td>2025</td><td>${escHtml(tLabel)}</td><td>${s.hdcp !== undefined ? s.hdcp : '—'}</td><td>${escHtml(r1)}</td><td>${escHtml(r2)}</td><td>${escHtml(r3)}</td><td>${escHtml(r4)}</td><td>${calcTotal(r1,r2,r3,r4)}</td></tr>`;
       } else {
-        histWrap.innerHTML = '';
+        h += '<tr><td>2025</td><td colspan="7" style="color:var(--color-text-muted);font-style:italic;text-align:left;">Did not participate</td></tr>';
       }
+
+      if (stat24row) {
+        const s = stat24row;
+        const tLabel = s.team.charAt(0).toUpperCase() + s.team.slice(1);
+        const r1 = s.r1 || '—', r2 = s.r2 || '—', r3 = s.r3 || '—', r4 = s.r4 || '—';
+        h += `<tr><td>2024</td><td>${escHtml(tLabel)}</td><td>N/A</td><td>${escHtml(r1)}</td><td>${escHtml(r2)}</td><td>${escHtml(r3)}</td><td>${escHtml(r4)}</td><td>${calcTotal(r1,r2,r3,r4)}</td></tr>`;
+      } else {
+        h += '<tr><td>2024</td><td colspan="7" style="color:var(--color-text-muted);font-style:italic;text-align:left;">Did not participate</td></tr>';
+      }
+
+      h += '</tbody></table>';
+      histWrap.innerHTML = h;
 
       document.getElementById('bioModal').classList.add('open');
       document.body.style.overflow = 'hidden';
