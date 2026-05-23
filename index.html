@@ -3775,27 +3775,27 @@
               <div class="schedule-items">
                 <div class="schedule-item">
                   <span class="schedule-time">9:03am</span>
-                  <span>Group 1 — <span class="name-ti">Ryne</span> + <span class="name-ti">Karsten</span> vs. <span class="name-gvo">Cody</span> + <span class="name-gvo">Sharkey</span></span>
+                  <span>Group 1 — <span class="name-ti player-link" onclick="goToPlayer('player-stone')">Ryne</span> + <span class="name-ti player-link" onclick="goToPlayer('player-meyer')">Karsten</span> vs. <span class="name-gvo player-link" onclick="goToPlayer('player-esbrandt')">Cody</span> + <span class="name-gvo player-link" onclick="goToPlayer('player-sharkey')">Sharkey</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:13am</span>
-                  <span>Group 2 — <span class="name-ti">Cass</span> + <span class="name-ti">Renato</span> vs. <span class="name-gvo">Taylor</span> + <span class="name-gvo">Joe M</span></span>
+                  <span>Group 2 — <span class="name-ti player-link" onclick="goToPlayer('player-glenn')">Cass</span> + <span class="name-ti player-link" onclick="goToPlayer('player-renato')">Renato</span> vs. <span class="name-gvo player-link" onclick="goToPlayer('player-touchberry')">Taylor</span> + <span class="name-gvo player-link" onclick="goToPlayer('player-mucha')">Joe M</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:23am</span>
-                  <span>Group 3 — <span class="name-ti">Davis</span> + <span class="name-ti">Adam</span> vs. <span class="name-gvo">Mitch</span> + <span class="name-gvo">Raheem</span></span>
+                  <span>Group 3 — <span class="name-ti player-link" onclick="goToPlayer('player-davis')">Davis</span> + <span class="name-ti player-link" onclick="goToPlayer('player-lewandowski')">Adam</span> vs. <span class="name-gvo player-link" onclick="goToPlayer('player-pletcher')">Mitch</span> + <span class="name-gvo player-link" onclick="goToPlayer('player-bishop')">Raheem</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:33am</span>
-                  <span>Group 4 — <span class="name-ti">Justin</span> + <span class="name-ti">Hermanson</span> vs. <span class="name-gvo">Jason</span> + <span class="name-gvo">Bova</span></span>
+                  <span>Group 4 — <span class="name-ti player-link" onclick="goToPlayer('player-reeves')">Justin</span> + <span class="name-ti player-link" onclick="goToPlayer('player-hermanson')">Hermanson</span> vs. <span class="name-gvo player-link" onclick="goToPlayer('player-damiani')">Jason</span> + <span class="name-gvo player-link" onclick="goToPlayer('player-bova')">Bova</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:43am</span>
-                  <span>Group 5 — <span class="name-ti">Donny</span> + <span class="name-ti">Max</span> vs. <span class="name-gvo">Bash</span> + <span class="name-gvo">Spencer</span></span>
+                  <span>Group 5 — <span class="name-ti player-link" onclick="goToPlayer('player-bartlett')">Donny</span> + <span class="name-ti player-link" onclick="goToPlayer('player-harris')">Max</span> vs. <span class="name-gvo player-link" onclick="goToPlayer('player-strobel')">Bash</span> + <span class="name-gvo player-link" onclick="goToPlayer('player-sschumann')">Spencer</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:53am</span>
-                  <span>Group 6 — <span class="name-ti">Robert</span> + <span class="name-ti">Ron</span> vs. <span class="name-gvo">Schumann</span> + <span class="name-gvo">Teddy</span></span>
+                  <span>Group 6 — <span class="name-ti player-link" onclick="goToPlayer('player-stephenson')">Robert</span> + <span class="name-ti player-link" onclick="goToPlayer('player-pannullo')">Ron</span> vs. <span class="name-gvo player-link" onclick="goToPlayer('player-cschumann')">Schumann</span> + <span class="name-gvo player-link" onclick="goToPlayer('player-smith')">Teddy</span></span>
                 </div>
                 <div class="schedule-item" style="color:var(--color-text-muted);font-style:italic;">
                   <span class="schedule-time">~2:53pm</span>
@@ -5244,7 +5244,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-stone" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]'>
+        <div class="player-card" id="player-stone" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]' data-photo="RynePic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">RS</div>
             <div class="player-card-info">
@@ -5611,8 +5611,8 @@
         </div>
 
         <!-- Push bios button — re-runs loadApprovedBios and navigates to The Bros page -->
-        <div id="adminToast" class="admin-toast">✓ Bios pushed to The Bros page</div>
-        <button class="admin-push-btn" onclick="pushBiosToPage()">Push Bios to The Bros Page</button>
+        <div id="adminToast" class="admin-toast">✓ All pending bios approved &amp; pushed to The Bros page</div>
+        <button class="admin-push-btn" onclick="pushAllPendingBios()">Push ALL Pending Bios to The Bros Page</button>
 
         <!-- Bio submissions list -->
         <div class="admin-section-title">Bio Submissions</div>
@@ -5724,16 +5724,8 @@
     // Switches to the Players tab, scrolls to the player's card,
     // and flashes a gold highlight so you can see which card you landed on.
     function goToPlayer(playerId) {
-      showTab('players', null);
-      // Small delay so the Players tab finishes rendering before we scroll
-      setTimeout(() => {
-        const card = document.getElementById(playerId);
-        if (!card) return;
-        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        card.classList.add('highlighted');
-        // Remove the highlight class after the animation completes
-        setTimeout(() => card.classList.remove('highlighted'), 2000);
-      }, 120);
+      const card = document.getElementById(playerId);
+      if (card) openBioModal(card);
     }
 
 
@@ -6205,10 +6197,36 @@
       }).join('');
     }
 
-    // Update a submission's status in the database and re-render the card
+    // Inject one bio's preview content into the matching player card immediately.
+    // Called when Approving a submission so the page updates without a full reload.
+    function pushSingleBioToCard(id) {
+      const s = allSubmissions[id];
+      if (!s || !s.firstName || !s.lastName) return;
+      const nameKey = (s.firstName + ' ' + s.lastName).toLowerCase().trim();
+      document.querySelectorAll('.player-card').forEach(card => {
+        const nameEl = card.querySelector('.player-card-name');
+        const bioEl  = card.querySelector('.player-card-bio');
+        if (!nameEl || !bioEl) return;
+        if (nameEl.textContent.replace(/★/g, '').trim().toLowerCase() !== nameKey) return;
+        bioEl.dataset.bioJson = JSON.stringify(s);
+        const lines = [];
+        if (s.nickname) lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(s.nickname)}</div>`);
+        if (s.yearbookQuote) {
+          const q = s.yearbookQuote.length > 100 ? s.yearbookQuote.substring(0, 97) + '…' : s.yearbookQuote;
+          lines.push(`<div class="bio-quote">&ldquo;${escHtml(q)}&rdquo;</div>`);
+        }
+        lines.push(`<button class="bio-show-more" onclick="openBioModal(this.closest('.player-card'))">Show More</button>`);
+        bioEl.innerHTML = lines.join('');
+        bioEl.classList.add('has-bio');
+      });
+    }
+
+    // Approve = set status to approved AND immediately push bio to player card.
+    // Reject just sets the status.
     function setSubmissionStatus(id, status) {
       db.ref(`bio_submissions/${id}`).update({ status }).then(() => {
         allSubmissions[id].status = status;
+        if (status === 'approved') pushSingleBioToCard(id);
         renderSubmissions();
       });
     }
@@ -6319,12 +6337,14 @@
 
       if (bio) {
         const rows = [
-          ['Known as',  bio.nickname],
-          ['Hometown',  bio.hometown],
-          ['Job',       bio.occupation],
-          ['Family',    bio.familyStatus],
-          ['Walk-up',   bio.walkUpSong],
-          ['Fun fact',  bio.funFact],
+          ['Known as',     bio.nickname],
+          ['Hometown',     bio.hometown],
+          ['Job',          bio.occupation],
+          ['Family',       bio.familyStatus],
+          ['Walk-up',      bio.walkUpSong],
+          ['Fun fact',     bio.funFact],
+          ['Discord',      bio.discordUsername],
+          ['Years in BBRC',bio.yearsParticipated],
         ].filter(([, v]) => v);
 
         let html = rows.map(([lbl, val]) =>
@@ -6482,11 +6502,12 @@
         <button class="sub-reject-btn" onclick="renderSubmissions()">Cancel</button>`;
     }
 
-    // Saves edited submission fields to Firebase then re-renders the card.
+    // Saves edited submission fields to Firebase, resets status to Pending,
+    // then re-renders the card so admin must re-approve before it goes live.
     function saveSubmission(id) {
       const card = document.getElementById('sub-' + id);
       if (!card) return;
-      const updated = {};
+      const updated = { status: 'pending' };
       card.querySelectorAll('[data-field]').forEach(el => {
         updated[el.dataset.field] = el.value.trim();
       });
@@ -6496,19 +6517,22 @@
       });
     }
 
-    // ---- PUSH BIOS BUTTON ----
-    // Re-runs loadApprovedBios() and navigates to The Bros page.
-    function pushBiosToPage() {
-      loadApprovedBios();
-      // Navigate to the Players / Bros tab
-      const brosTab = document.querySelector('.nav-tab[onclick*="players"]');
-      if (brosTab) brosTab.click();
-      // Show toast confirmation
-      const toast = document.getElementById('adminToast');
-      if (toast) {
-        toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 3000);
-      }
+    // ---- PUSH ALL PENDING BIOS ----
+    // Approves every pending submission at once and pushes each bio to the player card.
+    function pushAllPendingBios() {
+      const pending = Object.entries(allSubmissions).filter(([, s]) => s.status === 'pending');
+      if (pending.length === 0) { alert('No pending bios to push.'); return; }
+      const updates = {};
+      pending.forEach(([id]) => { updates[`bio_submissions/${id}/status`] = 'approved'; });
+      db.ref().update(updates).then(() => {
+        pending.forEach(([id]) => {
+          allSubmissions[id].status = 'approved';
+          pushSingleBioToCard(id);
+        });
+        renderSubmissions();
+        const toast = document.getElementById('adminToast');
+        if (toast) { toast.style.display = 'block'; setTimeout(() => { toast.style.display = 'none'; }, 3000); }
+      });
     }
 
     // Swap initials avatars with photos for any player card that has a data-photo attribute.
