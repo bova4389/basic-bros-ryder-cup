@@ -2896,6 +2896,17 @@
       margin: 1.5rem auto;
     }
     .bio-modal-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .bio-modal-stats-row {
+      display: flex;
+      gap: 2rem;
+      margin: .4rem 0 1rem;
+      padding: .6rem 1rem;
+      background: var(--color-surface-2);
+      border-radius: 8px;
+    }
+    .bio-modal-stat { display: flex; flex-direction: column; align-items: center; }
+    .bio-modal-stat-lbl { font-size: .7rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    .bio-modal-stat-val { font-size: 1.05rem; font-weight: 700; color: var(--color-cream); }
     .bio-modal-name {
       font-family: 'Cinzel', serif;
       font-size: 1.3rem;
@@ -4992,7 +5003,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]'>
+        <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="SchuPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">CS</div>
             <div class="player-card-info">
@@ -5024,7 +5035,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]'>
+        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]' data-photo="TaylorPic.PNG">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">TT</div>
             <div class="player-card-info">
@@ -5104,7 +5115,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2" data-history='["2025-ducks","2024-prba"]'>
+        <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2" data-history='["2025-ducks","2024-prba"]' data-photo="MuchaPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JM</div>
             <div class="player-card-info">
@@ -5136,7 +5147,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-sharkey" data-team="gvo" data-tier="t2">
+        <div class="player-card" id="player-sharkey" data-team="gvo" data-tier="t2" data-photo="SharkeyPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JS</div>
             <div class="player-card-info">
@@ -5551,16 +5562,6 @@
           <div class="form-group">
             <label class="form-label" for="bio-hometown">Hometown / Where You Live Now <span class="form-required">*</span></label>
             <input class="form-input" type="text" id="bio-hometown" name="hometown" required placeholder="e.g., Charlotte, NC">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="bio-years">Years in BBRC <span class="form-required">*</span></label>
-            <select class="form-select" id="bio-years" name="yearsParticipated" required>
-              <option value="" disabled selected>Select years played</option>
-              <option value="2026 only">2026 only — Year 3 (first time)</option>
-              <option value="2025, 2026">2025 + 2026 — Years 2–3</option>
-              <option value="2024, 2025, 2026">2024 + 2025 + 2026 — all three years</option>
-            </select>
           </div>
 
           <hr class="form-divider">
@@ -6045,9 +6046,8 @@
         const lastName  = document.getElementById('bio-last').value.trim();
         const discord   = document.getElementById('bio-discord').value.trim();
         const hometown  = document.getElementById('bio-hometown').value.trim();
-        const years     = document.getElementById('bio-years').value;
 
-        if (!firstName || !lastName || !discord || !hometown || !years) {
+        if (!firstName || !lastName || !discord || !hometown) {
           bioErrorMsg.textContent = 'Please fill in all required fields (marked with *).';
           bioErrorMsg.style.display = 'block';
           return;
@@ -6065,7 +6065,6 @@
             lastName,
             discordUsername:  discord,
             hometown,
-            yearsParticipated: years,
             nickname:        document.getElementById('bio-nickname').value.trim(),
             occupation:      document.getElementById('bio-occupation').value.trim(),
             familyStatus:    document.getElementById('bio-family').value.trim(),
@@ -6215,10 +6214,6 @@
               <div>
                 <div class="sub-field-label">Hometown</div>
                 <div class="sub-field-value">${val(s.hometown)}</div>
-              </div>
-              <div>
-                <div class="sub-field-label">Years in BBRC</div>
-                <div class="sub-field-value">${val(s.yearsParticipated)}</div>
               </div>
               <div>
                 <div class="sub-field-label">Nickname</div>
@@ -6388,6 +6383,24 @@
       document.getElementById('bioModalName').textContent = nameEl ? nameEl.textContent.trim() : '';
       document.getElementById('bioModalTeam').textContent = teamEl ? teamEl.textContent.trim() : '';
 
+      // --- Current handicap and career record from the player card stats ---
+      const statsRow = document.getElementById('bioModalStats');
+      const hdcpStatEl = Array.from(card.querySelectorAll('.player-stat'))
+        .find(el => el.querySelector('.player-stat-label')?.textContent === 'Hdcp');
+      const recordStatEl = Array.from(card.querySelectorAll('.player-stat'))
+        .find(el => el.querySelector('.player-stat-label')?.textContent === 'Record');
+      const hdcpVal  = hdcpStatEl  ? hdcpStatEl.querySelector('.player-stat-val')?.textContent  : null;
+      const recordVal = recordStatEl ? recordStatEl.querySelector('.player-stat-val')?.textContent : null;
+      if (statsRow && (hdcpVal || recordVal)) {
+        let sHtml = '';
+        if (hdcpVal)   sHtml += `<div class="bio-modal-stat"><span class="bio-modal-stat-lbl">Handicap</span><span class="bio-modal-stat-val">${escHtml(hdcpVal)}</span></div>`;
+        if (recordVal) sHtml += `<div class="bio-modal-stat"><span class="bio-modal-stat-lbl">Career Record</span><span class="bio-modal-stat-val">${escHtml(recordVal)}</span></div>`;
+        statsRow.innerHTML = sHtml;
+        statsRow.style.display = 'flex';
+      } else if (statsRow) {
+        statsRow.style.display = 'none';
+      }
+
       // --- Full bio fields ---
       const fieldsEl = document.getElementById('bioModalFields');
       let bio = null;
@@ -6402,7 +6415,6 @@
           ['Walk-up Song', bio.walkUpSong],
           ['Fun fact',     bio.funFact],
           ['Discord',      bio.discordUsername],
-          ['Years in BBRC',bio.yearsParticipated],
         ].filter(([, v]) => v);
 
         let html = rows.map(([lbl, val]) =>
@@ -6424,10 +6436,16 @@
 
       if (stats && stats.length > 0) {
         let h = '<hr class="bio-modal-divider"><div class="bio-modal-history-title">Career History</div>';
-        h += '<table class="bio-modal-history-table"><thead><tr><th>Year</th><th>Team</th><th>Hdcp</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>Payout</th></tr></thead><tbody>';
+        h += '<table class="bio-modal-history-table"><thead><tr><th>Year</th><th>Team</th><th>Hdcp</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead><tbody>';
         stats.forEach(s => {
           const tLabel = s.team.charAt(0).toUpperCase() + s.team.slice(1);
-          h += `<tr><td>${s.year}</td><td>${escHtml(tLabel)}</td><td>${s.hdcp}</td><td>${escHtml(s.r1||'—')}</td><td>${escHtml(s.r2||'—')}</td><td>${escHtml(s.r3||'—')}</td><td>${escHtml(s.r4||'—')}</td><td>${s.payout ? '$'+s.payout : '—'}</td></tr>`;
+          const hdcpDisplay = s.year === '2024' ? 'N/A' : (s.hdcp !== undefined ? s.hdcp : '—');
+          // 2025 uses r_res fields for W/L/T; 2024 r1-r4 are already W/L/T
+          const r1 = s.year === '2025' ? (s.r1_res || '—') : (s.r1 || '—');
+          const r2 = s.year === '2025' ? (s.r2_res || '—') : (s.r2 || '—');
+          const r3 = s.year === '2025' ? (s.r3_res || '—') : (s.r3 || '—');
+          const r4 = s.year === '2025' ? (s.r4_res || '—') : (s.r4 || '—');
+          h += `<tr><td>${s.year}</td><td>${escHtml(tLabel)}</td><td>${hdcpDisplay}</td><td>${escHtml(r1)}</td><td>${escHtml(r2)}</td><td>${escHtml(r3)}</td><td>${escHtml(r4)}</td></tr>`;
         });
         h += '</tbody></table>';
         histWrap.innerHTML = h;
@@ -6470,26 +6488,6 @@
         if (stat25) statsArr.push({ year: '2025', ...stat25 });
         if (stat24) statsArr.push({ year: '2024', ...stat24 });
         card.dataset.statsJson = JSON.stringify(statsArr);
-
-        // Create history div if it doesn't exist yet
-        let histDiv = card.querySelector('.player-card-history');
-        if (!histDiv) {
-          histDiv = document.createElement('div');
-          histDiv.className = 'player-card-history';
-          card.appendChild(histDiv);
-        }
-
-        let rows = '';
-        if (stat25) {
-          const tLabel = stat25.team.charAt(0).toUpperCase() + stat25.team.slice(1);
-          rows += `<div class="history-year-row">
-            <span class="history-chip">2025</span>
-            <span class="history-chip">${escHtml(tLabel)}</span>
-            <span class="history-chip">Hdcp ${stat25.hdcp}</span>
-            ${stat25.payout ? `<span class="history-chip">$${stat25.payout} payout</span>` : ''}
-          </div>`;
-        }
-        histDiv.innerHTML = rows;
 
         // Compute career W/L/T across all years and update the Record chip on the card
         let w = 0, l = 0, t = 0;
@@ -6577,7 +6575,6 @@
           <div><div class="sub-field-label">Last Name</div><input class="sub-edit-input" data-field="lastName" value="${v(s.lastName)}"></div>
           <div><div class="sub-field-label">Discord</div><input class="sub-edit-input" data-field="discordUsername" value="${v(s.discordUsername)}"></div>
           <div><div class="sub-field-label">Hometown</div><input class="sub-edit-input" data-field="hometown" value="${v(s.hometown)}"></div>
-          <div><div class="sub-field-label">Years in BBRC</div><input class="sub-edit-input" data-field="yearsParticipated" value="${v(s.yearsParticipated)}"></div>
           <div><div class="sub-field-label">Nickname</div><input class="sub-edit-input" data-field="nickname" value="${v(s.nickname)}"></div>
           <div><div class="sub-field-label">Occupation</div><input class="sub-edit-input" data-field="occupation" value="${v(s.occupation)}"></div>
           <div><div class="sub-field-label">Family Status</div><input class="sub-edit-input" data-field="familyStatus" value="${v(s.familyStatus)}"></div>
@@ -7628,6 +7625,7 @@
       <div class="bio-modal-body">
         <div id="bioModalName" class="bio-modal-name"></div>
         <div id="bioModalTeam" class="bio-modal-team"></div>
+        <div id="bioModalStats" class="bio-modal-stats-row" style="display:none;"></div>
         <div id="bioModalFields"></div>
         <div id="bioModalHistoryWrap"></div>
       </div>
