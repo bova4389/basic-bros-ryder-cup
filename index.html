@@ -2565,7 +2565,7 @@
       background: var(--color-surface-2);
       border: 1px solid var(--color-border);
     }
-    .hist-photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+    .hist-photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
     .hist-photo-placeholder {
       position: absolute; inset: 0;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -2841,7 +2841,7 @@
       width: 100%;
       height: 260px;
       object-fit: cover;
-      object-position: center 20%;
+      object-position: center 25%;
       display: block;
     }
     .bio-modal-avatar-large {
@@ -6548,7 +6548,7 @@
         img.src = photo;
         img.alt = nameEl ? nameEl.textContent.trim() : '';
         img.className = 'player-avatar ' + teamClass;
-        img.style.cssText = 'object-fit:cover;object-position:center 20%;';
+        img.style.cssText = 'object-fit:cover;object-position:center 25%;';
         avatarEl.replaceWith(img);
       });
     }
