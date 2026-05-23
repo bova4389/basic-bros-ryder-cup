@@ -68,7 +68,8 @@
     body.light-mode .player-filter.active,
     body.light-mode .coming-soon-badge,
     body.light-mode .schedule-format-badge,
-    body.light-mode .tier-badge {
+    body.light-mode .tier-badge,
+    body.light-mode .course-day-tag {
       color: #f5f0e8;
     }
     /* Nav tab active: keep text dark in light mode — underline indicator handles the selection cue */
@@ -2721,6 +2722,308 @@
       .hist-final-score-num { font-size: 2.4rem; }
     }
 
+    /* ============================================================
+       PHOTO LIGHTBOX
+       Shared overlay that opens when any non-logo image is tapped.
+       Fills the screen on mobile.
+    ============================================================ */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 2000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      padding: 1rem;
+    }
+    .lightbox-overlay.open { display: flex; }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 6px;
+      cursor: default;
+    }
+    .lightbox-caption {
+      margin-top: 0.75rem;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.85rem;
+      text-align: center;
+      max-width: 480px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      font-size: 1.3rem;
+      line-height: 1;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
+    @media (max-width: 640px) {
+      .lightbox-overlay { padding: 0; }
+      .lightbox-img { max-height: 100vh; width: 100vw; border-radius: 0; }
+    }
+
+    /* ============================================================
+       BIO MODAL
+       Full card view when "Show More" is tapped on a player card.
+       Full-screen on mobile.
+    ============================================================ */
+    .bio-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      z-index: 1500;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .bio-modal-overlay.open { display: flex; }
+
+    .bio-modal-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .bio-modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: var(--color-cream);
+      font-size: 1.1rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      transition: background 0.2s;
+    }
+    .bio-modal-close:hover { background: rgba(255,255,255,0.2); }
+
+    .bio-modal-photo-wrap {
+      width: 100%;
+      max-height: 260px;
+      overflow: hidden;
+      border-radius: 14px 14px 0 0;
+      background: var(--color-surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bio-modal-photo-wrap img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+    }
+    .bio-modal-avatar-large {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 1.5rem auto;
+    }
+    .bio-modal-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .bio-modal-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--color-cream);
+      margin-bottom: 0.15rem;
+    }
+    .bio-modal-team {
+      font-size: 0.83rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1rem;
+    }
+    .bio-modal-field {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+    .bio-modal-lbl {
+      font-weight: 700;
+      color: var(--color-text-muted);
+      min-width: 90px;
+      flex-shrink: 0;
+    }
+    .bio-modal-val { color: var(--color-cream); }
+    .bio-modal-quote {
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+      background: var(--color-surface-2);
+      border-left: 3px solid var(--color-green);
+      border-radius: 0 6px 6px 0;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--color-cream);
+    }
+    .bio-modal-divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
+      margin: 1.1rem 0;
+    }
+    .bio-modal-history-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.65rem;
+    }
+    .bio-modal-history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .bio-modal-history-table th {
+      text-align: left;
+      color: var(--color-text-muted);
+      font-weight: 600;
+      padding: 0.25rem 0.4rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .bio-modal-history-table td {
+      padding: 0.3rem 0.4rem;
+      color: var(--color-cream);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .bio-modal-history-table tr:last-child td { border-bottom: none; }
+
+    /* Show More button on collapsed player cards */
+    .bio-show-more {
+      background: none;
+      border: 1px solid var(--color-border);
+      color: var(--color-green-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .bio-show-more:hover {
+      background: var(--color-surface-2);
+      border-color: var(--color-green-light);
+    }
+
+    /* Admin bio edit form */
+    .sub-edit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+    .sub-edit-input {
+      width: 100%;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 5px;
+      color: var(--color-cream);
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.5rem;
+      margin-top: 0.25rem;
+      box-sizing: border-box;
+    }
+    .sub-edit-textarea { resize: vertical; min-height: 60px; }
+
+    /* Admin push bios button */
+    .admin-push-btn {
+      display: block;
+      width: 100%;
+      padding: 0.65rem 1rem;
+      margin-bottom: 1rem;
+      background: var(--color-green);
+      color: #f5f0e8;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .admin-push-btn:hover { background: #245c42; }
+    .admin-toast {
+      display: none;
+      background: var(--color-green);
+      color: #f5f0e8;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Career history chip on collapsed card */
+    .player-card-history {
+      padding: 0 0.9rem 0.75rem;
+      font-size: 0.74rem;
+      color: var(--color-text-muted);
+    }
+    .history-year-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      margin-bottom: 0.2rem;
+    }
+    .history-chip {
+      background: var(--color-surface-2);
+      border-radius: 4px;
+      padding: 0.15rem 0.45rem;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+      .bio-modal-overlay { padding: 0; }
+      .bio-modal-card {
+        border-radius: 0;
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+      }
+    }
+
   </style>
 </head>
 
@@ -2738,7 +3041,7 @@
         <img src="Basic_Bros_Logo.png" alt="Basic Bros Ryder Cup logo" class="header-logo">
         <div class="header-title">
           Basic Bros Ryder Cup
-          <span class="header-sub">Est. 2024 &nbsp;·&nbsp; Pawleys Island, SC</span>
+          <span class="header-sub">Est. 2024 &nbsp;·&nbsp; Pawleys Island, SC &nbsp;·&nbsp; June 25, 2026</span>
         </div>
       </button>
 
@@ -3494,6 +3797,14 @@
                   <span class="schedule-time">9:53am</span>
                   <span>Group 6 — <span class="name-ti">Robert</span> + <span class="name-ti">Ron</span> vs. <span class="name-gvo">Schumann</span> + <span class="name-gvo">Teddy</span></span>
                 </div>
+                <div class="schedule-item" style="color:var(--color-text-muted);font-style:italic;">
+                  <span class="schedule-time">~2:53pm</span>
+                  <span>Last group completes Round 1</span>
+                </div>
+                <div class="schedule-item" style="color:var(--color-green-light);font-weight:600;">
+                  <span class="schedule-time">3:00–5:00pm</span>
+                  <span>R&amp;R 🏖</span>
+                </div>
                 <div class="schedule-item">
                   <span class="schedule-time">PM</span>
                   <span>Saturday matchup selection &amp; 2027 date / location discussion</span>
@@ -3537,6 +3848,14 @@
                 <div class="schedule-item">
                   <span class="schedule-time">8:47am</span>
                   <span style="color:var(--color-text-muted);font-style:italic;">TBD</span>
+                </div>
+                <div class="schedule-item" style="color:var(--color-text-muted);font-style:italic;">
+                  <span class="schedule-time">~1:47pm</span>
+                  <span>Last group completes Round 2</span>
+                </div>
+                <div class="schedule-item" style="color:var(--color-green-light);font-weight:600;">
+                  <span class="schedule-time">2:00–4:00pm</span>
+                  <span>R&amp;R 🏖</span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">PM</span>
@@ -4460,9 +4779,9 @@
             <thead>
               <tr>
                 <th>Tee Time</th>
-                <th style="background:rgba(123,45,139,0.25);color:#c07ad0;">Transfusion Intrusion (2026)</th>
+                <th>Transfusion Intrusion (2026)</th>
                 <th style="text-align:center">—</th>
-                <th style="background:rgba(0,188,212,0.2);color:#00BCD4;">Good Vibes Only (2026)</th>
+                <th>Good Vibes Only (2026)</th>
               </tr>
             </thead>
             <tbody>
@@ -4487,9 +4806,9 @@
             <thead>
               <tr>
                 <th>Tee Time</th>
-                <th style="background:rgba(123,45,139,0.25);color:#c07ad0;">Transfusion Intrusion (2026)</th>
+                <th>Transfusion Intrusion (2026)</th>
                 <th style="text-align:center">—</th>
-                <th style="background:rgba(0,188,212,0.2);color:#00BCD4;">Good Vibes Only (2026)</th>
+                <th>Good Vibes Only (2026)</th>
               </tr>
             </thead>
             <tbody>
@@ -4619,7 +4938,7 @@
 
         <!-- ==================== GOOD VIBES ONLY ==================== -->
 
-        <div class="player-card" id="player-bova" data-team="gvo" data-tier="t2" data-history='["2025-baggers","2024-pirates"]'>
+        <div class="player-card" id="player-bova" data-team="gvo" data-tier="t2" data-history='["2025-baggers","2024-pirates"]' data-photo="BovaPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">MB</div>
             <div class="player-card-info">
@@ -4795,7 +5114,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]'>
+        <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="CodyPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">CE</div>
             <div class="player-card-info">
@@ -4845,7 +5164,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-pirates"]'>
+        <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-pirates"]' data-photo="Donny2025.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">DB</div>
             <div class="player-card-info">
@@ -4973,7 +5292,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-pirates"]'>
+        <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-pirates"]' data-photo="Karsten2025.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">KM</div>
             <div class="player-card-info">
@@ -5290,6 +5609,10 @@
             <span class="toggle-track"></span>
           </label>
         </div>
+
+        <!-- Push bios button — re-runs loadApprovedBios and navigates to The Bros page -->
+        <div id="adminToast" class="admin-toast">✓ Bios pushed to The Bros page</div>
+        <button class="admin-push-btn" onclick="pushBiosToPage()">Push Bios to The Bros Page</button>
 
         <!-- Bio submissions list -->
         <div class="admin-section-title">Bio Submissions</div>
@@ -5876,6 +6199,7 @@
               <button class="sub-approve-btn" onclick="setSubmissionStatus('${id}', 'approved')">Approve</button>
               <button class="sub-reject-btn"  onclick="setSubmissionStatus('${id}', 'rejected')">Reject</button>
               <button class="sub-delete-btn"  onclick="deleteSubmission('${id}')">Delete</button>
+              <button class="admin-filter-btn" style="margin-left:auto;" onclick="editSubmission('${id}')">✏ Edit</button>
             </div>
           </div>`;
       }).join('');
@@ -5900,15 +6224,18 @@
 
 
     // ---- BIO DISPLAY ON PLAYER CARDS ----
-    // Reads all approved bio submissions from Firebase and injects bio content
-    // into the matching player card on The Bros page.
-    // Matching is done by "First Last" name (case-insensitive) against .player-card-name text.
+    // Reads all approved bio submissions from Firebase and injects a collapsed
+    // preview (Known As + truncated Yearbook Quote + Show More button) into
+    // each matching player card. Full bio opens via openBioModal().
+    // Matching is case-insensitive by "First Last" against .player-card-name text.
+    // NOTE: this function ONLY writes to .player-card-bio — it never touches
+    // .player-card-history so career stats are always preserved.
     function loadApprovedBios() {
       db.ref('bio_submissions').once('value').then(snap => {
         const all = snap.val();
         if (!all) return;
 
-        // Build a lookup map: "full name lowercase" → bio object
+        // Build lookup: "full name lowercase" → bio object
         const approvedMap = {};
         Object.values(all).forEach(s => {
           if (s.status === 'approved' && s.firstName && s.lastName) {
@@ -5917,28 +6244,35 @@
           }
         });
 
-        // Walk every player card and inject bio if there's a match
         document.querySelectorAll('.player-card').forEach(card => {
           const nameEl = card.querySelector('.player-card-name');
           const bioEl  = card.querySelector('.player-card-bio');
           if (!nameEl || !bioEl) return;
 
-          const bio = approvedMap[nameEl.textContent.toLowerCase().trim()];
+          // Strip captain star before matching
+          const nameKey = nameEl.textContent.replace(/★/g, '').trim().toLowerCase();
+          const bio = approvedMap[nameKey];
           if (!bio) return;
 
-          const lines = [];
-          if (bio.nickname)      lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(bio.nickname)}</div>`);
-          if (bio.hometown)      lines.push(`<div class="bio-row"><span class="bio-lbl">Hometown:</span> ${escHtml(bio.hometown)}</div>`);
-          if (bio.occupation)    lines.push(`<div class="bio-row"><span class="bio-lbl">Job:</span> ${escHtml(bio.occupation)}</div>`);
-          if (bio.familyStatus)  lines.push(`<div class="bio-row"><span class="bio-lbl">Family:</span> ${escHtml(bio.familyStatus)}</div>`);
-          if (bio.walkUpSong)    lines.push(`<div class="bio-row"><span class="bio-lbl">Walk-up:</span> ${escHtml(bio.walkUpSong)}</div>`);
-          if (bio.funFact)       lines.push(`<div class="bio-row"><span class="bio-lbl">Fun fact:</span> ${escHtml(bio.funFact)}</div>`);
-          if (bio.yearbookQuote) lines.push(`<div class="bio-quote">&ldquo;${escHtml(bio.yearbookQuote)}&rdquo;</div>`);
+          // Store full bio JSON on element so openBioModal() can read it
+          bioEl.dataset.bioJson = JSON.stringify(bio);
 
-          if (lines.length > 0) {
-            bioEl.innerHTML = lines.join('');
-            bioEl.classList.add('has-bio');
+          // Build collapsed preview: Known As + truncated quote + Show More
+          const lines = [];
+          if (bio.nickname) {
+            lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(bio.nickname)}</div>`);
           }
+          if (bio.yearbookQuote) {
+            const q = bio.yearbookQuote.length > 100
+              ? bio.yearbookQuote.substring(0, 97) + '…'
+              : bio.yearbookQuote;
+            lines.push(`<div class="bio-quote">&ldquo;${escHtml(q)}&rdquo;</div>`);
+          }
+          lines.push(`<button class="bio-show-more" onclick="openBioModal(this.closest('.player-card'))">Show More</button>`);
+
+          bioEl.innerHTML = lines.join('');
+          bioEl.classList.add('has-bio');
+
         });
       });
     }
@@ -5952,8 +6286,260 @@
         .replace(/"/g, '&quot;');
     }
 
+    // ---- BIO MODAL ----
+    // Opens the full-screen bio card when "Show More" is tapped.
+    function openBioModal(cardEl) {
+      const nameEl = cardEl.querySelector('.player-card-name');
+      const teamEl = cardEl.querySelector('.player-card-team');
+      const bioEl  = cardEl.querySelector('.player-card-bio');
+      const photo  = cardEl.dataset.photo;
+      const team   = cardEl.dataset.team;
+
+      // --- Photo or large initials circle ---
+      const photoWrap = document.getElementById('bioModalPhotoWrap');
+      if (photo) {
+        photoWrap.innerHTML = `<img src="${photo}" alt="${nameEl ? escHtml(nameEl.textContent.trim()) : ''}">`;
+        photoWrap.style.display = 'flex';
+      } else {
+        const fullName = nameEl ? nameEl.textContent.replace(/★/g, '').trim() : '';
+        const initials = fullName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+        const bg = team === 'gvo' ? '#00788A' : team === 'ti' ? '#7b2d8b' : '#2d6a4f';
+        photoWrap.innerHTML = `<div class="bio-modal-avatar-large" style="background:${bg}">${initials}</div>`;
+        photoWrap.style.display = 'flex';
+      }
+
+      // --- Name and team ---
+      document.getElementById('bioModalName').textContent = nameEl ? nameEl.textContent.trim() : '';
+      document.getElementById('bioModalTeam').textContent = teamEl ? teamEl.textContent.trim() : '';
+
+      // --- Full bio fields ---
+      const fieldsEl = document.getElementById('bioModalFields');
+      let bio = null;
+      try { bio = (bioEl && bioEl.dataset.bioJson) ? JSON.parse(bioEl.dataset.bioJson) : null; } catch(e) {}
+
+      if (bio) {
+        const rows = [
+          ['Known as',  bio.nickname],
+          ['Hometown',  bio.hometown],
+          ['Job',       bio.occupation],
+          ['Family',    bio.familyStatus],
+          ['Walk-up',   bio.walkUpSong],
+          ['Fun fact',  bio.funFact],
+        ].filter(([, v]) => v);
+
+        let html = rows.map(([lbl, val]) =>
+          `<div class="bio-modal-field"><span class="bio-modal-lbl">${lbl}</span><span class="bio-modal-val">${escHtml(val)}</span></div>`
+        ).join('');
+
+        if (bio.yearbookQuote) {
+          html += `<div class="bio-modal-quote">&ldquo;${escHtml(bio.yearbookQuote)}&rdquo;</div>`;
+        }
+        fieldsEl.innerHTML = html || '<p style="color:var(--color-text-muted);font-style:italic;font-size:.88rem;">No additional details yet.</p>';
+      } else {
+        fieldsEl.innerHTML = '<p style="color:var(--color-text-muted);font-style:italic;font-size:.88rem;">Bio coming soon</p>';
+      }
+
+      // --- Career history table ---
+      const histWrap = document.getElementById('bioModalHistoryWrap');
+      let stats = null;
+      try { stats = cardEl.dataset.statsJson ? JSON.parse(cardEl.dataset.statsJson) : null; } catch(e) {}
+
+      if (stats && stats.length > 0) {
+        let h = '<hr class="bio-modal-divider"><div class="bio-modal-history-title">Career History</div>';
+        h += '<table class="bio-modal-history-table"><thead><tr><th>Year</th><th>Team</th><th>Hdcp</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>Payout</th></tr></thead><tbody>';
+        stats.forEach(s => {
+          const tLabel = s.team.charAt(0).toUpperCase() + s.team.slice(1);
+          h += `<tr><td>${s.year}</td><td>${escHtml(tLabel)}</td><td>${s.hdcp}</td><td>${escHtml(s.r1||'—')}</td><td>${escHtml(s.r2||'—')}</td><td>${escHtml(s.r3||'—')}</td><td>${escHtml(s.r4||'—')}</td><td>${s.payout ? '$'+s.payout : '—'}</td></tr>`;
+        });
+        h += '</tbody></table>';
+        histWrap.innerHTML = h;
+      } else {
+        histWrap.innerHTML = '';
+      }
+
+      document.getElementById('bioModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBioModal() {
+      document.getElementById('bioModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ---- CAREER HISTORY ON PLAYER CARDS ----
+    // Reads the H25.stats array and injects a small history section into each
+    // matching player card. Writes only to .player-card-history — never .player-card-bio.
+    function loadPlayerTournamentStats() {
+      if (!window.H25 || !H25.stats) return;
+
+      const statsMap = {};
+      H25.stats.forEach(s => {
+        statsMap[s.name.toLowerCase().trim()] = s;
+      });
+
+      document.querySelectorAll('.player-card').forEach(card => {
+        const nameEl = card.querySelector('.player-card-name');
+        if (!nameEl) return;
+        const nameKey = nameEl.textContent.replace(/★/g, '').trim().toLowerCase();
+        const stat = statsMap[nameKey];
+        if (!stat) return;
+
+        // Store on card for the bio modal to read
+        card.dataset.statsJson = JSON.stringify([{ year: '2025', ...stat }]);
+
+        // Create history div if it doesn't exist yet
+        let histDiv = card.querySelector('.player-card-history');
+        if (!histDiv) {
+          histDiv = document.createElement('div');
+          histDiv.className = 'player-card-history';
+          card.appendChild(histDiv);
+        }
+
+        const tLabel = stat.team.charAt(0).toUpperCase() + stat.team.slice(1);
+        histDiv.innerHTML = `
+          <div class="history-year-row">
+            <span class="history-chip">2025</span>
+            <span class="history-chip">${escHtml(tLabel)}</span>
+            <span class="history-chip">Hdcp ${stat.hdcp}</span>
+            ${stat.payout ? `<span class="history-chip">$${stat.payout} payout</span>` : ''}
+          </div>`;
+      });
+    }
+
+    // ---- PHOTO LIGHTBOX ----
+    // Makes every image on the page (except the logo) tappable to open full-screen.
+    function openLightbox(src, caption) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxCaption').textContent = caption || '';
+      document.getElementById('photoLightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('photoLightbox').classList.remove('open');
+      document.getElementById('lightboxImg').src = '';
+      document.body.style.overflow = '';
+    }
+
+    // Wire click handlers onto images. Uses a data attribute flag to avoid
+    // double-wiring the same image if called more than once.
+    function wireImageLightbox(root) {
+      (root || document).querySelectorAll('img').forEach(img => {
+        if (img.dataset.lbWired) return;
+        if (img.src && img.src.includes('Basic_Bros_Logo.png')) return;
+        img.dataset.lbWired = '1';
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openLightbox(this.src, this.alt);
+        });
+      });
+    }
+
+    // Also catch images added dynamically (e.g. history scorecard photos)
+    new MutationObserver(mutations => {
+      mutations.forEach(m => m.addedNodes.forEach(node => {
+        if (!node || node.nodeType !== 1) return;
+        if (node.tagName === 'IMG') {
+          wireImageLightbox(node.parentElement);
+        } else if (node.querySelectorAll) {
+          wireImageLightbox(node);
+        }
+      }));
+    }).observe(document.body, { childList: true, subtree: true });
+
+    // Escape key closes both lightbox and bio modal
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { closeLightbox(); closeBioModal(); }
+    });
+
+    // ---- ADMIN EDIT / SAVE ----
+    // Replaces a submission card's read-only display with an inline edit form.
+    function editSubmission(id) {
+      const s = allSubmissions[id];
+      if (!s) return;
+      const card = document.getElementById('sub-' + id);
+      if (!card) return;
+      const v = x => escHtml(x || '');
+
+      card.querySelector('.sub-card-body').innerHTML = `
+        <div class="sub-edit-grid">
+          <div><div class="sub-field-label">First Name</div><input class="sub-edit-input" data-field="firstName" value="${v(s.firstName)}"></div>
+          <div><div class="sub-field-label">Last Name</div><input class="sub-edit-input" data-field="lastName" value="${v(s.lastName)}"></div>
+          <div><div class="sub-field-label">Discord</div><input class="sub-edit-input" data-field="discordUsername" value="${v(s.discordUsername)}"></div>
+          <div><div class="sub-field-label">Hometown</div><input class="sub-edit-input" data-field="hometown" value="${v(s.hometown)}"></div>
+          <div><div class="sub-field-label">Years in BBRC</div><input class="sub-edit-input" data-field="yearsParticipated" value="${v(s.yearsParticipated)}"></div>
+          <div><div class="sub-field-label">Nickname</div><input class="sub-edit-input" data-field="nickname" value="${v(s.nickname)}"></div>
+          <div><div class="sub-field-label">Occupation</div><input class="sub-edit-input" data-field="occupation" value="${v(s.occupation)}"></div>
+          <div><div class="sub-field-label">Family Status</div><input class="sub-edit-input" data-field="familyStatus" value="${v(s.familyStatus)}"></div>
+          <div class="sub-field-full"><div class="sub-field-label">Walk-up Song</div><input class="sub-edit-input" data-field="walkUpSong" value="${v(s.walkUpSong)}"></div>
+          <div class="sub-field-full"><div class="sub-field-label">Photo URL</div><input class="sub-edit-input" data-field="photoUrl" value="${v(s.photoUrl)}"></div>
+          <div class="sub-field-full"><div class="sub-field-label">Yearbook Quote</div><textarea class="sub-edit-input sub-edit-textarea" data-field="yearbookQuote">${v(s.yearbookQuote)}</textarea></div>
+          <div class="sub-field-full"><div class="sub-field-label">Fun Fact</div><textarea class="sub-edit-input sub-edit-textarea" data-field="funFact">${v(s.funFact)}</textarea></div>
+        </div>`;
+      card.querySelector('.sub-card-actions').innerHTML = `
+        <button class="sub-approve-btn" onclick="saveSubmission('${id}')">💾 Save</button>
+        <button class="sub-reject-btn" onclick="renderSubmissions()">Cancel</button>`;
+    }
+
+    // Saves edited submission fields to Firebase then re-renders the card.
+    function saveSubmission(id) {
+      const card = document.getElementById('sub-' + id);
+      if (!card) return;
+      const updated = {};
+      card.querySelectorAll('[data-field]').forEach(el => {
+        updated[el.dataset.field] = el.value.trim();
+      });
+      db.ref('bio_submissions/' + id).update(updated).then(() => {
+        Object.assign(allSubmissions[id], updated);
+        renderSubmissions();
+      });
+    }
+
+    // ---- PUSH BIOS BUTTON ----
+    // Re-runs loadApprovedBios() and navigates to The Bros page.
+    function pushBiosToPage() {
+      loadApprovedBios();
+      // Navigate to the Players / Bros tab
+      const brosTab = document.querySelector('.nav-tab[onclick*="players"]');
+      if (brosTab) brosTab.click();
+      // Show toast confirmation
+      const toast = document.getElementById('adminToast');
+      if (toast) {
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+      }
+    }
+
+    // Swap initials avatars with photos for any player card that has a data-photo attribute.
+    // Runs independently of bios so photos show even without an approved bio submission.
+    function swapPlayerAvatars() {
+      document.querySelectorAll('.player-card[data-photo]').forEach(card => {
+        const photo   = card.dataset.photo;
+        const nameEl  = card.querySelector('.player-card-name');
+        const avatarEl = card.querySelector('.player-avatar');
+        if (!avatarEl || avatarEl.tagName === 'IMG') return; // already swapped
+        const teamClass = Array.from(avatarEl.classList).find(c => c.startsWith('player-avatar-')) || '';
+        const img = document.createElement('img');
+        img.src = photo;
+        img.alt = nameEl ? nameEl.textContent.trim() : '';
+        img.className = 'player-avatar ' + teamClass;
+        img.style.cssText = 'object-fit:cover;object-position:center 20%;';
+        avatarEl.replaceWith(img);
+      });
+    }
+
     // Load approved bios on page load so player cards are populated immediately
     loadApprovedBios();
+
+    // Load career history chips from 2025 stats data
+    loadPlayerTournamentStats();
+
+    // Swap initials with photos for players who have photos (runs regardless of bio status)
+    swapPlayerAvatars();
+
+    // Wire lightbox on all images already in the DOM
+    wireImageLightbox(document);
 
 
     /* ================================================================
@@ -6623,10 +7209,32 @@
     // Generate the history section content
     initHistory();
 
-    // Load approved bios on page load so player cards are populated immediately
-    loadApprovedBios();
-
   </script>
+
+  <!-- ============================================================
+       PHOTO LIGHTBOX — shared overlay for all tappable images
+  ============================================================ -->
+  <div id="photoLightbox" class="lightbox-overlay" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="event.stopPropagation();closeLightbox()">✕</button>
+    <img id="lightboxImg" class="lightbox-img" onclick="event.stopPropagation()" src="" alt="">
+    <div id="lightboxCaption" class="lightbox-caption"></div>
+  </div>
+
+  <!-- ============================================================
+       BIO MODAL — expandable player bio card
+  ============================================================ -->
+  <div id="bioModal" class="bio-modal-overlay" onclick="closeBioModal()">
+    <div class="bio-modal-card" onclick="event.stopPropagation()">
+      <button class="bio-modal-close" onclick="closeBioModal()">✕</button>
+      <div id="bioModalPhotoWrap" class="bio-modal-photo-wrap"></div>
+      <div class="bio-modal-body">
+        <div id="bioModalName" class="bio-modal-name"></div>
+        <div id="bioModalTeam" class="bio-modal-team"></div>
+        <div id="bioModalFields"></div>
+        <div id="bioModalHistoryWrap"></div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
