@@ -6385,9 +6385,9 @@
 
       // --- Current handicap and career record from the player card stats ---
       const statsRow = document.getElementById('bioModalStats');
-      const hdcpStatEl = Array.from(card.querySelectorAll('.player-stat'))
+      const hdcpStatEl = Array.from(cardEl.querySelectorAll('.player-stat'))
         .find(el => el.querySelector('.player-stat-label')?.textContent === 'Hdcp');
-      const recordStatEl = Array.from(card.querySelectorAll('.player-stat'))
+      const recordStatEl = Array.from(cardEl.querySelectorAll('.player-stat'))
         .find(el => el.querySelector('.player-stat-label')?.textContent === 'Record');
       const hdcpVal  = hdcpStatEl  ? hdcpStatEl.querySelector('.player-stat-val')?.textContent  : null;
       const recordVal = recordStatEl ? recordStatEl.querySelector('.player-stat-val')?.textContent : null;
