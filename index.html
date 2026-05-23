@@ -5755,6 +5755,12 @@
 
       // Scroll to top so user isn't stranded mid-page after switching tabs
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Update the URL hash so this tab is shareable and back/forward works.
+      // pushState changes the hash without firing a hashchange event (avoids loops).
+      if (window.location.hash !== '#' + tabId) {
+        history.pushState(null, '', '#' + tabId);
+      }
     }
 
 
@@ -5818,6 +5824,20 @@
 
     // Run chip builder after DOM is ready
     document.addEventListener('DOMContentLoaded', buildTeamChips);
+
+    // ---- URL HASH NAVIGATION ----
+    // On page load, open the tab matching the URL hash (e.g. #players from a shared link).
+    const VALID_TABS = ['home','tournament2026','players','history','rulebook','submitbio','admin'];
+    document.addEventListener('DOMContentLoaded', function() {
+      const hash = window.location.hash.slice(1); // strip the leading #
+      if (hash && VALID_TABS.includes(hash)) showTab(hash, null);
+    });
+
+    // When the user hits back/forward, switch to the tab the hash now points to.
+    window.addEventListener('hashchange', function() {
+      const hash = window.location.hash.slice(1);
+      showTab(hash && VALID_TABS.includes(hash) ? hash : 'home', null);
+    });
 
     // ---- ROTATING FOOTER QUOTES ----
     // Picks a random quote on page load and again any time the tab becomes visible.
