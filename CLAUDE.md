@@ -35,6 +35,9 @@ basic-bros-ryder-cup/
 - GitHub secrets required: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD` (stored under Settings → Secrets → Actions)
 - Uses `wlixcc/SFTP-Deploy-Action@v1.2.4` — DreamHost requires SFTP, plain FTP and FTPS do not work
 
+**Cache Busting (Required — Do Not Remove):**
+Safari on mobile caches pages aggressively. To prevent users from seeing stale versions after a deployment, this project has a `.htaccess` file that sends `no-cache` headers for all HTML, JS, and CSS. Never delete `.htaccess`. Since this project is a single HTML file with all styles/scripts inline, no `?v=` query strings are needed — the `.htaccess` alone is sufficient.
+
 **Rules — do not change without asking:**
 - Keep everything in one HTML file — no separate CSS or JS files
 - No React, Vue, npm, or build tools
