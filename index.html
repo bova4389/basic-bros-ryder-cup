@@ -5959,8 +5959,11 @@
     /* ================================================================
        TOURNAMENT HISTORY — 2025 DATA
        All scores sourced from Squabbit Golf screenshots.
-       R1/R3/R4: GROSS individual stroke counts.
-       R2 (scramble): NET team scores (gross minus handicap strokes).
+       Data keys use Squabbit's internal round numbering (r1–r4).
+       Display order is chronological: r2=R1 Scramble, r3=R2 Singles,
+       r4=R3 Singles, r1=R4 Team Doubles. R3+R4 played simultaneously.
+       r3/r4/r1: GROSS individual stroke counts.
+       r2 (scramble): NET team scores (gross minus handicap strokes).
        null = hole score not available from screenshots.
     ================================================================ */
     const H25 = {
@@ -6459,31 +6462,31 @@
                   '<th class="clr-ducks">Ducks</th><th class="clr-baggers">Baggers</th>' +
                 '</tr></thead>' +
                 '<tbody>' +
-                  '<tr><td>R2</td><td>Scramble</td><td>Nicklaus</td><td>Jun 20</td><td>4</td><td class="hist-round-winner-baggers">6</td></tr>' +
-                  '<tr><td>R3</td><td>Singles Matchplay</td><td>Palmer</td><td>Jun 21</td><td class="hist-round-winner-ducks">13</td><td>7</td></tr>' +
-                  '<tr><td>R1 *</td><td>Low Ball / Low Total</td><td>Nicklaus</td><td>Jun 22</td><td>4</td><td class="hist-round-winner-baggers">6</td></tr>' +
-                  '<tr><td>R4 *</td><td>Singles Matchplay</td><td>Nicklaus</td><td>Jun 22</td><td class="hist-round-tied">10</td><td class="hist-round-tied">10</td></tr>' +
-                  '<tr><td><strong>TOTAL</strong></td><td colspan="3"><small style="color:var(--color-text-muted)">* R1 and R4 played simultaneously</small></td><td class="hist-round-winner-ducks"><strong>31</strong></td><td><strong>29</strong></td></tr>' +
+                  '<tr><td>R1</td><td>Scramble</td><td>Nicklaus</td><td>Jun 20</td><td>4</td><td class="hist-round-winner-baggers">6</td></tr>' +
+                  '<tr><td>R2</td><td>Singles Matchplay</td><td>Palmer</td><td>Jun 21</td><td class="hist-round-winner-ducks">13</td><td>7</td></tr>' +
+                  '<tr><td>R3 *</td><td>Singles Matchplay</td><td>Nicklaus</td><td>Jun 22</td><td class="hist-round-tied">10</td><td class="hist-round-tied">10</td></tr>' +
+                  '<tr><td>R4 *</td><td>Team Doubles</td><td>Nicklaus</td><td>Jun 22</td><td>4</td><td class="hist-round-winner-baggers">6</td></tr>' +
+                  '<tr><td><strong>TOTAL</strong></td><td colspan="3"><small style="color:var(--color-text-muted)">* R3 &amp; R4 played simultaneously on Sunday</small></td><td class="hist-round-winner-ducks"><strong>31</strong></td><td><strong>29</strong></td></tr>' +
                 '</tbody>' +
               '</table>' +
             '</div>' +
 
-            // Inner round tabs
+            // Inner round tabs — ordered chronologically by date
             '<div class="inner-tabs" role="tablist">' +
-              '<button class="inner-tab active" role="tab" onclick="showInnerTab(\'h25\',\'r1\',this)">R1 · Low Ball</button>' +
-              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r2\',this)">R2 · Scramble</button>' +
-              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r3\',this)">R3 · Singles</button>' +
-              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r4\',this)">R4 · Singles</button>' +
+              '<button class="inner-tab active" role="tab" onclick="showInnerTab(\'h25\',\'r2\',this)">R1 · Scramble</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r3\',this)">R2 · Singles</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r4\',this)">R3 · Singles</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r1\',this)">R4 · Team Doubles</button>' +
               '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'stats\',this)">Player Stats</button>' +
             '</div>';
 
-          // ---- R1 tab ----
+          // ---- R4 (Team Doubles) tab — h25-r1 in data, displayed as Round 4 ----
           html +=
-            '<div id="h25-r1" class="inner-section active">' +
+            '<div id="h25-r1" class="inner-section">' +
               '<div class="hist-round-info">' +
-                '<div class="hist-round-info-title">Round 1 &mdash; Low Ball / Low Total</div>' +
+                '<div class="hist-round-info-title">Round 4 &mdash; Team Doubles</div>' +
                 '<div>June 22, 2025 &middot; Reunion Nicklaus Course &middot; Par 72 &middot; 6,205 yds (White)</div>' +
-                '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">2-person pairs: Low Ball (best net individual score per hole, 1 pt) + Low Total (combined net, 1 pt). Played simultaneously with R4.</div>' +
+                '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">2-person pairs: Team Doubles (best net individual score per hole, 1 pt) + Low Total (combined net, 1 pt). Played simultaneously with R3 Singles on Sunday &mdash; same round of golf, two scoring formats.</div>' +
                 '<div class="hist-round-pts">' +
                   '<span class="hist-round-pts-item clr-ducks">Ducks 4</span>' +
                   '<span class="hist-round-pts-item clr-baggers">Baggers 6</span>' +
@@ -6492,11 +6495,11 @@
           H25.r1.matches.forEach(m => { html += histR1R2Card('r1', m); });
           html += '</div>';
 
-          // ---- R2 tab ----
+          // ---- R1 (Scramble) tab — h25-r2 in data, displayed as Round 1 ----
           html +=
-            '<div id="h25-r2" class="inner-section">' +
+            '<div id="h25-r2" class="inner-section active">' +
               '<div class="hist-round-info">' +
-                '<div class="hist-round-info-title">Round 2 &mdash; Scramble</div>' +
+                '<div class="hist-round-info-title">Round 1 &mdash; Scramble</div>' +
                 '<div>June 20, 2025 &middot; Reunion Nicklaus Course &middot; Par 72 &middot; 6,205 yds (White)</div>' +
                 '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">2-person scramble. Scores shown are NET. Team handicap = (player 1 hdcp + player 2 hdcp) / 2.</div>' +
                 '<div class="hist-round-pts">' +
@@ -6507,11 +6510,11 @@
           H25.r2.matches.forEach(m => { html += histR1R2Card('r2', m); });
           html += '</div>';
 
-          // ---- R3 tab ----
+          // ---- R2 (Singles) tab — h25-r3 in data, displayed as Round 2 ----
           html +=
             '<div id="h25-r3" class="inner-section">' +
               '<div class="hist-round-info">' +
-                '<div class="hist-round-info-title">Round 3 &mdash; Singles Matchplay</div>' +
+                '<div class="hist-round-info-title">Round 2 &mdash; Singles Matchplay</div>' +
                 '<div>June 21, 2025 &middot; Reunion Palmer Course &middot; Par 72 &middot; 6,058 yds (Blue)</div>' +
                 '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Net singles matchplay by course handicap. Win = 2 pts, Halved = 1 pt each. Click a group to view scorecards.</div>' +
                 '<div class="hist-round-pts">' +
@@ -6525,13 +6528,13 @@
           });
           html += '</div>';
 
-          // ---- R4 tab ----
+          // ---- R3 (Singles) tab — h25-r4 in data, displayed as Round 3 ----
           html +=
             '<div id="h25-r4" class="inner-section">' +
               '<div class="hist-round-info">' +
-                '<div class="hist-round-info-title">Round 4 &mdash; Singles Matchplay</div>' +
+                '<div class="hist-round-info-title">Round 3 &mdash; Singles Matchplay</div>' +
                 '<div>June 22, 2025 &middot; Reunion Nicklaus Course &middot; Par 72 &middot; 6,205 yds (White)</div>' +
-                '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Net singles matchplay. Played simultaneously with R1 on the same round of golf. Click a group to view scorecards.</div>' +
+                '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Net singles matchplay. Played simultaneously with R4 Team Doubles on Sunday &mdash; same round of golf, two scoring formats running at once. Click a group to view scorecards.</div>' +
                 '<div class="hist-round-pts">' +
                   '<span class="hist-round-pts-item clr-ducks">Ducks 10</span>' +
                   '<span class="hist-round-pts-item clr-baggers">Baggers 10</span>' +
@@ -6545,21 +6548,22 @@
           html += '</div>';
 
           // ---- Player Stats tab ----
+          // Stats columns ordered chronologically: R1=Scramble(r2), R2=Singles Palmer(r3), R3=Singles Nicklaus(r4), R4=Team Doubles(r1)
           html += '<div id="h25-stats" class="inner-section"><div class="hist-stats-wrap"><table class="hist-stats-table">';
           html += '<thead><tr><th>Player</th><th>Hdcp</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>Payout</th></tr></thead><tbody>';
           html += '<tr class="team-hdr ducks-hdr"><td colspan="7">The Mighty Cluster Ducks &mdash; Won &middot; $225 each</td></tr>';
           H25.stats.filter(p => p.team === 'ducks').forEach(p => {
             html += '<tr><td>' + p.name + '</td><td>' + p.hdcp + '</td>' +
-              histStatCell(p.r1) + histStatCell(p.r2) + histStatCell(p.r3) + histStatCell(p.r4) +
+              histStatCell(p.r2) + histStatCell(p.r3) + histStatCell(p.r4) + histStatCell(p.r1) +
               '<td class="stat-payout">$' + p.payout + '</td></tr>';
           });
           html += '<tr class="team-hdr baggers-hdr"><td colspan="7">Tee Baggers &mdash; Runner-Up &middot; $75 each</td></tr>';
           H25.stats.filter(p => p.team === 'baggers').forEach(p => {
             html += '<tr><td>' + p.name + '</td><td>' + p.hdcp + '</td>' +
-              histStatCell(p.r1) + histStatCell(p.r2) + histStatCell(p.r3) + histStatCell(p.r4) +
+              histStatCell(p.r2) + histStatCell(p.r3) + histStatCell(p.r4) + histStatCell(p.r1) +
               '<td class="stat-payout">$' + p.payout + '</td></tr>';
           });
-          html += '</tbody></table><p style="font-size:.75rem;color:var(--color-text-muted);margin-top:.75rem">Net score vs par per round. R2 shows team scramble net shared by both partners. Negative = under par (good). Positive = over par.</p></div></div>';
+          html += '</tbody></table><p style="font-size:.75rem;color:var(--color-text-muted);margin-top:.75rem">Net score vs par per round. R1 shows team scramble net shared by both partners. Negative = under par (good). Positive = over par.</p></div></div>';
 
           // Close detail and year entry
           html += '</div></div>'; // end hist-detail-y2025, hist-year-entry
