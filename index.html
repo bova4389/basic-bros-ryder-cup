@@ -2549,6 +2549,178 @@
       .quick-links      { flex-direction: column; align-items: center; }
       .btn              { width: 100%; max-width: 300px; text-align: center; }
     }
+
+    /* ============================================================
+       TOURNAMENT HISTORY — year cards, scorecards, stats
+    ============================================================ */
+    .hist-wrapper { max-width: 960px; margin: 0 auto; }
+    .hist-year-entry { margin-bottom: 2.5rem; }
+
+    /* Clickable photo card */
+    .hist-photo-card {
+      position: relative; border-radius: 12px 12px 0 0;
+      overflow: hidden; cursor: pointer;
+      min-height: 220px; display: flex; align-items: flex-end;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+    }
+    .hist-photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hist-photo-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--color-text-muted); font-size: 0.9rem; gap: 0.5rem;
+    }
+    .hist-photo-placeholder-icon { font-size: 2.5rem; }
+    .hist-photo-overlay {
+      position: relative; z-index: 2; width: 100%;
+      padding: 1rem 1.25rem 1.25rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 100%);
+    }
+    .hist-year-badge {
+      font-family: 'Cinzel', serif; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-gold);
+      margin-bottom: 0.15rem;
+    }
+    .hist-venue-line { font-size: 0.82rem; color: rgba(255,255,255,0.82); }
+
+    /* Meta block below the photo */
+    .hist-meta {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border); border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 1.25rem 1.5rem;
+    }
+    .hist-teams-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .hist-team { flex: 1; }
+    .hist-team.ducks  { text-align: left; }
+    .hist-team.baggers { text-align: right; }
+    .hist-team-name { font-family: 'Cinzel', serif; font-size: 0.88rem; font-weight: 700; line-height: 1.3; }
+    .hist-team-captain { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 0.1rem; }
+    .hist-vs-block { text-align: center; flex-shrink: 0; }
+    .hist-score-display { font-family: 'Cinzel', serif; font-size: 1.85rem; font-weight: 900; color: var(--color-gold); white-space: nowrap; }
+    .hist-winner-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); }
+    .hist-narrative { font-size: 0.91rem; line-height: 1.75; margin-bottom: 1rem; }
+    .hist-expand-btn {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-family: 'Cinzel', serif; font-size: 0.67rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--color-green-light); background: none; border: none; padding: 0.25rem 0; cursor: pointer;
+    }
+    .hist-expand-btn:hover { color: var(--color-gold); }
+
+    /* Team accent colors */
+    .clr-ducks   { color: #f5a623; }
+    .clr-baggers { color: #00b4d8; }
+    .clr-prba    { color: var(--color-green-light); }
+    .clr-pirates { color: #7a9fd4; }
+    .hist-team.prba    { text-align: left; }
+    .hist-team.pirates { text-align: right; }
+
+    /* Detail section */
+    .hist-detail { padding-top: 1.25rem; }
+
+    /* Final score graphic */
+    .hist-final-graphic {
+      display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+      padding: 1.75rem 1rem; background: var(--color-surface);
+      border: 1px solid var(--color-border); border-radius: 12px;
+      margin-bottom: 1.5rem; text-align: center;
+    }
+    .hist-final-team { flex: 1; }
+    .hist-final-team-name { font-family: 'Cinzel', serif; font-size: 0.83rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .hist-final-score-num { font-family: 'Cinzel', serif; font-size: 3rem; font-weight: 900; line-height: 1; }
+    .hist-final-caption { font-size: 0.7rem; color: var(--color-text-muted); margin-top: 0.25rem; }
+    .hist-vs-divider { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--color-text-muted); flex-shrink: 0; }
+
+    /* Round summary table */
+    .hist-round-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.87rem; }
+    .hist-round-table th, .hist-round-table td { padding: 0.42rem 0.7rem; text-align: center; border: 1px solid var(--color-border); }
+    .hist-round-table th { background: var(--color-surface-2); font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-text-muted); }
+    .hist-round-table td:first-child, .hist-round-table th:first-child { text-align: left; }
+    .hist-round-winner-ducks   { color: #f5a623; font-weight: 700; }
+    .hist-round-winner-baggers { color: #00b4d8; font-weight: 700; }
+    .hist-round-tied           { color: var(--color-text-muted); }
+
+    /* Round info header */
+    .hist-round-info {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: 10px; padding: 0.9rem 1.1rem; margin-bottom: 1.1rem; font-size: 0.85rem;
+    }
+    .hist-round-info-title {
+      font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 0.4rem;
+    }
+    .hist-round-pts { display: flex; gap: 1rem; margin-top: 0.4rem; font-size: 0.84rem; }
+    .hist-round-pts-item { font-weight: 700; }
+
+    /* Match cards */
+    .hist-match-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; margin-bottom: 0.6rem; overflow: hidden; }
+    .hist-match-header { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 1rem; cursor: pointer; gap: 0.5rem; user-select: none; }
+    .hist-match-header:hover { background: var(--color-surface-2); }
+    .hist-match-players { font-size: 0.86rem; font-weight: 600; flex: 1; }
+    .hist-match-players > div { margin-bottom: 0.15rem; }
+    .hist-match-players > div:last-child { margin-bottom: 0; }
+    .hist-match-result-badge { font-family: 'Cinzel', serif; font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 20px; white-space: nowrap; display: inline-block; margin-left: 0.35rem; }
+    .result-ducks   { background: rgba(245,166,35,0.15); color: #f5a623; border: 1px solid rgba(245,166,35,0.35); }
+    .result-baggers { background: rgba(0,180,216,0.15);  color: #00b4d8; border: 1px solid rgba(0,180,216,0.35); }
+    .result-halved  { background: rgba(136,153,170,0.1); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+    .hist-match-toggle { font-size: 0.72rem; color: var(--color-text-muted); flex-shrink: 0; }
+
+    /* Scorecard wrap — hidden until expanded */
+    .hist-scorecard-wrap { border-top: 1px solid var(--color-border); overflow-x: auto; padding: 0.75rem; display: none; }
+    .hist-scorecard-wrap.open { display: block; }
+
+    /* Scorecard table */
+    .hist-scorecard { border-collapse: collapse; min-width: 620px; font-size: 0.72rem; width: 100%; }
+    .hist-scorecard th, .hist-scorecard td { padding: 0.27rem 0.36rem; text-align: center; border: 1px solid var(--color-border); min-width: 26px; }
+    .hist-scorecard th { background: var(--color-surface-2); font-weight: 600; color: var(--color-text-muted); }
+    .hist-scorecard .sc-label { text-align: left; min-width: 108px; max-width: 148px; font-weight: 600; }
+    .hist-scorecard .sc-label.clr-ducks   { color: #f5a623; }
+    .hist-scorecard .sc-label.clr-baggers { color: #00b4d8; }
+    .hist-scorecard .sc-label.sc-par { color: var(--color-text-muted); font-style: italic; font-weight: 400; }
+    .hist-scorecard .sc-total { background: var(--color-surface-2); font-weight: 700; }
+    .hist-scorecard .sc-over  { color: #e05656; }
+    .hist-scorecard .sc-under { color: #52b788; }
+    .hist-scorecard .sc-eagle { color: #d4af37; font-weight: 700; }
+    .hist-scramble-note { font-size: 0.77rem; color: var(--color-text-muted); margin-bottom: 0.7rem; padding: 0.45rem 0.7rem; background: var(--color-surface-2); border-radius: 6px; }
+
+    /* Group label for R3/R4 */
+    .hist-group-label { font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); margin: 1.1rem 0 0.45rem; }
+    .hist-group-label:first-child { margin-top: 0; }
+
+    /* Player overall stats table */
+    .hist-stats-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+    .hist-stats-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .hist-stats-table th, .hist-stats-table td { padding: 0.4rem 0.58rem; text-align: center; border: 1px solid var(--color-border); }
+    .hist-stats-table th { background: var(--color-surface-2); font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-text-muted); }
+    .hist-stats-table td:first-child, .hist-stats-table th:first-child { text-align: left; }
+    .hist-stats-table .team-hdr td { font-family: 'Cinzel', serif; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.52rem 0.7rem; }
+    .hist-stats-table .team-hdr.ducks-hdr   td { color: #f5a623; background: rgba(245,166,35,0.08); }
+    .hist-stats-table .team-hdr.baggers-hdr td { color: #00b4d8; background: rgba(0,180,216,0.08); }
+    .hist-stats-table .stat-pos   { color: #e05656; }
+    .hist-stats-table .stat-neg   { color: #52b788; }
+    .hist-stats-table .stat-even  { color: var(--color-text-muted); }
+    .hist-stats-table .stat-payout { color: var(--color-gold); font-weight: 700; }
+
+    /* Light mode fixes for history section */
+    body.light-mode .hist-photo-card { background: var(--color-surface-2); }
+    body.light-mode .hist-match-result-badge.result-ducks   { color: #c07000; background: rgba(245,166,35,0.12); }
+    body.light-mode .hist-match-result-badge.result-baggers { color: #007090; background: rgba(0,180,216,0.12); }
+    body.light-mode .clr-ducks   { color: #c07000; }
+    body.light-mode .clr-baggers { color: #007090; }
+    body.light-mode .hist-round-winner-ducks   { color: #c07000; }
+    body.light-mode .hist-round-winner-baggers { color: #007090; }
+    body.light-mode .hist-stats-table .team-hdr.ducks-hdr   td { color: #c07000; }
+    body.light-mode .hist-stats-table .team-hdr.baggers-hdr td { color: #007090; }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      .hist-teams-row { flex-direction: column; text-align: center; }
+      .hist-team.ducks, .hist-team.baggers { text-align: center; }
+      .hist-final-graphic { flex-direction: column; gap: 0.4rem; }
+      .hist-final-score-num { font-size: 2.4rem; }
+    }
+
   </style>
 </head>
 
@@ -4414,19 +4586,10 @@
 
 
     <!-- ========================================================
-         TOURNAMENT HISTORY TAB — placeholder
+         TOURNAMENT HISTORY TAB — 2025 results, populated by JS
     ======================================================== -->
     <section id="history" class="tab-section" role="tabpanel">
-      <div class="coming-soon-wrap">
-        <div class="coming-soon-card">
-          <div class="coming-soon-icon">📖</div>
-          <h2 class="coming-soon-title">Tournament History</h2>
-          <p class="coming-soon-body">
-            Year 1 (2024) and Year 2 (2025) results, final scores, MVPs, memorable moments, and the full record books.
-          </p>
-          <span class="coming-soon-badge">Coming Soon</span>
-        </div>
-      </div>
+      <div id="hist-root" class="hist-wrapper"></div>
     </section>
 
 
@@ -5788,6 +5951,673 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
     }
+
+    // Load approved bios on page load so player cards are populated immediately
+    loadApprovedBios();
+
+
+    /* ================================================================
+       TOURNAMENT HISTORY — 2025 DATA
+       All scores sourced from Squabbit Golf screenshots.
+       R1/R3/R4: GROSS individual stroke counts.
+       R2 (scramble): NET team scores (gross minus handicap strokes).
+       null = hole score not available from screenshots.
+    ================================================================ */
+    const H25 = {
+
+      // Course par arrays (18 holes)
+      nicklausPar: [4,4,5,4,3,5,4,3,4, 4,3,4,4,4,5,3,4,5],  // Reunion Nicklaus — R1, R2, R4
+      palmerPar:   [4,3,5,4,3,4,4,4,5, 5,4,4,4,3,5,3,4,4],  // Reunion Palmer — R3
+
+      // ---- ROUND 1: Low Ball / Low Total | Jun 22 | Nicklaus ----
+      r1: {
+        matches: [
+          { id:"r1m1", label:"Match 1", result:"BAGGERS WIN · 2:25", resultTeam:"baggers",
+            players: [
+              { name:"Karsten Meyer",   team:"ducks",   hdcp:0,  out:58, inT:63, tot:121, holes:[6,7,10,5,5,8,7,4,6,  8,4,8,6,8,6,5,8,10] },
+              { name:"Teddy Smith",     team:"ducks",   hdcp:20, out:68, inT:68, tot:136, holes:[7,8,10,6,6,10,7,6,8,  8,4,6,6,8,10,6,8,10] },
+              { name:"Matt Bova",       team:"baggers", hdcp:0,  out:56, inT:58, tot:114, holes:[5,6,10,6,6,6,7,5,5,  6,4,8,8,5,8,5,6,8] },
+              { name:"Cassady Glenn",   team:"baggers", hdcp:20, out:61, inT:61, tot:122, holes:[8,8,9,5,5,7,7,4,8,  7,3,7,8,7,7,6,8,8] }
+            ]
+          },
+          { id:"r1m2", label:"Match 2", result:"BAGGERS WIN · 9:15", resultTeam:"baggers",
+            players: [
+              { name:"Mark Bowman",     team:"ducks",   hdcp:2,  out:40, inT:39, tot:79,  holes:[5,4,4,5,3,5,6,4,4,  4,4,5,3,6,5,3,4,5] },
+              { name:"Jake Hammer",     team:"ducks",   hdcp:12, out:47, inT:51, tot:98,  holes:[6,6,7,5,6,5,4,3,5,  6,6,6,5,5,6,6,5,6] },
+              { name:"Johnny Pullman",  team:"baggers", hdcp:0,  out:38, inT:36, tot:74,  holes:[4,4,6,4,3,5,5,3,4,  4,4,4,4,5,4,3,4,4] },
+              { name:"Bennett Heath",   team:"baggers", hdcp:10, out:47, inT:52, tot:99,  holes:[6,6,8,4,5,5,4,4,5,  5,5,7,7,4,7,3,7,7] }
+            ]
+          },
+          { id:"r1m3", label:"Match 3", result:"DUCKS WIN · 17:6", resultTeam:"ducks",
+            players: [
+              { name:"Cody Esbrandt",     team:"ducks",   hdcp:3, out:48, inT:47, tot:95,  holes:[5,6,6,5,5,7,6,4,4,  6,4,7,5,5,5,4,5,6] },
+              { name:"Taylor Touchberry", team:"ducks",   hdcp:0, out:44, inT:44, tot:88,  holes:[5,4,7,5,3,5,5,3,7,  7,4,5,5,4,5,3,5,6] },
+              { name:"Donny Bartlett",    team:"baggers", hdcp:4, out:56, inT:53, tot:109, holes:[6,8,6,8,6,5,5,5,7,  6,6,8,5,5,5,3,8,7] },
+              { name:"Justin Reeves",     team:"baggers", hdcp:1, out:50, inT:47, tot:97,  holes:[6,6,8,7,3,6,4,6,4,  5,3,5,5,6,6,6,5,6] }
+            ]
+          },
+          { id:"r1m4", label:"Match 4", result:"DUCKS WIN · 18:5", resultTeam:"ducks",
+            players: [
+              { name:"Adam Lewandowski", team:"ducks",   hdcp:15, out:67, inT:53, tot:120, holes:[7,7,10,8,6,8,8,5,8,  5,2,7,8,6,6,6,7,6] },
+              { name:"Joe Mucha",        team:"ducks",   hdcp:0,  out:50, inT:54, tot:104, holes:[7,6,6,5,5,7,5,4,5,  7,5,7,6,7,5,5,6,6] },
+              { name:"Jordan Patrou",    team:"baggers", hdcp:12, out:61, inT:61, tot:122, holes:[7,7,8,6,6,10,7,4,6,  8,6,6,5,7,8,6,5,7] },
+              { name:"Ron Pannullo",     team:"baggers", hdcp:2,  out:61, inT:63, tot:124, holes:[7,6,8,8,5,8,6,5,8,  5,5,6,8,8,8,7,6,8] }
+            ]
+          },
+          { id:"r1m5", label:"Match 5", result:"BAGGERS WIN · 13:17", resultTeam:"baggers",
+            players: [
+              { name:"Chris Schneider",  team:"ducks",   hdcp:13, out:57, inT:49, tot:106, holes:[7,6,8,8,4,8,5,4,7,  6,4,5,6,6,6,3,5,8] },
+              { name:"Chris Schumann",   team:"ducks",   hdcp:0,  out:45, inT:50, tot:95,  holes:[4,6,7,6,3,5,4,4,6,  8,4,7,8,4,5,3,6,5] },
+              { name:"Mike Gaudet",      team:"baggers", hdcp:5,  out:48, inT:44, tot:92,  holes:[6,6,6,5,5,7,5,3,5,  4,4,5,5,4,7,4,5,6] },
+              { name:"Ryne Stone",       team:"baggers", hdcp:5,  out:50, inT:48, tot:98,  holes:[7,5,7,5,5,6,5,4,6,  6,4,5,6,5,5,5,6,6] }
+            ]
+          }
+        ]
+      },
+
+      // ---- ROUND 2: Scramble (NET scores) | Jun 20 | Nicklaus ----
+      r2: {
+        matches: [
+          { id:"r2m1", label:"Match 1 — 9:00 AM", result:"BAGGERS WIN · −9 vs −13", resultTeam:"baggers", scramble:true,
+            players: [
+              { name:"Schneider / Hammer", team:"ducks",   hdcp:23, out:28, inT:35, tot:63, net:"−9",  holes:[3,3,3,2,3,5,3,2,4,  3,2,4,3,4,5,5,4,5] },
+              { name:"Pannullo / Reeves",  team:"baggers", hdcp:23, out:28, inT:31, tot:59, net:"−13", holes:[3,3,4,2,3,4,3,2,4,  3,3,4,4,3,4,4,4,2] }
+            ]
+          },
+          { id:"r2m2", label:"Match 2 — 9:10 AM", result:"DUCKS WIN · −20 vs −16", resultTeam:"ducks", scramble:true,
+            players: [
+              { name:"Lewandowski / Bowman", team:"ducks",   hdcp:24, out:28, inT:24, tot:52, net:"−20", holes:[3,3,4,2,2,4,3,3,4,  2,2,2,3,2,4,3,3,3] },
+              { name:"Bova / Stone",          team:"baggers", hdcp:24, out:27, inT:29, tot:56, net:"−16", holes:[2,2,4,3,2,4,3,3,4,  4,3,3,3,3,4,3,4,4] }
+            ]
+          },
+          { id:"r2m3", label:"Match 3 — 9:20 AM", result:"BAGGERS WIN · −8 vs −10", resultTeam:"baggers", scramble:true,
+            players: [
+              { name:"Esbrandt / Mucha", team:"ducks",   hdcp:23, out:32, inT:32, tot:64, net:"−8",  holes:[3,4,4,2,2,5,5,3,4,  3,2,4,5,4,4,3,4,3] },
+              { name:"Heath / Gaudet",   team:"baggers", hdcp:18, out:31, inT:31, tot:62, net:"−10", holes:[3,5,4,4,2,4,2,3,4,  3,2,3,4,3,4,4,4,4] }
+            ]
+          },
+          { id:"r2m4", label:"Match 4 — 9:30 AM", result:"DUCKS WIN · −16 vs −15", resultTeam:"ducks", scramble:true,
+            players: [
+              { name:"Schumann / Smith",  team:"ducks",   hdcp:31, out:28, inT:28, tot:56, net:"−16", holes:[4,4,4,3,2,4,2,2,3,  3,3,3,3,3,3,2,4,4] },
+              { name:"Glenn / Bartlett",  team:"baggers", hdcp:33, out:27, inT:30, tot:57, net:"−15", holes:[4,2,4,3,2,4,3,2,3,  2,2,3,3,3,4,3,4,6] }
+            ]
+          },
+          { id:"r2m5", label:"Match 5 — 9:40 AM", result:"BAGGERS WIN · −16 vs −17", resultTeam:"baggers", scramble:true,
+            note:"Hole 8 (par 3): Meyer/Touchberry posted a net 1 — gross birdie on a par 3 with one handicap stroke given.",
+            players: [
+              { name:"Meyer / Touchberry", team:"ducks",   hdcp:21, out:26, inT:30, tot:56, net:"−16", holes:[3,2,3,2,3,4,5,1,3,  4,2,3,3,4,5,2,3,4] },
+              { name:"Pullman / Patrou",   team:"baggers", hdcp:21, out:24, inT:31, tot:55, net:"−17", holes:[3,2,4,2,2,3,3,2,3,  4,3,3,3,3,4,3,4,4] }
+            ]
+          }
+        ]
+      },
+
+      // ---- ROUND 3: Singles Matchplay | Jun 21 | Palmer ----
+      r3: {
+        groups: [
+          { label:"Group 1 — 10:00 AM",
+            matches: [
+              { result:"DUCKS W4&2",  resultTeam:"ducks",
+                p1:{ name:"Karsten Meyer",  team:"ducks",   hdcp:25 }, p2:{ name:"Jordan Patrou",  team:"baggers", hdcp:38 } },
+              { result:"DUCKS W6&5",  resultTeam:"ducks",
+                p1:{ name:"Mark Bowman",    team:"ducks",   hdcp:6  }, p2:{ name:"Mike Gaudet",    team:"baggers", hdcp:22 } }
+            ],
+            scorecards: [
+              { name:"Karsten Meyer",  team:"ducks",   out:50, inT:46, tot:96,  holes:[6,4,6,5,3,7,7,7,5,  5,4,6,5,3,3,8,3,9] },
+              { name:"Jordan Patrou",  team:"baggers", out:59, inT:56, tot:115, holes:[8,6,9,5,5,6,7,6,7,  7,7,6,7,4,6,6,5,8] },
+              { name:"Mark Bowman",    team:"ducks",   out:39, inT:37, tot:76,  holes:[4,4,5,4,3,5,4,5,5,  6,3,5,4,3,5,3,4,4] },
+              { name:"Mike Gaudet",    team:"baggers", out:54, inT:48, tot:102, holes:[5,5,7,5,4,6,7,8,7,  6,5,4,7,2,4,6,5,9] }
+            ]
+          },
+          { label:"Group 2 — 10:10 AM",
+            matches: [
+              { result:"BAGGERS W5&4", resultTeam:"baggers",
+                p1:{ name:"Johnny Pullman", team:"baggers", hdcp:4  }, p2:{ name:"Jake Hammer",    team:"ducks",   hdcp:16 } },
+              { result:"DUCKS W5&3",   resultTeam:"ducks",
+                p1:{ name:"Cody Esbrandt",  team:"ducks",   hdcp:19 }, p2:{ name:"Justin Reeves",  team:"baggers", hdcp:17 } }
+            ],
+            scorecards: [
+              { name:"Jake Hammer",    team:"ducks",   out:47, inT:47, tot:94,  holes:[4,4,7,5,4,6,6,6,5,  6,6,6,4,4,6,4,5,6] },
+              { name:"Johnny Pullman", team:"baggers", out:37, inT:39, tot:76,  holes:[4,4,4,4,3,4,4,5,5,  5,4,5,4,3,5,4,5,4] },
+              { name:"Cody Esbrandt",  team:"ducks",   out:44, inT:45, tot:89,  holes:[6,4,6,5,4,5,4,4,6,  8,4,4,4,5,5,4,5,6] },
+              { name:"Justin Reeves",  team:"baggers", out:50, inT:47, tot:97,  holes:[5,4,6,6,2,4,7,6,10, 6,5,7,4,4,5,4,5,7] }
+            ]
+          },
+          { label:"Group 3 — 10:20 AM",
+            matches: [
+              { result:"DUCKS W4&2",   resultTeam:"ducks",
+                p1:{ name:"Taylor Touchberry", team:"ducks",   hdcp:16 }, p2:{ name:"Bennett Heath",  team:"baggers", hdcp:14 } },
+              { result:"BAGGERS W5&4", resultTeam:"baggers",
+                p1:{ name:"Donny Bartlett",    team:"baggers", hdcp:20 }, p2:{ name:"Chris Schumann", team:"ducks",   hdcp:17 } }
+            ],
+            scorecards: [
+              { name:"Taylor Touchberry", team:"ducks",   out:42, inT:45, tot:87,  holes:[4,4,6,5,4,4,5,6,4,  7,4,5,5,5,7,3,4,5] },
+              { name:"Bennett Heath",     team:"baggers", out:47, inT:48, tot:95,  holes:[6,5,6,6,4,4,5,4,7,  7,5,5,4,5,7,4,4,7] },
+              { name:"Chris Schumann",    team:"ducks",   out:48, inT:41, tot:89,  holes:[6,6,7,5,4,4,5,5,6,  7,4,4,5,3,5,2,6,5] },
+              { name:"Donny Bartlett",    team:"baggers", out:42, inT:46, tot:88,  holes:[6,3,6,5,4,4,4,4,6,  7,5,4,4,5,5,7,4,5] }
+            ]
+          },
+          { label:"Group 4 — 10:30 AM",
+            matches: [
+              { result:"BAGGERS W3&1", resultTeam:"baggers",
+                p1:{ name:"Ryne Stone",       team:"baggers", hdcp:22 }, p2:{ name:"Joe Mucha",         team:"ducks",   hdcp:26 } },
+              { result:"DUCKS W4&2",   resultTeam:"ducks",
+                p1:{ name:"Adam Lewandowski", team:"ducks",   hdcp:41 }, p2:{ name:"Cassady Glenn",     team:"baggers", hdcp:45 } }
+            ],
+            scorecards: [
+              { name:"Joe Mucha",         team:"ducks",   out:50, inT:54, tot:104, holes:[6,6,8,6,4,4,4,6,6,  7,8,5,7,4,6,4,6,7] },
+              { name:"Ryne Stone",        team:"baggers", out:47, inT:41, tot:88,  holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Adam Lewandowski",  team:"ducks",   out:55, inT:53, tot:108, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Cassady Glenn",     team:"baggers", out:64, inT:61, tot:125, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] }
+            ]
+          },
+          { label:"Group 5 — 10:40 AM",
+            matches: [
+              { result:"HALVED · All Square", resultTeam:"halved",
+                p1:{ name:"Teddy Smith",     team:"ducks",   hdcp:45 }, p2:{ name:"Matt Bova",      team:"baggers", hdcp:25 } },
+              { result:"DUCKS W8&7",          resultTeam:"ducks",
+                p1:{ name:"Chris Schneider", team:"ducks",   hdcp:30 }, p2:{ name:"Ron Pannullo",   team:"baggers", hdcp:28 } }
+            ],
+            scorecards: [
+              { name:"Matt Bova",       team:"baggers", out:53, inT:54, tot:107, holes:[5,4,7,6,6,6,5,7,7,  6,6,6,8,4,6,5,5,8] },
+              { name:"Teddy Smith",     team:"ducks",   out:59, inT:67, tot:126, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Chris Schneider", team:"ducks",   out:47, inT:47, tot:94,  holes:[4,5,7,6,3,4,6,6,6,  null,null,null,null,null,null,null,null,null] },
+              { name:"Ron Pannullo",    team:"baggers", out:56, inT:56, tot:112, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] }
+            ]
+          }
+        ]
+      },
+
+      // ---- ROUND 4: Singles Matchplay | Jun 22 | Nicklaus ----
+      // Played simultaneously with R1 on the same day
+      r4: {
+        groups: [
+          { label:"Group 1 — 8:00 AM",
+            matches: [
+              { result:"BAGGERS W3&2", resultTeam:"baggers",
+                p1:{ name:"Matt Bova",     team:"baggers", hdcp:25 }, p2:{ name:"Karsten Meyer", team:"ducks",   hdcp:25 } },
+              { result:"BAGGERS W7&6", resultTeam:"baggers",
+                p1:{ name:"Cassady Glenn", team:"baggers", hdcp:45 }, p2:{ name:"Teddy Smith",   team:"ducks",   hdcp:45 } }
+            ],
+            scorecards: [
+              { name:"Karsten Meyer",  team:"ducks",   out:60, inT:63, tot:123, holes:[6,7,10,7,5,8,7,4,6, null,null,null,null,null,null,null,null,null] },
+              { name:"Matt Bova",      team:"baggers", out:56, inT:58, tot:114, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Teddy Smith",    team:"ducks",   out:70, inT:68, tot:138, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Cassady Glenn",  team:"baggers", out:61, inT:61, tot:122, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] }
+            ]
+          },
+          { label:"Group 2 — 8:10 AM",
+            matches: [
+              { result:"BAGGERS W4&3", resultTeam:"baggers",
+                p1:{ name:"Johnny Pullman", team:"baggers", hdcp:4  }, p2:{ name:"Mark Bowman",   team:"ducks",   hdcp:6  } },
+              { result:"DUCKS W1up",   resultTeam:"ducks",
+                p1:{ name:"Jake Hammer",    team:"ducks",   hdcp:16 }, p2:{ name:"Bennett Heath", team:"baggers", hdcp:14 } }
+            ],
+            scorecards: [
+              { name:"Mark Bowman",    team:"ducks",   out:40, inT:39, tot:79, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Johnny Pullman", team:"baggers", out:38, inT:36, tot:74, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Jake Hammer",    team:"ducks",   out:47, inT:51, tot:98, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Bennett Heath",  team:"baggers", out:47, inT:52, tot:99, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] }
+            ]
+          },
+          { label:"Group 3 — 8:20 AM",
+            matches: [
+              { result:"DUCKS W6&5",  resultTeam:"ducks",
+                p1:{ name:"Cody Esbrandt",     team:"ducks",   hdcp:19 }, p2:{ name:"Donny Bartlett",    team:"baggers", hdcp:20 } },
+              { result:"DUCKS W4&2",  resultTeam:"ducks",
+                p1:{ name:"Taylor Touchberry", team:"ducks",   hdcp:16 }, p2:{ name:"Justin Reeves",     team:"baggers", hdcp:17 } }
+            ],
+            scorecards: [
+              { name:"Cody Esbrandt",     team:"ducks",   out:48, inT:47, tot:95,  holes:[5,6,6,5,5,7,6,4,4, null,null,null,null,null,null,null,null,null] },
+              { name:"Donny Bartlett",    team:"baggers", out:56, inT:52, tot:108, holes:[6,8,6,8,6,5,5,5,7, null,null,null,null,null,null,null,null,null] },
+              { name:"Taylor Touchberry", team:"ducks",   out:44, inT:44, tot:88,  holes:[5,4,7,5,3,5,5,3,7, null,null,null,null,null,null,null,null,null] },
+              { name:"Justin Reeves",     team:"baggers", out:50, inT:47, tot:97,  holes:[6,6,8,7,3,6,4,6,4, null,null,null,null,null,null,null,null,null] }
+            ]
+          },
+          { label:"Group 4 — 8:30 AM",
+            matches: [
+              { result:"BAGGERS W3&2", resultTeam:"baggers",
+                p1:{ name:"Jordan Patrou",    team:"baggers", hdcp:38 }, p2:{ name:"Adam Lewandowski", team:"ducks",   hdcp:41 } },
+              { result:"DUCKS W5&4",   resultTeam:"ducks",
+                p1:{ name:"Joe Mucha",        team:"ducks",   hdcp:26 }, p2:{ name:"Ron Pannullo",     team:"baggers", hdcp:28 } }
+            ],
+            scorecards: [
+              { name:"Adam Lewandowski", team:"ducks",   out:67, inT:53, tot:120, holes:[7,7,10,8,6,8,8,5,8, null,null,null,null,null,null,null,null,null] },
+              { name:"Jordan Patrou",    team:"baggers", out:61, inT:61, tot:122, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] },
+              { name:"Joe Mucha",        team:"ducks",   out:50, inT:54, tot:104, holes:[7,6,6,5,5,7,5,4,5, null,null,null,null,null,null,null,null,null] },
+              { name:"Ron Pannullo",     team:"baggers", out:61, inT:63, tot:124, holes:[null,null,null,null,null,null,null,null,null, null,null,null,null,null,null,null,null,null] }
+            ]
+          },
+          { label:"Group 5 — 8:40 AM",
+            matches: [
+              { result:"DUCKS W2&1",   resultTeam:"ducks",
+                p1:{ name:"Chris Schneider", team:"ducks",   hdcp:30 }, p2:{ name:"Ryne Stone",     team:"baggers", hdcp:22 } },
+              { result:"BAGGERS W6&4", resultTeam:"baggers",
+                p1:{ name:"Mike Gaudet",     team:"baggers", hdcp:22 }, p2:{ name:"Chris Schumann", team:"ducks",   hdcp:17 } }
+            ],
+            scorecards: [
+              { name:"Chris Schneider", team:"ducks",   out:57, inT:49, tot:106, holes:[7,6,8,8,4,8,5,4,7, null,null,null,null,null,null,null,null,null] },
+              { name:"Ryne Stone",      team:"baggers", out:50, inT:48, tot:98,  holes:[7,5,7,5,5,6,5,4,6, null,null,null,null,null,null,null,null,null] },
+              { name:"Chris Schumann",  team:"ducks",   out:45, inT:50, tot:95,  holes:[4,6,7,6,3,5,4,4,6, null,null,null,null,null,null,null,null,null] },
+              { name:"Mike Gaudet",     team:"baggers", out:48, inT:44, tot:92,  holes:[6,6,6,5,5,7,5,3,5, null,null,null,null,null,null,null,null,null] }
+            ]
+          }
+        ]
+      },
+
+      // ---- OVERALL PLAYER STATS (Squabbit "Overall" tab) ----
+      // +/- = individual net score vs par each round
+      // R2 values = team scramble net (both partners share same number)
+      stats: [
+        { name:"Adam Lewandowski", team:"ducks",   hdcp:41.0, r1:"+33", r2:"−20", r3:"−5",  r4:"+7",  payout:225 },
+        { name:"Chris Schneider",  team:"ducks",   hdcp:30.0, r1:"+21", r2:"−9",  r3:"−8",  r4:"+4",  payout:225 },
+        { name:"Chris Schumann",   team:"ducks",   hdcp:17.0, r1:"+23", r2:"−16", r3:"E",        r4:"+6",  payout:225 },
+        { name:"Cody Esbrandt",    team:"ducks",   hdcp:19.0, r1:"+20", r2:"−8",  r3:"−2",  r4:"+4",  payout:225 },
+        { name:"Jake Hammer",      team:"ducks",   hdcp:16.0, r1:"+14", r2:"−9",  r3:"+6",       r4:"+10", payout:225 },
+        { name:"Joe Mucha",        team:"ducks",   hdcp:26.0, r1:"+32", r2:"−8",  r3:"+6",       r4:"+6",  payout:225 },
+        { name:"Karsten Meyer",    team:"ducks",   hdcp:25.0, r1:"+49", r2:"−16", r3:"−1",  r4:"+26", payout:225 },
+        { name:"Mark Bowman",      team:"ducks",   hdcp:6.0,  r1:"+5",  r2:"−20", r3:"−2",  r4:"+1",  payout:225 },
+        { name:"Taylor Touchberry",team:"ducks",   hdcp:16.0, r1:"+16", r2:"−16", r3:"−1",  r4:"E",   payout:225 },
+        { name:"Teddy Smith",      team:"ducks",   hdcp:45.0, r1:"+44", r2:"−16", r3:"+9",       r4:"+21", payout:225 },
+        { name:"Bennett Heath",    team:"baggers", hdcp:14.0, r1:"+17", r2:"−10", r3:"+9",       r4:"+13", payout:75 },
+        { name:"Cassady Glenn",    team:"baggers", hdcp:45.0, r1:"+30", r2:"−15", r3:"+8",       r4:"+5",  payout:75 },
+        { name:"Donny Bartlett",   team:"baggers", hdcp:20.0, r1:"+33", r2:"−15", r3:"−4",  r4:"+16", payout:75 },
+        { name:"Johnny Pullman",   team:"baggers", hdcp:4.0,  r1:"+2",  r2:"−17", r3:"E",        r4:"−2", payout:75 },
+        { name:"Jordan Patrou",    team:"baggers", hdcp:38.0, r1:"+38", r2:"−17", r3:"+5",       r4:"+12", payout:75 },
+        { name:"Justin Reeves",    team:"baggers", hdcp:17.0, r1:"+24", r2:"−13", r3:"+8",       r4:"+8",  payout:75 },
+        { name:"Matt Bova",        team:"baggers", hdcp:25.0, r1:"+42", r2:"−16", r3:"+10",      r4:"+17", payout:75 },
+        { name:"Mike Gaudet",      team:"baggers", hdcp:22.0, r1:"+15", r2:"−10", r3:"+8",       r4:"−2", payout:75 },
+        { name:"Ron Pannullo",     team:"baggers", hdcp:28.0, r1:"+50", r2:"−13", r3:"+12",      r4:"+24", payout:75 },
+        { name:"Ryne Stone",       team:"baggers", hdcp:22.0, r1:"+21", r2:"−16", r3:"−6",  r4:"+4",  payout:75 }
+      ]
+    };
+
+
+    /* ================================================================
+       HISTORY — RENDER FUNCTIONS
+    ================================================================ */
+
+    // Toggle the full scorecard detail open/closed for a year entry
+    function histToggleYear(yearId) {
+      const detail = document.getElementById('hist-detail-' + yearId);
+      const btn    = document.getElementById('hist-expand-btn-' + yearId);
+      if (!detail) return;
+      const isOpen = detail.style.display !== 'none';
+      detail.style.display = isOpen ? 'none' : 'block';
+      if (btn) btn.textContent = isOpen ? '▼ View Full Scorecards & Stats' : '▲ Hide Scorecards & Stats';
+    }
+
+    // Toggle a match card open/closed; scorecard is built lazily on first open
+    function histToggleMatch(headerEl) {
+      const card   = headerEl.closest('.hist-match-card');
+      const wrap   = card.querySelector('.hist-scorecard-wrap');
+      const toggle = card.querySelector('.hist-match-toggle');
+      if (!wrap) return;
+
+      // Build scorecard HTML only once (first open)
+      if (!wrap.dataset.rendered) {
+        const rnd  = card.dataset.round;
+        const mid  = card.dataset.match || null;
+        const gidx = card.dataset.group != null ? +card.dataset.group : null;
+        wrap.innerHTML = histBuildScorecard(rnd, mid, gidx);
+        wrap.dataset.rendered = '1';
+      }
+
+      const isOpen = wrap.classList.contains('open');
+      wrap.classList.toggle('open', !isOpen);
+      if (toggle) toggle.textContent = isOpen ? '▼' : '▲';
+    }
+
+    // Build the scorecard HTML table for a given round + match/group
+    function histBuildScorecard(roundId, matchId, grpIdx) {
+      const par    = (roundId === 'r3') ? H25.palmerPar : H25.nicklausPar;
+      const parOut = par.slice(0,9).reduce((a,b)=>a+b,0);
+      const parIn  = par.slice(9).reduce((a,b)=>a+b,0);
+      const parTot = parOut + parIn;
+      let players, isScramble = false, note = '';
+
+      if (roundId === 'r1') {
+        const m = H25.r1.matches.find(m => m.id === matchId);
+        players = m.players;
+      } else if (roundId === 'r2') {
+        const m = H25.r2.matches.find(m => m.id === matchId);
+        players = m.players; isScramble = true; note = m.note || '';
+      } else if (roundId === 'r3') {
+        players = H25.r3.groups[grpIdx].scorecards;
+      } else if (roundId === 'r4') {
+        players = H25.r4.groups[grpIdx].scorecards;
+      }
+
+      let html = '';
+      if (isScramble) html += '<div class="hist-scramble-note">Scores shown are <strong>NET</strong> (gross minus handicap strokes). Par row shows course par.</div>';
+      if (note)        html += '<div class="hist-scramble-note">' + note + '</div>';
+
+      // Table header
+      html += '<table class="hist-scorecard"><thead><tr><th class="sc-label">Player</th>';
+      for (let i=1;i<=9;i++) html += '<th>' + i + '</th>';
+      html += '<th class="sc-total">OUT</th>';
+      for (let i=10;i<=18;i++) html += '<th>' + i + '</th>';
+      html += '<th class="sc-total">IN</th><th class="sc-total">TOT</th>';
+      if (isScramble) html += '<th class="sc-total">NET</th>';
+      html += '</tr></thead><tbody>';
+
+      // Par row
+      html += '<tr><td class="sc-label sc-par">Par</td>';
+      for (let i=0;i<9;i++) html += '<td class="sc-par">' + par[i] + '</td>';
+      html += '<td class="sc-total sc-par">' + parOut + '</td>';
+      for (let i=9;i<18;i++) html += '<td class="sc-par">' + par[i] + '</td>';
+      html += '<td class="sc-total sc-par">' + parIn + '</td><td class="sc-total sc-par">' + parTot + '</td>';
+      if (isScramble) html += '<td></td>';
+      html += '</tr>';
+
+      // One row per player
+      for (const p of players) {
+        const tc = p.team === 'ducks' ? 'clr-ducks' : 'clr-baggers';
+        const hdcpTxt = p.hdcp != null ? ' <small style="font-weight:400;opacity:.6">(' + p.hdcp + ')</small>' : '';
+        html += '<tr><td class="sc-label ' + tc + '">' + p.name + hdcpTxt + '</td>';
+        for (let i=0;i<9;i++)  html += histCell(p.holes[i], par[i]);
+        html += '<td class="sc-total">' + p.out + '</td>';
+        for (let i=9;i<18;i++) html += histCell(p.holes[i], par[i]);
+        html += '<td class="sc-total">' + p.inT + '</td><td class="sc-total">' + p.tot + '</td>';
+        if (isScramble) html += '<td class="sc-total">' + (p.net||'') + '</td>';
+        html += '</tr>';
+      }
+      html += '</tbody></table>';
+      return html;
+    }
+
+    // Returns a color-coded table cell for a single hole score vs par
+    function histCell(score, par) {
+      if (score == null) return '<td>—</td>';
+      const d = score - par;
+      const c = d <= -2 ? 'sc-eagle' : d === -1 ? 'sc-under' : d >= 1 ? 'sc-over' : '';
+      return c ? '<td class="' + c + '">' + score + '</td>' : '<td>' + score + '</td>';
+    }
+
+    // Color-code a stat string (+N, -N, E) for the overall stats table
+    function histStatCell(val) {
+      if (!val || val === 'E') return '<td class="stat-even">' + (val||'') + '</td>';
+      if (val.startsWith('+')) return '<td class="stat-pos">' + val + '</td>';
+      return '<td class="stat-neg">' + val + '</td>';
+    }
+
+    // Build a match card for R1 or R2 (pairs/scramble)
+    function histR1R2Card(rnd, match) {
+      const rc = 'result-' + match.resultTeam;
+      const p  = match.players;
+      // ducks are indices 0,1 — baggers are 2,3 (or just 0,1 for scramble)
+      const ducksNames   = match.scramble ? p[0].name : p[0].name + ' / ' + p[1].name;
+      const baggersNames = match.scramble ? p[1].name : p[2].name + ' / ' + p[3].name;
+      return (
+        '<div class="hist-match-card" data-round="' + rnd + '" data-match="' + match.id + '">' +
+          '<div class="hist-match-header" onclick="histToggleMatch(this)">' +
+            '<div class="hist-match-players">' +
+              '<span class="clr-ducks">' + ducksNames + '</span>' +
+              '<span style="color:var(--color-text-muted)"> vs </span>' +
+              '<span class="clr-baggers">' + baggersNames + '</span>' +
+            '</div>' +
+            '<span class="hist-match-result-badge ' + rc + '">' + match.result + '</span>' +
+            '<span class="hist-match-toggle">▼</span>' +
+          '</div>' +
+          '<div class="hist-scorecard-wrap"></div>' +
+        '</div>'
+      );
+    }
+
+    // Build a group card for R3 or R4 (singles matchplay, 2 matches per group)
+    function histGroupCard(rnd, grp, idx) {
+      const m0 = grp.matches[0], m1 = grp.matches[1];
+      const tc = function(t) { return t === 'ducks' ? 'clr-ducks' : 'clr-baggers'; };
+      const row = function(m) {
+        const rc = 'result-' + m.resultTeam;
+        return (
+          '<div>' +
+            '<span class="' + tc(m.p1.team) + '">' + m.p1.name + '</span>' +
+            ' <small style="opacity:.6">(' + m.p1.hdcp + ')</small> vs ' +
+            '<span class="' + tc(m.p2.team) + '">' + m.p2.name + '</span>' +
+            ' <small style="opacity:.6">(' + m.p2.hdcp + ')</small>' +
+            '<span class="hist-match-result-badge ' + rc + '">' + m.result + '</span>' +
+          '</div>'
+        );
+      };
+      return (
+        '<div class="hist-match-card" data-round="' + rnd + '" data-group="' + idx + '">' +
+          '<div class="hist-match-header" onclick="histToggleMatch(this)">' +
+            '<div class="hist-match-players">' + row(m0) + row(m1) + '</div>' +
+            '<span class="hist-match-toggle">▼</span>' +
+          '</div>' +
+          '<div class="hist-scorecard-wrap"></div>' +
+        '</div>'
+      );
+    }
+
+    // Build the full 2025 history section HTML and inject it into the page
+    function initHistory() {
+      const root = document.getElementById('hist-root');
+      if (!root) return;
+
+      // --- Year card / photo entry ---
+      let html =
+        '<div class="hist-year-entry">' +
+
+          // Clickable photo card (placeholder until photo is uploaded)
+          '<div class="hist-photo-card" onclick="histToggleYear(\'y2025\')">' +
+            '<img class="hist-photo-img" src="BBRC Group Photo 2025.png" alt="BBRC 2025 Group Photo" />' +
+            '<div class="hist-photo-overlay">' +
+              '<div class="hist-year-badge">Year 2 &middot; 2025</div>' +
+              '<div class="hist-venue-line">Reunion Resort &amp; Golf Club &middot; Orlando, FL &middot; June 20&ndash;22</div>' +
+            '</div>' +
+          '</div>' +
+
+          // Meta block: team names, captains, score, narrative
+          '<div class="hist-meta">' +
+            '<div class="hist-teams-row">' +
+              '<div class="hist-team ducks">' +
+                '<div class="hist-team-name clr-ducks">The Mighty Cluster Ducks</div>' +
+                '<div class="hist-team-captain">Capt. Cody Esbrandt</div>' +
+              '</div>' +
+              '<div class="hist-vs-block">' +
+                '<div class="hist-score-display">31&thinsp;:&thinsp;29</div>' +
+                '<div class="hist-winner-label">Ducks Win &middot; Year 2</div>' +
+              '</div>' +
+              '<div class="hist-team baggers">' +
+                '<div class="hist-team-name clr-baggers">Tee Baggers</div>' +
+                '<div class="hist-team-captain">Capt. Ryne Stone</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="hist-narrative">' +
+              '<p>Year 2 sent the Bros south to Reunion Resort in Orlando, where the Tee Baggers struck first &mdash; rolling to a 6&ndash;4 win in Friday&rsquo;s opening scramble round. But captain Cody Esbrandt&rsquo;s Cluster Ducks had other plans. Saturday&rsquo;s singles matchplay on the Palmer Course turned into a showcase: Bowman cruised to a W6&amp;5, Schneider posted a sensational W8&amp;7, and the Ducks racked up a dominant 13&ndash;7 day to seize the overall lead. Sunday&rsquo;s finale ran two formats simultaneously on the Nicklaus Course &mdash; R1 Low Ball/Low Total went Baggers 6&ndash;4, while R4 singles finished in a dead-even 10&ndash;10 tie. When the final numbers were tallied, the Ducks held on 31&ndash;29, claiming Year 2 glory and leaving captain Ryne Stone&rsquo;s Baggers one point short.</p>' +
+            '</div>' +
+            '<button class="hist-expand-btn" id="hist-expand-btn-y2025" onclick="histToggleYear(\'y2025\')">' +
+              '▼ View Full Scorecards &amp; Stats' +
+            '</button>' +
+          '</div>' + // end hist-meta
+
+          // Expandable detail section
+          '<div class="hist-detail" id="hist-detail-y2025" style="display:none">' +
+
+            // Final score graphic
+            '<div class="hist-final-graphic">' +
+              '<div class="hist-final-team">' +
+                '<div class="hist-final-team-name clr-ducks">The Mighty Cluster Ducks</div>' +
+                '<div class="hist-final-score-num clr-ducks">31</div>' +
+                '<div class="hist-final-caption">Winner &middot; $225 each</div>' +
+              '</div>' +
+              '<div class="hist-vs-divider">vs</div>' +
+              '<div class="hist-final-team">' +
+                '<div class="hist-final-team-name clr-baggers">Tee Baggers</div>' +
+                '<div class="hist-final-score-num clr-baggers">29</div>' +
+                '<div class="hist-final-caption">Runner-Up &middot; $75 each</div>' +
+              '</div>' +
+            '</div>' +
+
+            // Round summary table
+            '<div style="overflow-x:auto;margin-bottom:1.5rem">' +
+              '<table class="hist-round-table">' +
+                '<thead><tr>' +
+                  '<th>Round</th><th>Format</th><th>Course</th><th>Date</th>' +
+                  '<th class="clr-ducks">Ducks</th><th class="clr-baggers">Baggers</th>' +
+                '</tr></thead>' +
+                '<tbody>' +
+                  '<tr><td>R2</td><td>Scramble</td><td>Nicklaus</td><td>Jun 20</td><td>4</td><td class="hist-round-winner-baggers">6</td></tr>' +
+                  '<tr><td>R3</td><td>Singles Matchplay</td><td>Palmer</td><td>Jun 21</td><td class="hist-round-winner-ducks">13</td><td>7</td></tr>' +
+                  '<tr><td>R1 *</td><td>Low Ball / Low Total</td><td>Nicklaus</td><td>Jun 22</td><td>4</td><td class="hist-round-winner-baggers">6</td></tr>' +
+                  '<tr><td>R4 *</td><td>Singles Matchplay</td><td>Nicklaus</td><td>Jun 22</td><td class="hist-round-tied">10</td><td class="hist-round-tied">10</td></tr>' +
+                  '<tr><td><strong>TOTAL</strong></td><td colspan="3"><small style="color:var(--color-text-muted)">* R1 and R4 played simultaneously</small></td><td class="hist-round-winner-ducks"><strong>31</strong></td><td><strong>29</strong></td></tr>' +
+                '</tbody>' +
+              '</table>' +
+            '</div>' +
+
+            // Inner round tabs
+            '<div class="inner-tabs" role="tablist">' +
+              '<button class="inner-tab active" role="tab" onclick="showInnerTab(\'h25\',\'r1\',this)">R1 · Low Ball</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r2\',this)">R2 · Scramble</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r3\',this)">R3 · Singles</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'r4\',this)">R4 · Singles</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h25\',\'stats\',this)">Player Stats</button>' +
+            '</div>';
+
+          // ---- R1 tab ----
+          html +=
+            '<div id="h25-r1" class="inner-section active">' +
+              '<div class="hist-round-info">' +
+                '<div class="hist-round-info-title">Round 1 &mdash; Low Ball / Low Total</div>' +
+                '<div>June 22, 2025 &middot; Reunion Nicklaus Course &middot; Par 72 &middot; 6,205 yds (White)</div>' +
+                '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">2-person pairs: Low Ball (best net individual score per hole, 1 pt) + Low Total (combined net, 1 pt). Played simultaneously with R4.</div>' +
+                '<div class="hist-round-pts">' +
+                  '<span class="hist-round-pts-item clr-ducks">Ducks 4</span>' +
+                  '<span class="hist-round-pts-item clr-baggers">Baggers 6</span>' +
+                '</div>' +
+              '</div>';
+          H25.r1.matches.forEach(m => { html += histR1R2Card('r1', m); });
+          html += '</div>';
+
+          // ---- R2 tab ----
+          html +=
+            '<div id="h25-r2" class="inner-section">' +
+              '<div class="hist-round-info">' +
+                '<div class="hist-round-info-title">Round 2 &mdash; Scramble</div>' +
+                '<div>June 20, 2025 &middot; Reunion Nicklaus Course &middot; Par 72 &middot; 6,205 yds (White)</div>' +
+                '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">2-person scramble. Scores shown are NET. Team handicap = (player 1 hdcp + player 2 hdcp) / 2.</div>' +
+                '<div class="hist-round-pts">' +
+                  '<span class="hist-round-pts-item clr-ducks">Ducks 4</span>' +
+                  '<span class="hist-round-pts-item clr-baggers">Baggers 6</span>' +
+                '</div>' +
+              '</div>';
+          H25.r2.matches.forEach(m => { html += histR1R2Card('r2', m); });
+          html += '</div>';
+
+          // ---- R3 tab ----
+          html +=
+            '<div id="h25-r3" class="inner-section">' +
+              '<div class="hist-round-info">' +
+                '<div class="hist-round-info-title">Round 3 &mdash; Singles Matchplay</div>' +
+                '<div>June 21, 2025 &middot; Reunion Palmer Course &middot; Par 72 &middot; 6,058 yds (Blue)</div>' +
+                '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Net singles matchplay by course handicap. Win = 2 pts, Halved = 1 pt each. Click a group to view scorecards.</div>' +
+                '<div class="hist-round-pts">' +
+                  '<span class="hist-round-pts-item clr-ducks">Ducks 13</span>' +
+                  '<span class="hist-round-pts-item clr-baggers">Baggers 7</span>' +
+                '</div>' +
+              '</div>';
+          H25.r3.groups.forEach((grp, idx) => {
+            html += '<div class="hist-group-label">' + grp.label + '</div>';
+            html += histGroupCard('r3', grp, idx);
+          });
+          html += '</div>';
+
+          // ---- R4 tab ----
+          html +=
+            '<div id="h25-r4" class="inner-section">' +
+              '<div class="hist-round-info">' +
+                '<div class="hist-round-info-title">Round 4 &mdash; Singles Matchplay</div>' +
+                '<div>June 22, 2025 &middot; Reunion Nicklaus Course &middot; Par 72 &middot; 6,205 yds (White)</div>' +
+                '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Net singles matchplay. Played simultaneously with R1 on the same round of golf. Click a group to view scorecards.</div>' +
+                '<div class="hist-round-pts">' +
+                  '<span class="hist-round-pts-item clr-ducks">Ducks 10</span>' +
+                  '<span class="hist-round-pts-item clr-baggers">Baggers 10</span>' +
+                  '<span style="font-size:.82rem;color:var(--color-text-muted)">(Tied)</span>' +
+                '</div>' +
+              '</div>';
+          H25.r4.groups.forEach((grp, idx) => {
+            html += '<div class="hist-group-label">' + grp.label + '</div>';
+            html += histGroupCard('r4', grp, idx);
+          });
+          html += '</div>';
+
+          // ---- Player Stats tab ----
+          html += '<div id="h25-stats" class="inner-section"><div class="hist-stats-wrap"><table class="hist-stats-table">';
+          html += '<thead><tr><th>Player</th><th>Hdcp</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>Payout</th></tr></thead><tbody>';
+          html += '<tr class="team-hdr ducks-hdr"><td colspan="7">The Mighty Cluster Ducks &mdash; Won &middot; $225 each</td></tr>';
+          H25.stats.filter(p => p.team === 'ducks').forEach(p => {
+            html += '<tr><td>' + p.name + '</td><td>' + p.hdcp + '</td>' +
+              histStatCell(p.r1) + histStatCell(p.r2) + histStatCell(p.r3) + histStatCell(p.r4) +
+              '<td class="stat-payout">$' + p.payout + '</td></tr>';
+          });
+          html += '<tr class="team-hdr baggers-hdr"><td colspan="7">Tee Baggers &mdash; Runner-Up &middot; $75 each</td></tr>';
+          H25.stats.filter(p => p.team === 'baggers').forEach(p => {
+            html += '<tr><td>' + p.name + '</td><td>' + p.hdcp + '</td>' +
+              histStatCell(p.r1) + histStatCell(p.r2) + histStatCell(p.r3) + histStatCell(p.r4) +
+              '<td class="stat-payout">$' + p.payout + '</td></tr>';
+          });
+          html += '</tbody></table><p style="font-size:.75rem;color:var(--color-text-muted);margin-top:.75rem">Net score vs par per round. R2 shows team scramble net shared by both partners. Negative = under par (good). Positive = over par.</p></div></div>';
+
+          // Close detail and year entry
+          html += '</div></div>'; // end hist-detail-y2025, hist-year-entry
+
+      // --- Year 1: 2024 ---
+      html +=
+        '<div class="hist-year-entry">' +
+
+          '<div class="hist-photo-card" onclick="histToggleYear(\'y2024\')">' +
+            '<img class="hist-photo-img" src="BBRC Group Photo 2024.png" alt="BBRC 2024 Group Photo" />' +
+            '<div class="hist-photo-overlay">' +
+              '<div class="hist-year-badge">Year 1 &middot; 2024</div>' +
+              '<div class="hist-venue-line">Dubsdread Golf Course &middot; Orlando, FL</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="hist-meta">' +
+            '<div class="hist-teams-row">' +
+              '<div class="hist-team prba">' +
+                '<div class="hist-team-name clr-prba">Patrick Reed\'s Burner Account</div>' +
+                '<div class="hist-team-captain">Capt. Ryne Stone</div>' +
+              '</div>' +
+              '<div class="hist-vs-block">' +
+                '<div class="hist-score-display" style="font-size:1.05rem;color:var(--color-gold)">Year 1</div>' +
+                '<div class="hist-winner-label">The inaugural BBRC</div>' +
+              '</div>' +
+              '<div class="hist-team pirates">' +
+                '<div class="hist-team-name clr-pirates">Putt Pirates</div>' +
+                '<div class="hist-team-captain">Capt. Cody Esbrandt</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="hist-narrative">' +
+              '<p>The inaugural Basic Bros Ryder Cup took place at historic Dubsdread Golf Course in Orlando, FL &mdash; one of the oldest courses in the Southeast, built in 1924. With 12 players squaring off in a 1-round format, Year 1 laid the foundation for the tournament tradition. Handicaps were rough estimates, but the competitive spirit was already in full force. Pairings and scorecards are preserved below.</p>' +
+            '</div>' +
+            '<button class="hist-expand-btn" id="hist-expand-btn-y2024" onclick="histToggleYear(\'y2024\')">' +
+              '&#9660; View Pairings &amp; Scorecards' +
+            '</button>' +
+          '</div>' +
+
+          '<div class="hist-detail" id="hist-detail-y2024" style="display:none">' +
+            '<p style="font-size:.82rem;color:var(--color-text-muted);margin-bottom:1.25rem">Year 1 used a 1-round format with 12 players. Handicaps were rough estimates &mdash; results are for historical reference.</p>' +
+            '<div style="margin-bottom:1.75rem">' +
+              '<div style="font-family:\'Cinzel\',serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-gold);margin-bottom:.6rem">Pairings &amp; Team Scoring</div>' +
+              '<img src="BBRC 2024 - Parings + Team Scoring.png" alt="2024 Pairings and Team Scoring" style="width:100%;border-radius:8px;border:1px solid var(--color-border);display:block" />' +
+            '</div>' +
+            '<div>' +
+              '<div style="font-family:\'Cinzel\',serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-gold);margin-bottom:.6rem">Scorecards</div>' +
+              '<img src="BBRC Scorecards - Dubsdread 2024.png" alt="2024 Scorecards" style="width:100%;border-radius:8px;border:1px solid var(--color-border);display:block" />' +
+            '</div>' +
+          '</div>' +
+
+        '</div>'; // end hist-year-entry 2024
+
+      root.innerHTML = html;
+    }
+
+    // Generate the history section content
+    initHistory();
 
     // Load approved bios on page load so player cards are populated immediately
     loadApprovedBios();
