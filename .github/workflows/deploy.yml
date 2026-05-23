@@ -22,3 +22,4 @@ jobs:
           local_path: './*'
           remote_path: '/home/mattbova/basic-bros-ryder-cup.com'
           args: '-o StrictHostKeyChecking=no'
+
