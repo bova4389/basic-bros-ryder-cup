@@ -2669,6 +2669,17 @@
     .result-ducks   { background: rgba(245,166,35,0.15); color: #f5a623; border: 1px solid rgba(245,166,35,0.35); }
     .result-baggers { background: rgba(0,180,216,0.15);  color: #00b4d8; border: 1px solid rgba(0,180,216,0.35); }
     .result-halved  { background: rgba(136,153,170,0.1); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+    .result-pirates { background: rgba(122,159,212,0.15); color: #7a9fd4; border: 1px solid rgba(122,159,212,0.35); }
+    .result-prba    { background: rgba(82,183,136,0.15);  color: var(--color-green-light); border: 1px solid rgba(82,183,136,0.35); }
+    .hist-round-winner-pirates { color: #7a9fd4; font-weight: 700; }
+    .hist-round-winner-prba    { color: var(--color-green-light); font-weight: 700; }
+    /* 2024 best-ball match card */
+    .hist24-bb-card { background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 0.6rem; }
+    .hist24-bb-label { font-family: 'Cinzel', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-gold); margin-bottom: 0.45rem; }
+    .hist24-bb-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; font-size: 0.88rem; }
+    .hist24-score { font-family: 'Cinzel', serif; font-weight: 700; color: var(--color-cream); font-size: 1rem; }
+    /* 2024 singles match card */
+    .hist24-singles-card { background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: 8px; padding: 0.6rem 1rem; margin-bottom: 0.5rem; font-size: 0.88rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.25rem; }
     .hist-match-toggle { font-size: 0.72rem; color: var(--color-text-muted); flex-shrink: 0; }
 
     /* Scorecard wrap — hidden until expanded */
@@ -2701,8 +2712,13 @@
     .hist-stats-table td:first-child, .hist-stats-table th:first-child { text-align: left; }
     .hist-stats-table .team-hdr td { font-family: 'Cinzel', serif; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.52rem 0.7rem; }
     .hist-stats-table .team-hdr.ducks-hdr   td { color: #f5a623; background: rgba(245,166,35,0.08); }
-    .hist-stats-table .team-hdr.baggers-hdr td { color: #00b4d8; background: rgba(0,180,216,0.08); }
+    .hist-stats-table .team-hdr.baggers-hdr  td { color: #00b4d8; background: rgba(0,180,216,0.08); }
+    .hist-stats-table .team-hdr.pirates-hdr  td { color: #7a9fd4; background: rgba(122,159,212,0.08); }
+    .hist-stats-table .team-hdr.prba-hdr     td { color: var(--color-green-light); background: rgba(82,183,136,0.08); }
     .hist-stats-table .stat-pos   { color: #e05656; }
+    .hist-stats-table .stat-w     { color: var(--color-green-light); font-weight: 700; }
+    .hist-stats-table .stat-l     { color: #e05656; }
+    .hist-stats-table .stat-t     { color: var(--color-text-muted); }
     .hist-stats-table .stat-neg   { color: #52b788; }
     .hist-stats-table .stat-even  { color: var(--color-text-muted); }
     .hist-stats-table .stat-payout { color: var(--color-gold); font-weight: 700; }
@@ -2716,7 +2732,15 @@
     body.light-mode .hist-round-winner-ducks   { color: #c07000; }
     body.light-mode .hist-round-winner-baggers { color: #007090; }
     body.light-mode .hist-stats-table .team-hdr.ducks-hdr   td { color: #c07000; }
-    body.light-mode .hist-stats-table .team-hdr.baggers-hdr td { color: #007090; }
+    body.light-mode .hist-stats-table .team-hdr.baggers-hdr  td { color: #007090; }
+    body.light-mode .hist-match-result-badge.result-pirates { color: #2a5fa8; background: rgba(122,159,212,0.12); }
+    body.light-mode .hist-match-result-badge.result-prba    { color: #1a6e44; background: rgba(82,183,136,0.12); }
+    body.light-mode .hist-round-winner-pirates { color: #2a5fa8; }
+    body.light-mode .hist-round-winner-prba    { color: #1a6e44; }
+    body.light-mode .hist-stats-table .team-hdr.pirates-hdr td { color: #2a5fa8; background: rgba(122,159,212,0.08); }
+    body.light-mode .hist-stats-table .team-hdr.prba-hdr    td { color: #1a6e44; background: rgba(82,183,136,0.08); }
+    body.light-mode .clr-pirates { color: #2a5fa8; }
+    body.light-mode .clr-prba    { color: #1a6e44; }
 
     /* Responsive */
     @media (max-width: 520px) {
@@ -6580,6 +6604,89 @@
        r2 (scramble): NET team scores (gross minus handicap strokes).
        null = hole score not available from screenshots.
     ================================================================ */
+
+    /* ================================================================
+       YEAR 1 (2024) SCORING DATA — Dubsdread Golf Course, Orlando, FL
+       One physical round of golf scored across four concurrent formats.
+       Net adjusted scores used throughout.
+       Win = 2 pts · Push = 1 pt each · Loss = 0 pts · Total possible = 36
+    ================================================================ */
+    const H24 = {
+
+      // ---- ROUND 1: Best Ball Doubles | Same-team pairs ----
+      r1: {
+        matches: [
+          { prba:{ names:'Ryne Stone &amp; Stephen Burleson', score:71 },
+            pirates:{ names:'Cody Esbrandt &amp; Donny Bartlett', score:64 },
+            result:'PIRATES WIN', resultTeam:'pirates' },
+          { prba:{ names:'Justin Reeves &amp; Joe Mucha', score:76 },
+            pirates:{ names:'Matt Bova &amp; Karsten Meyer', score:74 },
+            result:'PIRATES WIN', resultTeam:'pirates' },
+          { prba:{ names:'Chris Schneider &amp; Adam Lewandowski', score:67 },
+            pirates:{ names:'Chris Schumann &amp; Jordan Patrou', score:67 },
+            result:'PUSH · 67 – 67', resultTeam:'halved' }
+        ]
+      },
+
+      // ---- ROUND 2: Best Ball Mixed Doubles | Reshuffled same-team pairs ----
+      r2: {
+        matches: [
+          { prba:{ names:'Ryne Stone &amp; Joe Mucha', score:73 },
+            pirates:{ names:'Cody Esbrandt &amp; Jordan Patrou', score:64 },
+            result:'PIRATES WIN', resultTeam:'pirates' },
+          { prba:{ names:'Justin Reeves &amp; Adam Lewandowski', score:67 },
+            pirates:{ names:'Matt Bova &amp; Donny Bartlett', score:68 },
+            result:'PRBA WIN', resultTeam:'prba' },
+          { prba:{ names:'Chris Schneider &amp; Stephen Burleson', score:71 },
+            pirates:{ names:'Chris Schumann &amp; Karsten Meyer', score:67 },
+            result:'PIRATES WIN', resultTeam:'pirates' }
+        ]
+      },
+
+      // ---- ROUND 3: Singles Pairings #1 ----
+      r3: {
+        matches: [
+          { p1:{ name:'Cody Esbrandt',    team:'pirates', score:64 }, p2:{ name:'Ryne Stone',          team:'prba',    score:73 }, result:'PIRATES WIN', resultTeam:'pirates' },
+          { p1:{ name:'Donny Bartlett',   team:'pirates', score:68 }, p2:{ name:'Stephen Burleson',    team:'prba',    score:71 }, result:'PIRATES WIN', resultTeam:'pirates' },
+          { p1:{ name:'Justin Reeves',    team:'prba',    score:76 }, p2:{ name:'Matt Bova',            team:'pirates', score:78 }, result:'PRBA WIN',    resultTeam:'prba'    },
+          { p1:{ name:'Karsten Meyer',    team:'pirates', score:74 }, p2:{ name:'Joe Mucha',            team:'prba',    score:79 }, result:'PIRATES WIN', resultTeam:'pirates' },
+          { p1:{ name:'Chris Schumann',   team:'pirates', score:67 }, p2:{ name:'Chris Schneider',      team:'prba',    score:81 }, result:'PIRATES WIN', resultTeam:'pirates' },
+          { p1:{ name:'Adam Lewandowski', team:'prba',    score:85 }, p2:{ name:'Jordan Patrou',        team:'pirates', score:90 }, result:'PRBA WIN',    resultTeam:'prba'    }
+        ]
+      },
+
+      // ---- ROUND 4: Singles Pairings #2 ----
+      r4: {
+        matches: [
+          { p1:{ name:'Donny Bartlett',   team:'pirates', score:68 }, p2:{ name:'Ryne Stone',           team:'prba',    score:73 }, result:'PIRATES WIN', resultTeam:'pirates' },
+          { p1:{ name:'Cody Esbrandt',    team:'pirates', score:64 }, p2:{ name:'Stephen Burleson',     team:'prba',    score:71 }, result:'PIRATES WIN', resultTeam:'pirates' },
+          { p1:{ name:'Karsten Meyer',    team:'pirates', score:74 }, p2:{ name:'Justin Reeves',         team:'prba',    score:76 }, result:'PIRATES WIN', resultTeam:'pirates' },
+          { p1:{ name:'Matt Bova',        team:'pirates', score:78 }, p2:{ name:'Joe Mucha',             team:'prba',    score:79 }, result:'PIRATES WIN', resultTeam:'pirates' },
+          { p1:{ name:'Chris Schneider',  team:'prba',    score:81 }, p2:{ name:'Jordan Patrou',         team:'pirates', score:90 }, result:'PRBA WIN',    resultTeam:'prba'    },
+          { p1:{ name:'Chris Schumann',   team:'pirates', score:67 }, p2:{ name:'Adam Lewandowski',      team:'prba',    score:85 }, result:'PIRATES WIN', resultTeam:'pirates' }
+        ]
+      },
+
+      // ---- PLAYER STATS ----
+      // r1/r2 = best ball team result (shared with partner); r3/r4 = individual singles
+      stats: [
+        // Putt Pirates
+        { name:'Cody Esbrandt',    team:'pirates', net:64, r1:'W', r2:'W', r3:'W', r4:'W' },
+        { name:'Donny Bartlett',   team:'pirates', net:68, r1:'W', r2:'L', r3:'W', r4:'W' },
+        { name:'Matt Bova',        team:'pirates', net:78, r1:'W', r2:'L', r3:'L', r4:'W' },
+        { name:'Karsten Meyer',    team:'pirates', net:74, r1:'W', r2:'W', r3:'W', r4:'W' },
+        { name:'Chris Schumann',   team:'pirates', net:67, r1:'T', r2:'W', r3:'W', r4:'W' },
+        { name:'Jordan Patrou',    team:'pirates', net:90, r1:'T', r2:'W', r3:'L', r4:'L' },
+        // Patrick Reed's Burner Account
+        { name:'Ryne Stone',       team:'prba',    net:73, r1:'L', r2:'L', r3:'L', r4:'L' },
+        { name:'Stephen Burleson', team:'prba',    net:71, r1:'L', r2:'L', r3:'L', r4:'L' },
+        { name:'Justin Reeves',    team:'prba',    net:76, r1:'L', r2:'W', r3:'W', r4:'L' },
+        { name:'Joe Mucha',        team:'prba',    net:79, r1:'L', r2:'L', r3:'L', r4:'L' },
+        { name:'Chris Schneider',  team:'prba',    net:81, r1:'T', r2:'L', r3:'L', r4:'W' },
+        { name:'Adam Lewandowski', team:'prba',    net:85, r1:'T', r2:'W', r3:'W', r4:'L' }
+      ]
+    };
+
     const H25 = {
 
       // Course par arrays (18 holes)
@@ -7008,6 +7115,51 @@
       );
     }
 
+    // Render a 2024 best-ball match card (pairs format, scores only — no hole expansion)
+    function hist24BBCard(m) {
+      const rc = m.resultTeam === 'pirates' ? 'result-pirates' : m.resultTeam === 'prba' ? 'result-prba' : 'result-halved';
+      return (
+        '<div class="hist24-bb-card">' +
+          '<div class="hist24-bb-row">' +
+            '<span class="clr-prba">' + m.prba.names + '</span>' +
+            '<span class="hist24-score">' + m.prba.score + '</span>' +
+          '</div>' +
+          '<div class="hist24-bb-row">' +
+            '<span class="clr-pirates">' + m.pirates.names + '</span>' +
+            '<span class="hist24-score">' + m.pirates.score + '</span>' +
+          '</div>' +
+          '<div style="margin-top:.4rem">' +
+            '<span class="hist-match-result-badge ' + rc + '">' + m.result + '</span>' +
+          '</div>' +
+        '</div>'
+      );
+    }
+
+    // Render a 2024 singles match card (individual head-to-head)
+    function hist24SinglesCard(m) {
+      const rc = m.resultTeam === 'pirates' ? 'result-pirates' : m.resultTeam === 'prba' ? 'result-prba' : 'result-halved';
+      const c1 = 'clr-' + m.p1.team;
+      const c2 = 'clr-' + m.p2.team;
+      return (
+        '<div class="hist24-singles-card">' +
+          '<span class="' + c1 + '">' + m.p1.name + '</span>' +
+          '&thinsp;<small style="opacity:.65">(' + m.p1.score + ')</small>' +
+          ' <span style="color:var(--color-text-muted);padding:0 .3rem">vs</span> ' +
+          '<span class="' + c2 + '">' + m.p2.name + '</span>' +
+          '&thinsp;<small style="opacity:.65">(' + m.p2.score + ')</small>' +
+          '<span class="hist-match-result-badge ' + rc + '" style="margin-left:auto">' + m.result + '</span>' +
+        '</div>'
+      );
+    }
+
+    // Color-code a W/L/T result cell for the 2024 stats table
+    function hist24ResCell(v) {
+      if (v === 'W') return '<td class="stat-w">W</td>';
+      if (v === 'L') return '<td class="stat-l">L</td>';
+      if (v === 'T') return '<td class="stat-t">T</td>';
+      return '<td>&mdash;</td>';
+    }
+
     // Build the full 2025 history section HTML and inject it into the page
     function initHistory() {
       const root = document.getElementById('hist-root');
@@ -7043,7 +7195,7 @@
               '</div>' +
             '</div>' +
             '<div class="hist-narrative">' +
-              '<p>Year 2 sent the Bros south to Reunion Resort in Orlando, where the Tee Baggers struck first &mdash; rolling to a 6&ndash;4 win in Friday&rsquo;s opening scramble round. But captain Cody Esbrandt&rsquo;s Cluster Ducks had other plans. Saturday&rsquo;s singles matchplay on the Palmer Course turned into a showcase: Bowman cruised to a W6&amp;5, Schneider posted a sensational W8&amp;7, and the Ducks racked up a dominant 13&ndash;7 day to seize the overall lead. Sunday&rsquo;s finale ran two formats simultaneously on the Nicklaus Course &mdash; R1 Low Ball/Low Total went Baggers 6&ndash;4, while R4 singles finished in a dead-even 10&ndash;10 tie. When the final numbers were tallied, the Ducks held on 31&ndash;29, claiming Year 2 glory and leaving captain Ryne Stone&rsquo;s Baggers one point short.</p>' +
+              '<p>Year 2 sent the Bros south to Reunion Resort in Orlando, where the Tee Baggers struck first &mdash; rolling to a 6&ndash;4 win in Friday&rsquo;s opening scramble round. But captain Cody Esbrandt&rsquo;s Cluster Ducks had other plans. Saturday&rsquo;s singles matchplay on the Palmer Course turned into a showcase: Bowman cruised to a W6&amp;5, Schneider posted a sensational W8&amp;7, and the Ducks racked up a dominant 13&ndash;7 day to seize the overall lead. Sunday&rsquo;s finale ran two formats simultaneously on the Nicklaus Course &mdash; R1 Low Ball/Low Total went Baggers 6&ndash;4, while R4 singles finished in a dead-even 10&ndash;10 tie. When the final numbers were tallied, the Ducks held on 31&ndash;29, claiming Year 2 glory and leaving captain Ryne Stone&rsquo;s Baggers one point short &mdash; and Ryne himself sitting at a quietly devastating 0&ndash;2 as a captain. He will almost certainly get one last crack at redemption in 2026. We&rsquo;re rooting for him. Kind of.</p>' +
             '</div>' +
             '<button class="hist-expand-btn" id="hist-expand-btn-y2025" onclick="histToggleYear(\'y2025\')">' +
               '▼ View Full Scorecards &amp; Stats' +
@@ -7196,40 +7348,160 @@
 
           '<div class="hist-meta">' +
             '<div class="hist-teams-row">' +
-              '<div class="hist-team prba">' +
-                '<div class="hist-team-name clr-prba">Patrick Reed\'s Burner Account</div>' +
-                '<div class="hist-team-captain">Capt. Ryne Stone</div>' +
-              '</div>' +
-              '<div class="hist-vs-block">' +
-                '<div class="hist-score-display" style="font-size:1.05rem;color:var(--color-gold)">Year 1</div>' +
-                '<div class="hist-winner-label">The inaugural BBRC</div>' +
-              '</div>' +
               '<div class="hist-team pirates">' +
                 '<div class="hist-team-name clr-pirates">Putt Pirates</div>' +
                 '<div class="hist-team-captain">Capt. Cody Esbrandt</div>' +
               '</div>' +
+              '<div class="hist-vs-block">' +
+                '<div class="hist-score-display">27&thinsp;:&thinsp;9</div>' +
+                '<div class="hist-winner-label">Pirates Win &middot; Year 1</div>' +
+              '</div>' +
+              '<div class="hist-team prba">' +
+                '<div class="hist-team-name clr-prba">Patrick Reed\'s Burner Account</div>' +
+                '<div class="hist-team-captain">Capt. Ryne Stone</div>' +
+              '</div>' +
             '</div>' +
             '<div class="hist-narrative">' +
-              '<p>The inaugural Basic Bros Ryder Cup took place at historic Dubsdread Golf Course in Orlando, FL &mdash; one of the oldest courses in the Southeast, built in 1924. With 12 players squaring off in a 1-round format, Year 1 laid the foundation for the tournament tradition. Handicaps were rough estimates, but the competitive spirit was already in full force. Pairings and scorecards are preserved below.</p>' +
+              '<p>The inaugural Basic Bros Ryder Cup descended on Dubsdread Golf Course in Orlando &mdash; a historic 100-year-old track that had never seen anything quite like Jordan Patrou shooting a 90. Twelve players, one round of golf, four scoring formats, and a result that was never really in doubt once Cody Esbrandt pulled a 64 out of thin air and dared anyone to match him. Nobody did. Captain Cody&rsquo;s Putt Pirates dismantled Captain Ryne Stone&rsquo;s Patrick Reed&rsquo;s Burner Account 27&ndash;9 in a performance so lopsided it required several rounds of drinks to fully process. Ryne himself went 0-for-4 on the day &mdash; the inaugural chapter of what would prove to be a deeply concerning pattern. Joe Mucha and Stephen Burleson also went 0-for-4, cementing their legacy as the guys who were definitely present. On the bright side for PRBA, Adam Lewandowski and Justin Reeves each scraped together 2 wins &mdash; exactly 2 more than their captain.</p>' +
             '</div>' +
             '<button class="hist-expand-btn" id="hist-expand-btn-y2024" onclick="histToggleYear(\'y2024\')">' +
-              '&#9660; View Pairings &amp; Scorecards' +
+              '&#9660; View Full Scorecards &amp; Stats' +
             '</button>' +
           '</div>' +
 
+          // Expandable detail section
           '<div class="hist-detail" id="hist-detail-y2024" style="display:none">' +
-            '<p style="font-size:.82rem;color:var(--color-text-muted);margin-bottom:1.25rem">Year 1 used a 1-round format with 12 players. Handicaps were rough estimates &mdash; results are for historical reference.</p>' +
-            '<div style="margin-bottom:1.75rem">' +
-              '<div style="font-family:\'Cinzel\',serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-gold);margin-bottom:.6rem">Pairings &amp; Team Scoring</div>' +
-              '<img src="BBRC 2024 - Parings + Team Scoring.png" alt="2024 Pairings and Team Scoring" style="width:100%;border-radius:8px;border:1px solid var(--color-border);display:block" />' +
-            '</div>' +
-            '<div>' +
-              '<div style="font-family:\'Cinzel\',serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-gold);margin-bottom:.6rem">Scorecards</div>' +
-              '<img src="BBRC Scorecards - Dubsdread 2024.png" alt="2024 Scorecards" style="width:100%;border-radius:8px;border:1px solid var(--color-border);display:block" />' +
-            '</div>' +
-          '</div>' +
 
-        '</div>'; // end hist-year-entry 2024
+            // Final score graphic
+            '<div class="hist-final-graphic">' +
+              '<div class="hist-final-team">' +
+                '<div class="hist-final-team-name clr-pirates">Putt Pirates</div>' +
+                '<div class="hist-final-score-num clr-pirates">27</div>' +
+                '<div class="hist-final-caption">Champions &middot; Year 1</div>' +
+              '</div>' +
+              '<div class="hist-vs-divider">vs</div>' +
+              '<div class="hist-final-team">' +
+                '<div class="hist-final-team-name clr-prba">Patrick Reed\'s Burner Account</div>' +
+                '<div class="hist-final-score-num clr-prba">9</div>' +
+                '<div class="hist-final-caption">Runner-Up</div>' +
+              '</div>' +
+            '</div>' +
+
+            // Round summary table
+            '<div style="overflow-x:auto;margin-bottom:1.5rem">' +
+              '<table class="hist-round-table">' +
+                '<thead><tr>' +
+                  '<th>Round</th><th>Format</th><th>Matches</th>' +
+                  '<th class="clr-pirates">Pirates</th><th class="clr-prba">PRBA</th>' +
+                '</tr></thead>' +
+                '<tbody>' +
+                  '<tr><td>R1</td><td>Best Ball Doubles</td><td>3</td><td class="hist-round-winner-pirates">5</td><td>1</td></tr>' +
+                  '<tr><td>R2</td><td>Best Ball Mixed</td><td>3</td><td class="hist-round-winner-pirates">4</td><td>2</td></tr>' +
+                  '<tr><td>R3</td><td>Singles Pairings #1</td><td>6</td><td class="hist-round-winner-pirates">8</td><td>4</td></tr>' +
+                  '<tr><td>R4</td><td>Singles Pairings #2</td><td>6</td><td class="hist-round-winner-pirates">10</td><td>2</td></tr>' +
+                  '<tr><td><strong>TOTAL</strong></td><td colspan="2"><small style="color:var(--color-text-muted)">Win = 2 pts &middot; Push = 1 pt each &middot; Total possible = 36</small></td>' +
+                  '<td class="hist-round-winner-pirates"><strong>27</strong></td><td><strong>9</strong></td></tr>' +
+                '</tbody>' +
+              '</table>' +
+            '</div>' +
+
+            '<p style="font-size:.82rem;color:var(--color-text-muted);margin-bottom:1rem">Year 1 used 1 round of golf at Dubsdread (Par 70) with 4 concurrent scoring formats. Handicaps were rough estimates. Net adjusted scores used throughout.</p>' +
+
+            // Inner round tabs
+            '<div class="inner-tabs" role="tablist">' +
+              '<button class="inner-tab active" role="tab" onclick="showInnerTab(\'h24\',\'r1\',this)">R1 · Best Ball Doubles</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h24\',\'r2\',this)">R2 · Best Ball Mixed</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h24\',\'r3\',this)">R3 · Singles #1</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h24\',\'r4\',this)">R4 · Singles #2</button>' +
+              '<button class="inner-tab" role="tab" onclick="showInnerTab(\'h24\',\'stats\',this)">Player Stats</button>' +
+            '</div>';
+
+      // ---- R1: Best Ball Doubles ----
+      html +=
+        '<div id="h24-r1" class="inner-section active">' +
+          '<div class="hist-round-info">' +
+            '<div class="hist-round-info-title">Round 1 &mdash; Best Ball Doubles</div>' +
+            '<div>Dubsdread Golf Course &middot; Par 70 &middot; Orlando, FL</div>' +
+            '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Same-team pairs. Each player plays their own ball; the lower net score of the two counts as the pair&rsquo;s team total. Lower total wins the match.</div>' +
+            '<div class="hist-round-pts">' +
+              '<span class="hist-round-pts-item clr-pirates">Pirates 5</span>' +
+              '<span class="hist-round-pts-item clr-prba">PRBA 1</span>' +
+            '</div>' +
+          '</div>';
+      H24.r1.matches.forEach(m => { html += hist24BBCard(m); });
+      html += '</div>';
+
+      // ---- R2: Best Ball Mixed Doubles ----
+      html +=
+        '<div id="h24-r2" class="inner-section">' +
+          '<div class="hist-round-info">' +
+            '<div class="hist-round-info-title">Round 2 &mdash; Best Ball Mixed Doubles</div>' +
+            '<div>Dubsdread Golf Course &middot; Par 70 &middot; Orlando, FL</div>' +
+            '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Reshuffled same-team pairs &mdash; different partners than R1, same best-ball format. All four formats scored from the same physical round of golf.</div>' +
+            '<div class="hist-round-pts">' +
+              '<span class="hist-round-pts-item clr-pirates">Pirates 4</span>' +
+              '<span class="hist-round-pts-item clr-prba">PRBA 2</span>' +
+            '</div>' +
+          '</div>';
+      H24.r2.matches.forEach(m => { html += hist24BBCard(m); });
+      html += '</div>';
+
+      // ---- R3: Singles Pairings #1 ----
+      html +=
+        '<div id="h24-r3" class="inner-section">' +
+          '<div class="hist-round-info">' +
+            '<div class="hist-round-info-title">Round 3 &mdash; Singles Pairings #1</div>' +
+            '<div>Dubsdread Golf Course &middot; Par 70 &middot; Orlando, FL</div>' +
+            '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Head-to-head singles. Each player&rsquo;s individual net score compared directly. Lower score wins. Win = 2 pts.</div>' +
+            '<div class="hist-round-pts">' +
+              '<span class="hist-round-pts-item clr-pirates">Pirates 8</span>' +
+              '<span class="hist-round-pts-item clr-prba">PRBA 4</span>' +
+            '</div>' +
+          '</div>';
+      H24.r3.matches.forEach(m => { html += hist24SinglesCard(m); });
+      html += '</div>';
+
+      // ---- R4: Singles Pairings #2 ----
+      html +=
+        '<div id="h24-r4" class="inner-section">' +
+          '<div class="hist-round-info">' +
+            '<div class="hist-round-info-title">Round 4 &mdash; Singles Pairings #2</div>' +
+            '<div>Dubsdread Golf Course &middot; Par 70 &middot; Orlando, FL</div>' +
+            '<div style="margin-top:.3rem;font-size:.82rem;color:var(--color-text-muted)">Second set of head-to-head singles with different matchups. Same format, same round of golf. Win = 2 pts.</div>' +
+            '<div class="hist-round-pts">' +
+              '<span class="hist-round-pts-item clr-pirates">Pirates 10</span>' +
+              '<span class="hist-round-pts-item clr-prba">PRBA 2</span>' +
+            '</div>' +
+          '</div>';
+      H24.r4.matches.forEach(m => { html += hist24SinglesCard(m); });
+      html += '</div>';
+
+      // ---- Player Stats tab ----
+      html += '<div id="h24-stats" class="inner-section"><div class="hist-stats-wrap"><table class="hist-stats-table">';
+      html += '<thead><tr><th>Player</th><th>Net</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>Record</th></tr></thead><tbody>';
+      html += '<tr class="team-hdr pirates-hdr"><td colspan="7">Putt Pirates &mdash; Champions &middot; 27 pts</td></tr>';
+      H24.stats.filter(p => p.team === 'pirates').forEach(p => {
+        const w = ['r1','r2','r3','r4'].filter(r => p[r] === 'W').length;
+        const l = ['r1','r2','r3','r4'].filter(r => p[r] === 'L').length;
+        const t = ['r1','r2','r3','r4'].filter(r => p[r] === 'T').length;
+        html += '<tr><td>' + p.name + '</td><td>' + p.net + '</td>' +
+          hist24ResCell(p.r1) + hist24ResCell(p.r2) + hist24ResCell(p.r3) + hist24ResCell(p.r4) +
+          '<td>' + w + '&ndash;' + l + (t ? '&ndash;' + t : '') + '</td></tr>';
+      });
+      html += '<tr class="team-hdr prba-hdr"><td colspan="7">Patrick Reed\'s Burner Account &mdash; Runner-Up &middot; 9 pts</td></tr>';
+      H24.stats.filter(p => p.team === 'prba').forEach(p => {
+        const w = ['r1','r2','r3','r4'].filter(r => p[r] === 'W').length;
+        const l = ['r1','r2','r3','r4'].filter(r => p[r] === 'L').length;
+        const t = ['r1','r2','r3','r4'].filter(r => p[r] === 'T').length;
+        html += '<tr><td>' + p.name + '</td><td>' + p.net + '</td>' +
+          hist24ResCell(p.r1) + hist24ResCell(p.r2) + hist24ResCell(p.r3) + hist24ResCell(p.r4) +
+          '<td>' + w + '&ndash;' + l + (t ? '&ndash;' + t : '') + '</td></tr>';
+      });
+      html += '</tbody></table>';
+      html += '<p style="font-size:.75rem;color:var(--color-text-muted);margin-top:.75rem">Net adjusted scores (handicap applied). R1 &amp; R2 results reflect team (pairs) outcome. All four formats scored from the same 18-hole round at Dubsdread.</p>';
+      html += '</div></div>';
+
+      html += '</div></div>'; // end hist-detail-y2024, hist-year-entry
 
       root.innerHTML = html;
     }
