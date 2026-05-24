@@ -5131,7 +5131,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-pletcher" data-team="gvo" data-tier="t1">
+        <div class="player-card" id="player-pletcher" data-team="gvo" data-tier="t1" data-photo="PletcherPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">MP</div>
             <div class="player-card-info">
@@ -6254,13 +6254,16 @@
     // Called when Approving a submission so the page updates without a full reload.
     function pushSingleBioToCard(id) {
       const s = allSubmissions[id];
-      if (!s || !s.firstName || !s.lastName) return;
-      const nameKey = (s.firstName + ' ' + s.lastName).toLowerCase().trim();
+      if (!s) return;
+      // Match by explicit playerId first, then fall back to "First Last" name matching
+      const nameKey = (s.firstName && s.lastName) ? (s.firstName + ' ' + s.lastName).toLowerCase().trim() : null;
       document.querySelectorAll('.player-card').forEach(card => {
         const nameEl = card.querySelector('.player-card-name');
         const bioEl  = card.querySelector('.player-card-bio');
         if (!nameEl || !bioEl) return;
-        if (nameEl.textContent.replace(/★/g, '').trim().toLowerCase() !== nameKey) return;
+        const matchById = s.playerId && card.id === s.playerId;
+        const matchByName = nameKey && nameEl.textContent.replace(/★/g, '').trim().toLowerCase() === nameKey;
+        if (!matchById && !matchByName) return;
         bioEl.dataset.bioJson = JSON.stringify(s);
         const lines = [];
         if (s.nickname) lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(s.nickname)}</div>`);
@@ -6306,12 +6309,15 @@
         const all = snap.val();
         if (!all) return;
 
-        // Build lookup: "full name lowercase" → bio object
-        const approvedMap = {};
+        // Build two lookups: one by explicit playerId, one by "first last" name
+        const approvedById   = {};
+        const approvedByName = {};
         Object.values(all).forEach(s => {
-          if (s.status === 'approved' && s.firstName && s.lastName) {
+          if (s.status !== 'approved') return;
+          if (s.playerId) approvedById[s.playerId] = s;
+          if (s.firstName && s.lastName) {
             const key = (s.firstName + ' ' + s.lastName).toLowerCase().trim();
-            approvedMap[key] = s;
+            approvedByName[key] = s;
           }
         });
 
@@ -6320,9 +6326,9 @@
           const bioEl  = card.querySelector('.player-card-bio');
           if (!nameEl || !bioEl) return;
 
-          // Strip captain star before matching
+          // playerId match takes priority over name match
           const nameKey = nameEl.textContent.replace(/★/g, '').trim().toLowerCase();
-          const bio = approvedMap[nameKey];
+          const bio = approvedById[card.id] || approvedByName[nameKey];
           if (!bio) return;
 
           // Store full bio JSON on element so openBioModal() can read it
@@ -6587,6 +6593,7 @@
 
       card.querySelector('.sub-card-body').innerHTML = `
         <div class="sub-edit-grid">
+          <div class="sub-field-full"><div class="sub-field-label">Player ID (e.g. player-sharkey) — overrides name matching if set</div><input class="sub-edit-input" data-field="playerId" value="${v(s.playerId)}"></div>
           <div><div class="sub-field-label">First Name</div><input class="sub-edit-input" data-field="firstName" value="${v(s.firstName)}"></div>
           <div><div class="sub-field-label">Last Name</div><input class="sub-edit-input" data-field="lastName" value="${v(s.lastName)}"></div>
           <div><div class="sub-field-label">Discord</div><input class="sub-edit-input" data-field="discordUsername" value="${v(s.discordUsername)}"></div>
