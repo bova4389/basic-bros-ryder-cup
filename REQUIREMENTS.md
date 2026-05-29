@@ -46,7 +46,7 @@ A public-facing league website for the **Basic Bros Ryder Cup** — an annual 3-
 - Condo assignments:
   - Condo 1: Spencer, Schumann, Ron, Jason, Max, Sharkey
   - Condo 2: Taylor, Donny, Bash, Raheem, Davis, Robert
-  - Condo 3: Adam, Justin, Joe, Cass, Renato, Ryne
+  - Condo 3: Adam, Mike Gaudet, Joe, Cass, Renato, Ryne
   - Condo 4: Bova, Mitch, Karsten, Teddy, Cody, Jeremy
 - Prize fund: 1st place $225/player · 2nd place $75/player
 - Entry fee: ~$900/player

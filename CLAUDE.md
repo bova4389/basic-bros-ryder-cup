@@ -14,12 +14,30 @@ A fan-facing website for the **Basic Bros Ryder Cup** — an annual 3-day match 
 
 ```
 basic-bros-ryder-cup/
-├── CLAUDE.md              ← you are here
-├── REQUIREMENTS.md        ← full feature and content spec
-├── index.html             ← main site (single HTML file)
-├── assets/
-│   └── logo.png           ← Basic Bros Ryder Cup logo
-└── README.md
+├── CLAUDE.md                    ← you are here
+├── REQUIREMENTS.md              ← full feature and content spec
+├── index.html                   ← main site (single HTML file — everything lives here)
+├── Basic_Bros_Logo.png          ← site logo (referenced directly in HTML)
+├── site.webmanifest
+├── BBRC Group Photo 2024.png    ← used in Tournament History section
+├── BBRC Group Photo 2025.png    ← used in Tournament History section
+├── Bro Pics/                    ← player profile photos (see section below)
+│   ├── BovaPic.png
+│   ├── CodyPic.png
+│   ├── Donny2025.png
+│   ├── JasonPic.png
+│   ├── Karsten2025.png
+│   ├── MuchaPic.png
+│   ├── PletcherPic.png
+│   ├── RaheemPic.png
+│   ├── RynePic.png
+│   ├── SchuPic.png
+│   ├── SharkeyPic.png
+│   ├── SpencerPic.png
+│   └── TaylorPic.PNG
+└── img/
+    ├── Pawleys/                 ← hole photos for Pawleys Plantation (18 holes)
+    └── Caledonia/               ← hole photos for Caledonia Golf & Fish Club (18 holes)
 ```
 
 **Stack:**
@@ -48,10 +66,81 @@ Safari on mobile caches pages aggressively. To prevent users from seeing stale v
 
 ---
 
+## PLAYER PHOTOS
+
+All player profile photos live in the `Bro Pics/` folder in the project root.
+
+**How they wire up in the HTML:**
+- Each `.player-card` element has a `data-photo="Bro Pics/filename.png"` attribute
+- On page load, `swapPlayerAvatars()` reads that attribute and replaces the initials avatar with the photo
+- The photo also displays in the full-screen bio modal via `openBioModal()`
+- Players without a photo show their initials in a colored circle (green = GVO, purple = TI, gray = alumni)
+
+**Naming convention:** `[FirstName]Pic.png` for standard shots, `[FirstName]YYYY.png` for year-specific photos (e.g. `Donny2025.png`).
+
+**Adding a new photo:** Drop the file into `Bro Pics/`, then add `data-photo="Bro Pics/YourFile.png"` to the player's `.player-card` div in `index.html`.
+
+---
+
+## 2026 ROSTER STATE
+
+**Good Vibes Only — Captain: Matt Bova ★**
+
+| Player | Tier | Hdcp |
+|---|---|---|
+| Taylor Touchberry | T1 | 12 |
+| Jason Damiani | T1 | 12 |
+| Mitch Pletcher | T1 | 15 |
+| Chris Schumann | T1 | 16 |
+| Sebastian "Bash" Strobel | T1 | 16 |
+| Cody Esbrandt | T1 | 16 |
+| Matt Bova ★ | T2 | 28 |
+| Spencer Schumann | T2 | 42 |
+| Teddy Smith | T2 | 42 |
+| Raheem Bishop | T2 | 26 |
+| Joe Mucha | T2 | 26 |
+| Joe Sharkey | T2 | 22 |
+
+**Transfusion Intrusion — Captain: Adam Lewandowski ★**
+
+| Player | Tier | Hdcp |
+|---|---|---|
+| Mike Davis | T1 | 3 |
+| Renato | T1 | 11 |
+| Robert Stephenson | T1 | 14 |
+| Ryne Stone | T1 | 18 |
+| Donny Bartlett | T1 | 19 |
+| Mike Gaudet | T1 | 22 |
+| Karsten Meyer | T2 | 24 |
+| Max Harris | T2 | 26 |
+| Ron Pannullo | T2 | 30 |
+| Adam Lewandowski ★ | T2 | 34 |
+| Jeremy Hermanson | T2 | 35 |
+| Cassady Glenn | T2 | 44 |
+
+**Alumni (not competing in 2026):**
+Justin Reeves (2024–25), Johnny Pullman (2025), Jordan Partou (2024–25), Bennett Heath (2025), Stephen Burleson (2024), Jake Hammer (2025), Chris Schneider (2024–25), Mark Bowman (2025), Mike Gaudet (2025 — now active in 2026)
+
+**Note on Justin Reeves:** Justin competed in 2024 and 2025 and may return in a future year. His 2024/2025 scores remain in the Tournament History data under his name. His player card is in the alumni section.
+
+---
+
+## SCRAMBLE HANDICAP FORMULA
+
+For the Day 1 Scramble round, team handicap is calculated as:
+
+**`round((player1_hdcp + player2_hdcp) × 0.35)`** — standard rounding (not ceiling)
+
+Example: Mike Gaudet (22) + Hermanson (35) = 57 × 0.35 = 19.95 → **20**
+
+This formula is confirmed against all 6 groups in the 2026 Day 1 pairings table.
+
+---
+
 ## BRANDING & VISUAL IDENTITY
 
 ### Logo
-`assets/logo.png` — discover filename by directory listing, do not hardcode path.
+`Basic_Bros_Logo.png` in the project root — do not hardcode assumptions about other asset paths.
 
 ### Color Palette (from logo)
 - Dark navy/charcoal — primary background
@@ -59,6 +148,11 @@ Safari on mobile caches pages aggressively. To prevent users from seeing stale v
 - Cream/ivory — primary text
 - Gold/yellow — star accents, awards, highlights
 - Red — flag detail, alert states
+
+### Button Classes
+- `.btn-primary` — green filled (main CTAs)
+- `.btn-secondary` — gold outline (transparent background)
+- `.btn-gold` — gold filled (used for The Bros homepage link to make it stand out)
 
 ### Persistent Header
 - "Basic Bros Ryder Cup" on every page
@@ -82,6 +176,21 @@ Top-level tabs (in order):
 4. **Tournament History** — 2024 (Year 1), 2025 (Year 2)
 5. **Players** — bios, stats, career records
 6. **Admin** — password-protected, CSV upload, bio approval
+
+---
+
+## BIO SYSTEM
+
+Player bios are submitted via a form and stored in Firebase. Approved bios are loaded on page load and injected into each player card.
+
+**Card preview shows (in order):**
+1. Known as (nickname) — only if different from the player's first name
+2. Yearbook quote (truncated to 100 chars)
+3. Fun fact (truncated to 100 chars)
+4. "This person has no fun facts." — shown only if both yearbook quote AND fun fact are empty
+5. "Show More" button → opens full-screen bio modal
+
+**Full modal shows:** Known as, Hometown, Job, Family, Walk-up Song, Fun fact, Discord
 
 ---
 
@@ -120,7 +229,6 @@ Firebase is the backend for player bio submissions and tournament data storage. 
 4. **Comment all code in plain English** — owner is not an engineer
 5. **Test in browser** after every change
 6. **Commit and push to GitHub** on completion of each working feature
-7. **Never hardcode filenames** — use directory listings to discover asset names
 
 ---
 
