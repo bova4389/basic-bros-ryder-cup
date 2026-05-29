@@ -1,0 +1,17 @@
+{
+  "name": "Basic Bros Ryder Cup",
+  "short_name": "BBRC",
+  "description": "The official site for the Basic Bros Ryder Cup annual golf tournament.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1923",
+  "theme_color": "#0f1923",
+  "icons": [
+    {
+      "src": "Basic_Bros_Logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

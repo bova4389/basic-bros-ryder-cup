@@ -542,6 +542,20 @@
       transform: translateY(-2px);
     }
 
+    /* Gold filled button — used for The Bros homepage link */
+    .btn-gold {
+      background: var(--color-gold);
+      color: #0f1923;
+      border: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-gold:hover {
+      background: #e8c84a;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
     /* Thin divider line */
     .divider {
       border: none;
@@ -3203,7 +3217,7 @@
       <div class="quick-links">
         <button class="btn btn-primary" onclick="showTab('tournament2026', null)">⛳ View 2026 Tournament</button>
         <button class="btn btn-primary" onclick="showTab('rulebook', null)">📋 Read the Rulebook</button>
-        <button class="btn btn-secondary" onclick="showTab('players', null)">👤 The Bros</button>
+        <button class="btn btn-gold" onclick="showTab('players', null)">👤 The Bros</button>
       </div>
 
       <!-- Founding Bros: gold-bordered callout card — sits at bottom of home page above footer -->
@@ -3594,7 +3608,7 @@
           <div class="condo-card">
             <div class="condo-title">Condo 3</div>
             <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-lewandowski')">Adam Lewandowski</span></div>
-            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-reeves')">Justin Reeves</span></div>
+            <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-gaudet')">Mike Gaudet</span></div>
             <div class="condo-player"><span class="name-gvo player-link" onclick="goToPlayer('player-mucha')">Joe Mucha</span></div>
             <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-glenn')">Cassady Glenn</span></div>
             <div class="condo-player"><span class="name-ti player-link" onclick="goToPlayer('player-renato')">Renato</span></div>
@@ -3733,9 +3747,9 @@
               <span class="player-row-hdcp">19</span>
             </div>
             <div class="player-row">
-              <span class="player-row-name player-link" onclick="goToPlayer('player-reeves')">Justin Reeves</span>
+              <span class="player-row-name player-link" onclick="goToPlayer('player-gaudet')">Mike Gaudet</span>
               <span class="tier-badge tier-badge-t1">T1</span>
-              <span class="player-row-hdcp">20</span>
+              <span class="player-row-hdcp">22</span>
             </div>
 
             <div class="tier-group-label">Tier 2</div>
@@ -3839,7 +3853,7 @@
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:33am</span>
-                  <span>Group 4 — <span class="name-ti player-link" onclick="goToPlayer('player-reeves')">Justin</span> + <span class="name-ti player-link" onclick="goToPlayer('player-hermanson')">Hermanson</span> vs. <span class="name-gvo player-link" onclick="goToPlayer('player-damiani')">Jason</span> + <span class="name-gvo player-link" onclick="goToPlayer('player-bova')">Bova</span></span>
+                  <span>Group 4 — <span class="name-ti player-link" onclick="goToPlayer('player-gaudet')">Mike G</span> + <span class="name-ti player-link" onclick="goToPlayer('player-hermanson')">Hermanson</span> vs. <span class="name-gvo player-link" onclick="goToPlayer('player-damiani')">Jason</span> + <span class="name-gvo player-link" onclick="goToPlayer('player-bova')">Bova</span></span>
                 </div>
                 <div class="schedule-item">
                   <span class="schedule-time">9:43am</span>
@@ -4794,8 +4808,8 @@
               </tr>
               <tr>
                 <td class="hdcp-cell">9:33am</td>
-                <td><span class="name-ti player-link" onclick="goToPlayer('player-reeves')">Justin</span> (20) + <span class="name-ti player-link" onclick="goToPlayer('player-hermanson')">Hermanson</span> (35)</td>
-                <td class="hdcp-cell">19</td>
+                <td><span class="name-ti player-link" onclick="goToPlayer('player-gaudet')">Mike G</span> (22) + <span class="name-ti player-link" onclick="goToPlayer('player-hermanson')">Hermanson</span> (35)</td>
+                <td class="hdcp-cell">20</td>
                 <td class="vs-cell">VS</td>
                 <td><span class="name-gvo player-link" onclick="goToPlayer('player-damiani')">Jason</span> (12) + <span class="name-gvo player-link" onclick="goToPlayer('player-bova')">Bova</span> (28)</td>
                 <td class="hdcp-cell">14</td>
@@ -4990,7 +5004,7 @@
 
         <!-- ==================== GOOD VIBES ONLY ==================== -->
 
-        <div class="player-card" id="player-bova" data-team="gvo" data-tier="t2" data-history='["2025-baggers","2024-pirates"]' data-photo="BovaPic.png">
+        <div class="player-card" id="player-bova" data-team="gvo" data-tier="t2" data-history='["2025-baggers","2024-pirates"]' data-photo="Bro Pics/BovaPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">MB</div>
             <div class="player-card-info">
@@ -5006,7 +5020,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="SchuPic.png">
+        <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/SchuPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">CS</div>
             <div class="player-card-info">
@@ -5022,7 +5036,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-sschumann" data-team="gvo" data-tier="t2" data-photo="SpencerPic.png">
+        <div class="player-card" id="player-sschumann" data-team="gvo" data-tier="t2" data-photo="Bro Pics/SpencerPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">SS</div>
             <div class="player-card-info">
@@ -5038,7 +5052,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]' data-photo="TaylorPic.PNG" data-photo-position="top">
+        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]' data-photo="Bro Pics/TaylorPic.PNG" data-photo-position="top">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">TT</div>
             <div class="player-card-info">
@@ -5086,7 +5100,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-damiani" data-team="gvo" data-tier="t1">
+        <div class="player-card" id="player-damiani" data-team="gvo" data-tier="t1" data-photo="Bro Pics/JasonPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JD</div>
             <div class="player-card-info">
@@ -5102,7 +5116,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-bishop" data-team="gvo" data-tier="t2">
+        <div class="player-card" id="player-bishop" data-team="gvo" data-tier="t2" data-photo="Bro Pics/RaheemPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">RB</div>
             <div class="player-card-info">
@@ -5118,7 +5132,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2" data-history='["2025-ducks","2024-prba"]' data-photo="MuchaPic.png">
+        <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2" data-history='["2025-ducks","2024-prba"]' data-photo="Bro Pics/MuchaPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JM</div>
             <div class="player-card-info">
@@ -5134,7 +5148,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-pletcher" data-team="gvo" data-tier="t1" data-photo="PletcherPic.png">
+        <div class="player-card" id="player-pletcher" data-team="gvo" data-tier="t1" data-photo="Bro Pics/PletcherPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">MP</div>
             <div class="player-card-info">
@@ -5150,7 +5164,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-sharkey" data-team="gvo" data-tier="t2" data-photo="SharkeyPic.png">
+        <div class="player-card" id="player-sharkey" data-team="gvo" data-tier="t2" data-photo="Bro Pics/SharkeyPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JS</div>
             <div class="player-card-info">
@@ -5166,7 +5180,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="CodyPic.png">
+        <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/CodyPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">CE</div>
             <div class="player-card-info">
@@ -5216,7 +5230,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-pirates"]' data-photo="Donny2025.png">
+        <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-pirates"]' data-photo="Bro Pics/Donny2025.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">DB</div>
             <div class="player-card-info">
@@ -5280,23 +5294,22 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-reeves" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]'>
+        <div class="player-card" id="player-reeves" data-team="alumni" data-history='["2025-baggers","2024-prba"]'>
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-ti">JR</div>
+            <div class="player-avatar player-avatar-alumni">JR</div>
             <div class="player-card-info">
               <div class="player-card-name">Justin Reeves</div>
-              <div class="player-card-team">Transfusion Intrusion</div>
+              <div class="player-card-team">Not competing in 2026</div>
             </div>
-            <span class="tier-badge tier-badge-t1">T1</span>
           </div>
           <div class="player-card-stats">
-            <div class="player-stat"><span class="player-stat-label">Hdcp</span><span class="player-stat-val">20</span></div>
-                        <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
+            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2024–25</span></div>
+            <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-stone" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]' data-photo="RynePic.png">
+        <div class="player-card" id="player-stone" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]' data-photo="Bro Pics/RynePic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">RS</div>
             <div class="player-card-info">
@@ -5344,7 +5357,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-pirates"]' data-photo="Karsten2025.png">
+        <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/Karsten2025.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">KM</div>
             <div class="player-card-info">
@@ -5487,16 +5500,17 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-gaudet" data-team="alumni" data-history='["2025-baggers"]'>
+        <div class="player-card" id="player-gaudet" data-team="ti" data-tier="t1" data-history='["2025-baggers"]'>
           <div class="player-card-top">
-            <div class="player-avatar player-avatar-alumni">MG</div>
+            <div class="player-avatar player-avatar-ti">MG</div>
             <div class="player-card-info">
               <div class="player-card-name">Mike Gaudet</div>
-              <div class="player-card-team">Not competing in 2026</div>
+              <div class="player-card-team">Transfusion Intrusion</div>
             </div>
+            <span class="tier-badge tier-badge-t1">T1</span>
           </div>
           <div class="player-card-stats">
-            <div class="player-stat"><span class="player-stat-label">Years</span><span class="player-stat-val">2025</span></div>
+            <div class="player-stat"><span class="player-stat-label">Hdcp</span><span class="player-stat-val">22</span></div>
             <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
@@ -6269,10 +6283,18 @@
         if (!matchById && !matchByName) return;
         bioEl.dataset.bioJson = JSON.stringify(s);
         const lines = [];
-        if (s.nickname) lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(s.nickname)}</div>`);
+        // Only show "Known as" if the nickname is different from the player's first name
+        if (s.nickname && s.nickname.toLowerCase() !== (s.firstName || '').toLowerCase()) lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(s.nickname)}</div>`);
         if (s.yearbookQuote) {
           const q = s.yearbookQuote.length > 100 ? s.yearbookQuote.substring(0, 97) + '…' : s.yearbookQuote;
           lines.push(`<div class="bio-quote">&ldquo;${escHtml(q)}&rdquo;</div>`);
+        }
+        if (s.funFact) {
+          const f = s.funFact.length > 100 ? s.funFact.substring(0, 97) + '…' : s.funFact;
+          lines.push(`<div class="bio-row"><span class="bio-lbl">Fun fact:</span> ${escHtml(f)}</div>`);
+        }
+        if (!s.yearbookQuote && !s.funFact) {
+          lines.push(`<div class="bio-quote">This person has no fun facts.</div>`);
         }
         lines.push(`<button class="bio-show-more" onclick="openBioModal(this.closest('.player-card'))">Show More</button>`);
         bioEl.innerHTML = lines.join('');
@@ -6337,9 +6359,10 @@
           // Store full bio JSON on element so openBioModal() can read it
           bioEl.dataset.bioJson = JSON.stringify(bio);
 
-          // Build collapsed preview: Known As + truncated quote + Show More
+          // Build collapsed preview: Known As + yearbook quote + fun fact + Show More
           const lines = [];
-          if (bio.nickname) {
+          // Only show "Known as" if the nickname is different from the player's first name
+          if (bio.nickname && bio.nickname.toLowerCase() !== (bio.firstName || '').toLowerCase()) {
             lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(bio.nickname)}</div>`);
           }
           if (bio.yearbookQuote) {
@@ -6347,6 +6370,13 @@
               ? bio.yearbookQuote.substring(0, 97) + '…'
               : bio.yearbookQuote;
             lines.push(`<div class="bio-quote">&ldquo;${escHtml(q)}&rdquo;</div>`);
+          }
+          if (bio.funFact) {
+            const f = bio.funFact.length > 100 ? bio.funFact.substring(0, 97) + '…' : bio.funFact;
+            lines.push(`<div class="bio-row"><span class="bio-lbl">Fun fact:</span> ${escHtml(f)}</div>`);
+          }
+          if (!bio.yearbookQuote && !bio.funFact) {
+            lines.push(`<div class="bio-quote">This person has no fun facts.</div>`);
           }
           lines.push(`<button class="bio-show-more" onclick="openBioModal(this.closest('.player-card'))">Show More</button>`);
 
