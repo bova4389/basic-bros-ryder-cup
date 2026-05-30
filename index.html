@@ -1125,8 +1125,6 @@
     .bio-quote {
       margin-top: 0.5rem;
       font-style: italic;
-      border-left: 2px solid var(--color-green-light);
-      padding-left: 0.5rem;
     }
 
     /* Responsive: 2-col on tablet, 1-col on phone */
@@ -6285,13 +6283,13 @@
         const lines = [];
         // Only show "Known as" if the nickname is different from the player's first name
         if (s.nickname && s.nickname.toLowerCase() !== (s.firstName || '').toLowerCase()) lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(s.nickname)}</div>`);
-        if (s.yearbookQuote) {
-          const q = s.yearbookQuote.length > 100 ? s.yearbookQuote.substring(0, 97) + '…' : s.yearbookQuote;
-          lines.push(`<div class="bio-quote">&ldquo;${escHtml(q)}&rdquo;</div>`);
-        }
         if (s.funFact) {
           const f = s.funFact.length > 100 ? s.funFact.substring(0, 97) + '…' : s.funFact;
           lines.push(`<div class="bio-row"><span class="bio-lbl">Fun fact:</span> ${escHtml(f)}</div>`);
+        }
+        if (s.yearbookQuote) {
+          const q = s.yearbookQuote.length > 100 ? s.yearbookQuote.substring(0, 97) + '…' : s.yearbookQuote;
+          lines.push(`<div class="bio-quote">&ldquo;${escHtml(q)}&rdquo;</div>`);
         }
         if (!s.yearbookQuote && !s.funFact) {
           lines.push(`<div class="bio-quote">This person has no fun facts.</div>`);
@@ -6359,21 +6357,21 @@
           // Store full bio JSON on element so openBioModal() can read it
           bioEl.dataset.bioJson = JSON.stringify(bio);
 
-          // Build collapsed preview: Known As + yearbook quote + fun fact + Show More
+          // Build collapsed preview: Known As + fun fact + yearbook quote + Show More
           const lines = [];
           // Only show "Known as" if the nickname is different from the player's first name
           if (bio.nickname && bio.nickname.toLowerCase() !== (bio.firstName || '').toLowerCase()) {
             lines.push(`<div class="bio-row"><span class="bio-lbl">Known as:</span> ${escHtml(bio.nickname)}</div>`);
+          }
+          if (bio.funFact) {
+            const f = bio.funFact.length > 100 ? bio.funFact.substring(0, 97) + '…' : bio.funFact;
+            lines.push(`<div class="bio-row"><span class="bio-lbl">Fun fact:</span> ${escHtml(f)}</div>`);
           }
           if (bio.yearbookQuote) {
             const q = bio.yearbookQuote.length > 100
               ? bio.yearbookQuote.substring(0, 97) + '…'
               : bio.yearbookQuote;
             lines.push(`<div class="bio-quote">&ldquo;${escHtml(q)}&rdquo;</div>`);
-          }
-          if (bio.funFact) {
-            const f = bio.funFact.length > 100 ? bio.funFact.substring(0, 97) + '…' : bio.funFact;
-            lines.push(`<div class="bio-row"><span class="bio-lbl">Fun fact:</span> ${escHtml(f)}</div>`);
           }
           if (!bio.yearbookQuote && !bio.funFact) {
             lines.push(`<div class="bio-quote">This person has no fun facts.</div>`);
