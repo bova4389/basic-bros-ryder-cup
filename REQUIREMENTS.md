@@ -69,7 +69,7 @@ A public-facing league website for the **Basic Bros Ryder Cup** — an annual 3-
 | Joe Sharkey | T2 | 22 |
 | Cody Esbrandt | T1 | 16 |
 
-**Team 2 — Luben Dubers** (Captain: Adam Lewandowski)
+**Team 2 — Transfusion Intrusion** (Captain: Adam Lewandowski)
 
 | Player | Tier | Handicap |
 |---|---|---|
@@ -118,7 +118,7 @@ Include course scorecard data (hole-by-hole par/yardage) if layout allows — th
 #### 2e. Round 1 Pairings (Scramble — Friday)
 Format: T1 + T2 vs T1 + T2. Handicap = 35% of combined total, rounded UP.
 
-| Team Luben Dubers | HDCP | vs | Team Good Vibes Only | HDCP |
+| Team Transfusion Intrusion | HDCP | vs | Team Good Vibes Only | HDCP |
 |---|---|---|---|---|
 | Ryne (18) + Karsten (24) | 15 | vs | Cody (15) + Sharkey (22) | 13 |
 | Cass (44) + Renato (11) | 19 | vs | Taylor (12) + Joe M (26) | 13 |

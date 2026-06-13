@@ -3088,6 +3088,545 @@
       }
     }
 
+    /* ============================================================
+       SCORE ENTRY, COMMENTARY & MATCHUP BUILDER — ADMIN
+    ============================================================ */
+
+    /* Sub-tab rows for round selection inside admin */
+    .admin-round-tabs {
+      display: flex;
+      gap: 0.4rem;
+      margin: 0.6rem 0 1.1rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-round-tab {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.42rem 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--color-border);
+      background: none;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .admin-round-tab.active {
+      background: var(--color-green);
+      border-color: var(--color-green);
+      color: #f5f0e8;
+    }
+
+    .admin-round-tab:hover:not(.active) {
+      border-color: var(--color-green-light);
+      color: var(--color-green-light);
+    }
+
+    /* Score entry panels — only the .active one shows */
+    .score-entry-panel { display: none; }
+    .score-entry-panel.active { display: block; }
+
+    /* Two-column image upload layout */
+    .score-img-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .score-img-cols { grid-template-columns: 1fr; }
+    }
+
+    .score-img-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .score-file-input {
+      width: 100%;
+      font-size: 0.82rem;
+      color: var(--color-text);
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+    }
+
+    .score-file-input::-webkit-file-upload-button {
+      background: var(--color-green);
+      color: #f5f0e8;
+      border: none;
+      border-radius: 4px;
+      padding: 0.28rem 0.65rem;
+      font-family: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+
+    /* Thumbnail row of uploaded images */
+    .score-img-previews {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.3rem;
+    }
+
+    .score-img-thumb {
+      width: 68px;
+      height: 54px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid var(--color-border);
+    }
+
+    /* Main action button — parse / generate */
+    .parse-btn {
+      background: var(--color-green);
+      color: #f5f0e8;
+      border: none;
+      border-radius: 8px;
+      padding: 0.62rem 1.35rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .parse-btn:hover:not(:disabled) { background: var(--color-green-light); color: #0f1923; }
+    .parse-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .parse-status {
+      font-size: 0.83rem;
+      color: var(--color-text-muted);
+      margin-top: 0.55rem;
+      min-height: 1.2rem;
+    }
+
+    .parse-status.error   { color: var(--color-red); }
+    .parse-status.success { color: var(--color-green-light); }
+
+    /* Results editor card */
+    .results-editor {
+      margin-top: 1.25rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1.2rem;
+    }
+
+    .results-editor-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--color-cream);
+      margin-bottom: 1rem;
+    }
+
+    /* Individual match card inside editor */
+    .match-editor-card {
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.85rem 0.95rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .match-editor-header {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .match-editor-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.65rem;
+      align-items: center;
+      margin-bottom: 0.55rem;
+    }
+
+    .match-editor-team { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .match-team-name { font-size: 0.81rem; font-weight: 600; color: var(--color-cream); }
+
+    .match-score-inputs { display: flex; gap: 0.4rem; align-items: flex-end; flex-wrap: wrap; }
+
+    .score-input {
+      width: 58px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 5px;
+      padding: 0.3rem 0.4rem;
+      font-size: 0.9rem;
+      text-align: center;
+      color: var(--color-cream);
+      font-family: 'Cinzel', serif;
+    }
+
+    .score-input:focus { outline: none; border-color: var(--color-green-light); }
+
+    .score-input-label {
+      font-size: 0.63rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .match-vs {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      text-align: center;
+    }
+
+    /* Winner selector buttons */
+    .match-winner-row {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      margin-top: 0.45rem;
+      padding-top: 0.45rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .match-winner-label {
+      font-size: 0.7rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .winner-btn {
+      padding: 0.26rem 0.7rem;
+      border-radius: 5px;
+      border: 1px solid var(--color-border);
+      background: none;
+      color: var(--color-text-muted);
+      font-size: 0.77rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .winner-btn.sel-ti  { background: rgba(100,20,115,0.25); border-color: #9b50b0; color: #c090d4; }
+    .winner-btn.sel-gvo { background: rgba(0,140,160,0.2);  border-color: #00aac0; color: #60ccd8; }
+    .winner-btn.sel-tie { background: rgba(212,175,55,0.14); border-color: var(--color-gold); color: var(--color-gold); }
+
+    /* Points tally bar inside the editor */
+    .results-totals-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      margin: 0.7rem 0 0.9rem;
+      font-family: 'Cinzel', serif;
+    }
+
+    .totals-team { display: flex; flex-direction: column; align-items: center; gap: 0.12rem; }
+    .totals-pts  { font-size: 1.4rem; font-weight: 700; color: var(--color-gold); line-height: 1; }
+    .totals-label{ font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); }
+
+    /* API key input row */
+    .api-key-section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.95rem 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .api-key-desc {
+      font-size: 0.81rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.7rem;
+      line-height: 1.5;
+    }
+
+    .api-key-row { display: flex; gap: 0.5rem; align-items: center; }
+    .api-key-row .form-input { flex: 1; font-family: monospace; font-size: 0.82rem; }
+
+    /* Commentary */
+    .commentary-controls {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+      margin-bottom: 0.7rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-select {
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 0.48rem 0.75rem;
+      color: var(--color-text);
+      font-size: 0.84rem;
+      font-family: inherit;
+    }
+
+    .commentary-preview {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1.2rem;
+    }
+
+    .commentary-textarea {
+      width: 100%;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 0.7rem;
+      color: var(--color-cream);
+      font-size: 0.88rem;
+      font-family: 'Source Sans 3', sans-serif;
+      line-height: 1.6;
+      resize: vertical;
+      margin-bottom: 0.7rem;
+    }
+
+    .commentary-textarea:focus { outline: none; border-color: var(--color-green-light); }
+
+    /* Matchup builder panels */
+    .matchup-builder-panel { display: none; }
+    .matchup-builder-panel.active { display: block; }
+    .matchup-builder-desc { font-size: 0.83rem; color: var(--color-text-muted); margin-bottom: 0.85rem; }
+
+    .standings-mini {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      margin-bottom: 0.9rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+    }
+
+    .standings-mini-pts { font-size: 1.1rem; font-weight: 700; color: var(--color-gold); }
+
+    .matchup-row-card {
+      display: grid;
+      grid-template-columns: 72px 1fr auto 1fr;
+      gap: 0.55rem;
+      align-items: center;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.55rem 0.85rem;
+      margin-bottom: 0.45rem;
+    }
+
+    @media (max-width: 600px) {
+      .matchup-row-card { grid-template-columns: 1fr 1fr; }
+      .matchup-tee-time { grid-column: 1 / -1; text-align: center; }
+      .matchup-vs-label { display: none; }
+    }
+
+    .matchup-tee-time {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      color: var(--color-text-muted);
+    }
+
+    .matchup-select {
+      width: 100%;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 0.38rem 0.5rem;
+      color: var(--color-text);
+      font-size: 0.83rem;
+      font-family: inherit;
+    }
+
+    .matchup-select:focus { outline: none; border-color: var(--color-green-light); }
+    .matchup-vs-label { font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--color-text-muted); text-align: center; }
+
+    /* Round 3 pod cards */
+    .pod-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.8rem 0.95rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .pod-card-header {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: 0.55rem;
+    }
+
+    .pod-row {
+      display: grid;
+      grid-template-columns: 58px 1fr auto 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.38rem;
+    }
+
+    .pod-tier-label { font-size: 0.66rem; letter-spacing: 0.07em; text-transform: uppercase; }
+
+    /* ============================================================
+       PUBLIC SCORING TAB — LIVE RESULTS
+    ============================================================ */
+
+    .status-live {
+      background: rgba(45,106,79,0.18);
+      color: var(--color-green-light);
+      border: 1px solid var(--color-green);
+    }
+
+    .status-final {
+      background: rgba(212,175,55,0.12);
+      color: var(--color-gold);
+      border: 1px solid rgba(212,175,55,0.3);
+    }
+
+    /* Container inside each round-result-block for JS-rendered content */
+    .round-result-body { }
+
+    /* Individual match row in live results */
+    .result-match-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.84rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .result-match-row:last-child { border-bottom: none; }
+
+    .result-team-cell { display: flex; flex-direction: column; gap: 0.1rem; }
+    .result-player-name { color: var(--color-cream); font-weight: 600; font-size: 0.85rem; }
+    .result-score { font-family: 'Cinzel', serif; font-size: 0.72rem; color: var(--color-text-muted); }
+
+    .result-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.5rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      display: block;
+      text-align: center;
+    }
+
+    .result-win  { background: rgba(45,106,79,0.18);  color: var(--color-green-light); border: 1px solid var(--color-green); }
+    .result-loss { background: rgba(136,153,170,0.07); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+    .result-halved { background: rgba(212,175,55,0.1);  color: var(--color-gold); border: 1px solid rgba(212,175,55,0.28); }
+
+    /* Round subtotal footer */
+    .round-team-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0.9rem;
+      border-top: 2px solid var(--color-green);
+      background: var(--color-surface-2);
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    /* Overall standings bar above round blocks */
+    .overall-standings-bar {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--color-surface);
+      border: 1px solid var(--color-gold);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 24px rgba(212,175,55,0.07);
+    }
+
+    .standings-team-block { display: flex; flex-direction: column; align-items: center; gap: 0.18rem; }
+
+    .standings-team-pts {
+      font-family: 'Cinzel', serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      line-height: 1;
+    }
+
+    .standings-team-name {
+      font-size: 0.67rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+
+    .standings-divider { font-family: 'Cinzel', serif; font-size: 1.2rem; color: var(--color-border); }
+
+    .standings-to-win {
+      font-size: 0.7rem;
+      color: var(--color-text-muted);
+      text-align: center;
+      margin-top: 0.2rem;
+    }
+
+    /* Day recap cards on public page */
+    .recap-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-gold);
+      border-radius: 10px;
+      padding: 1.4rem 1.5rem;
+      margin-top: 1.4rem;
+      box-shadow: 0 0 18px rgba(212,175,55,0.05);
+    }
+
+    .recap-card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      margin-bottom: 0.7rem;
+    }
+
+    .recap-card-body {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.72;
+      white-space: pre-wrap;
+    }
+
   </style>
 </head>
 
@@ -4849,6 +5388,7 @@
               </tr>
             </thead>
             <tbody>
+            <tbody id="r2-matchup-tbody">
               <tr><td class="hdcp-cell">7:57am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD — announced Friday night</td></tr>
               <tr><td class="hdcp-cell">8:07am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
               <tr><td class="hdcp-cell">8:17am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
@@ -4876,6 +5416,7 @@
               </tr>
             </thead>
             <tbody>
+            <tbody id="r3-matchup-tbody">
               <tr><td class="hdcp-cell">8:06am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD — announced Saturday night</td></tr>
               <tr><td class="hdcp-cell">8:16am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
               <tr><td class="hdcp-cell">8:26am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
@@ -4930,38 +5471,57 @@
           </div>
         </div>
 
-        <!-- Round 1 result block -->
-        <div class="round-result-block">
+        <!-- Overall standings bar — hidden until at least one round is published -->
+        <div class="overall-standings-bar" id="overallStandingsBar">
+          <div class="standings-team-block">
+            <span class="standings-team-pts" style="color:#c090d4" id="standingsTI">0</span>
+            <span class="standings-team-name">Transfusion Intrusion</span>
+          </div>
+          <div style="text-align:center">
+            <div class="standings-divider">—</div>
+            <div class="standings-to-win">First to 36.5 wins</div>
+          </div>
+          <div class="standings-team-block">
+            <span class="standings-team-pts" style="color:#60ccd8" id="standingsGVO">0</span>
+            <span class="standings-team-name">Good Vibes Only</span>
+          </div>
+        </div>
+
+        <!-- Round 1 result block — JS fills .round-result-body when results are published -->
+        <div class="round-result-block" id="liveRound1">
           <div class="round-result-header">
             <span class="round-result-title">Round 1 — Scramble · Pawleys Plantation</span>
-            <span class="round-result-status status-pending">Pending</span>
+            <span class="round-result-status status-pending" id="liveRound1Status">Pending</span>
           </div>
-          <div class="round-result-placeholder">
-            Results posted after Friday's round wraps up.
+          <div class="round-result-body" id="liveRound1Body">
+            <div class="round-result-placeholder">Results posted after Friday's round wraps up.</div>
           </div>
         </div>
 
         <!-- Round 2 result block -->
-        <div class="round-result-block">
+        <div class="round-result-block" id="liveRound2">
           <div class="round-result-header">
-            <span class="round-result-title">Round 2 — True Blue Golf Club</span>
-            <span class="round-result-status status-pending">Pending</span>
+            <span class="round-result-title">Round 2 — Singles · True Blue Golf Club</span>
+            <span class="round-result-status status-pending" id="liveRound2Status">Pending</span>
           </div>
-          <div class="round-result-placeholder">
-            Results posted after Saturday's round wraps up.
+          <div class="round-result-body" id="liveRound2Body">
+            <div class="round-result-placeholder">Results posted after Saturday's round wraps up.</div>
           </div>
         </div>
 
         <!-- Round 3 result block -->
-        <div class="round-result-block">
+        <div class="round-result-block" id="liveRound3">
           <div class="round-result-header">
-            <span class="round-result-title">Round 3 (Final) — Caledonia Golf &amp; Fish Club</span>
-            <span class="round-result-status status-pending">Pending</span>
+            <span class="round-result-title">Round 3 (Final) — Doubles + Singles · Caledonia</span>
+            <span class="round-result-status status-pending" id="liveRound3Status">Pending</span>
           </div>
-          <div class="round-result-placeholder">
-            Results posted after Sunday's final round wraps up.
+          <div class="round-result-body" id="liveRound3Body">
+            <div class="round-result-placeholder">Results posted after Sunday's final round.</div>
           </div>
         </div>
+
+        <!-- Day recap cards — JS populates from Firebase recaps/ node -->
+        <div id="recapsContainer"></div>
 
       </div><!-- end t26-scoring -->
 
@@ -5681,6 +6241,169 @@
 
         <div id="submissionsList">
           <div class="admin-empty">Loading submissions…</div>
+        </div>
+
+        <!-- ====================================================
+             ADMIN — CLAUDE API KEY
+             Stored in localStorage only. Never in Firebase or repo.
+        ==================================================== -->
+        <hr class="divider" style="margin:1.75rem 0;">
+        <div class="admin-section-title">Claude API Key</div>
+        <div class="api-key-section">
+          <p class="api-key-desc">Your Anthropic API key powers score parsing and commentary generation. It lives only on this device (localStorage) — never stored in Firebase or the codebase.</p>
+          <div class="api-key-row">
+            <input type="password" id="claudeApiKeyInput" class="form-input" placeholder="sk-ant-…">
+            <button class="admin-gate-btn" onclick="saveClaudeKey()">Save</button>
+          </div>
+          <div id="claudeKeyStatus" class="parse-status"></div>
+        </div>
+
+        <!-- ====================================================
+             ADMIN — SCORE ENTRY
+             Upload 1–N gross screenshots + 1–N net screenshots.
+             Claude parses all images together, then shows an
+             editable confirmation table before saving to Firebase.
+        ==================================================== -->
+        <div class="admin-section-title">Score Entry</div>
+
+        <div class="admin-round-tabs" id="scoreRoundTabs">
+          <button class="admin-round-tab active" onclick="showScoreRound(1,this)">Round 1 — Scramble</button>
+          <button class="admin-round-tab" onclick="showScoreRound(2,this)">Round 2 — Singles</button>
+          <button class="admin-round-tab" onclick="showScoreRound(3,this)">Round 3 — Doubles+Singles</button>
+        </div>
+
+        <!-- Round 1 -->
+        <div id="scorePanel1" class="score-entry-panel active">
+          <div class="score-img-cols">
+            <div>
+              <div class="score-img-label">Gross Score Screenshots</div>
+              <input type="file" id="grossImgs1" class="score-file-input" accept="image/*" multiple onchange="previewImgs(this,'grossPrev1')">
+              <div id="grossPrev1" class="score-img-previews"></div>
+            </div>
+            <div>
+              <div class="score-img-label">Net Score Screenshots</div>
+              <input type="file" id="netImgs1" class="score-file-input" accept="image/*" multiple onchange="previewImgs(this,'netPrev1')">
+              <div id="netPrev1" class="score-img-previews"></div>
+            </div>
+          </div>
+          <button class="parse-btn" id="parseBtn1" onclick="parseScores(1)">Parse with Claude</button>
+          <div id="parseStatus1" class="parse-status"></div>
+          <div id="resultsEditor1" class="results-editor" style="display:none">
+            <div class="results-editor-title">Review &amp; Edit — Round 1 Scramble · 6 Matches</div>
+            <div id="matchEditorRows1"></div>
+            <div id="resultsTotals1" class="results-totals-bar"></div>
+            <button class="admin-push-btn" id="saveBtn1" onclick="saveRoundResults(1)">Save &amp; Publish Results</button>
+          </div>
+        </div>
+
+        <!-- Round 2 -->
+        <div id="scorePanel2" class="score-entry-panel">
+          <div class="score-img-cols">
+            <div>
+              <div class="score-img-label">Gross Score Screenshots</div>
+              <input type="file" id="grossImgs2" class="score-file-input" accept="image/*" multiple onchange="previewImgs(this,'grossPrev2')">
+              <div id="grossPrev2" class="score-img-previews"></div>
+            </div>
+            <div>
+              <div class="score-img-label">Net Score Screenshots</div>
+              <input type="file" id="netImgs2" class="score-file-input" accept="image/*" multiple onchange="previewImgs(this,'netPrev2')">
+              <div id="netPrev2" class="score-img-previews"></div>
+            </div>
+          </div>
+          <button class="parse-btn" id="parseBtn2" onclick="parseScores(2)">Parse with Claude</button>
+          <div id="parseStatus2" class="parse-status"></div>
+          <div id="resultsEditor2" class="results-editor" style="display:none">
+            <div class="results-editor-title">Review &amp; Edit — Round 2 Singles</div>
+            <div id="matchEditorRows2"></div>
+            <div id="resultsTotals2" class="results-totals-bar"></div>
+            <button class="admin-push-btn" id="saveBtn2" onclick="saveRoundResults(2)">Save &amp; Publish Results</button>
+          </div>
+        </div>
+
+        <!-- Round 3 -->
+        <div id="scorePanel3" class="score-entry-panel">
+          <div class="score-img-cols">
+            <div>
+              <div class="score-img-label">Gross Score Screenshots</div>
+              <input type="file" id="grossImgs3" class="score-file-input" accept="image/*" multiple onchange="previewImgs(this,'grossPrev3')">
+              <div id="grossPrev3" class="score-img-previews"></div>
+            </div>
+            <div>
+              <div class="score-img-label">Net Score Screenshots</div>
+              <input type="file" id="netImgs3" class="score-file-input" accept="image/*" multiple onchange="previewImgs(this,'netPrev3')">
+              <div id="netPrev3" class="score-img-previews"></div>
+            </div>
+          </div>
+          <button class="parse-btn" id="parseBtn3" onclick="parseScores(3)">Parse with Claude</button>
+          <div id="parseStatus3" class="parse-status"></div>
+          <div id="resultsEditor3" class="results-editor" style="display:none">
+            <div class="results-editor-title">Review &amp; Edit — Round 3 Doubles + Singles · 6 Pods</div>
+            <div id="matchEditorRows3"></div>
+            <div id="resultsTotals3" class="results-totals-bar"></div>
+            <button class="admin-push-btn" id="saveBtn3" onclick="saveRoundResults(3)">Save &amp; Publish Results</button>
+          </div>
+        </div>
+
+        <!-- ====================================================
+             ADMIN — COMMENTARY GENERATOR
+             Reads the published round data from Firebase, sends
+             it to Claude Haiku, lets admin edit, then saves to
+             Firebase recaps/ — public page reads and displays.
+        ==================================================== -->
+        <hr class="divider" style="margin:1.75rem 0;">
+        <div class="admin-section-title">Day Recap &amp; Commentary</div>
+        <div class="commentary-controls">
+          <select id="commentaryRoundSel" class="admin-select">
+            <option value="1">Round 1 — Friday Scramble</option>
+            <option value="2">Round 2 — Saturday Singles</option>
+            <option value="3">Round 3 — Sunday Final</option>
+          </select>
+          <button class="parse-btn" onclick="generateCommentary()">Generate with Claude</button>
+        </div>
+        <div id="commentaryStatus" class="parse-status"></div>
+        <div id="commentaryPreview" class="commentary-preview" style="display:none">
+          <textarea id="commentaryText" class="commentary-textarea" rows="9"></textarea>
+          <button class="admin-push-btn" onclick="saveCommentary()">Save Commentary to Site</button>
+        </div>
+
+        <!-- ====================================================
+             ADMIN — MATCHUP BUILDER
+             Round 2: 12 singles dropdown pairs (TI vs GVO).
+             Round 3: 6 pods of 4 (TI T1 + TI T2 vs GVO T1 + GVO T2).
+             Publish writes to Firebase matchups/ — public matchup
+             tables read those and replace TBD rows automatically.
+        ==================================================== -->
+        <hr class="divider" style="margin:1.75rem 0;">
+        <div class="admin-section-title">Matchup Builder</div>
+
+        <div class="admin-round-tabs" id="matchupRoundTabs">
+          <button class="admin-round-tab active" onclick="showMatchupRound(2,this)">Round 2 — Saturday</button>
+          <button class="admin-round-tab" onclick="showMatchupRound(3,this)">Round 3 — Sunday</button>
+        </div>
+
+        <!-- Round 2 builder -->
+        <div id="matchupPanel2" class="matchup-builder-panel active">
+          <div class="matchup-builder-desc">Singles Match Play · Any tier mix · 12 matches · True Blue Golf Club · 7:57am first tee</div>
+          <div id="standingsMini" class="standings-mini">Loading standings…</div>
+          <div style="display:flex;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+            <button class="parse-btn" onclick="suggestMatchups(2)">Suggest with AI</button>
+          </div>
+          <div id="suggestStatus2" class="parse-status"></div>
+          <div id="matchupRows2"></div>
+          <button class="admin-push-btn" style="margin-top:0.75rem;" onclick="publishMatchups(2)">Publish Round 2 Matchups</button>
+          <div id="publishStatus2" class="parse-status"></div>
+        </div>
+
+        <!-- Round 3 builder -->
+        <div id="matchupPanel3" class="matchup-builder-panel">
+          <div class="matchup-builder-desc">Doubles + Singles · Same-tier pods (T1 vs T1 / T2 vs T2) · 6 pods · Caledonia · 8:06am first tee</div>
+          <div style="display:flex;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+            <button class="parse-btn" onclick="suggestMatchups(3)">Suggest with AI</button>
+          </div>
+          <div id="suggestStatus3" class="parse-status"></div>
+          <div id="podRows3"></div>
+          <button class="admin-push-btn" style="margin-top:0.75rem;" onclick="publishMatchups(3)">Publish Round 3 Matchups</button>
+          <div id="publishStatus3" class="parse-status"></div>
         </div>
 
       </div>
@@ -7657,6 +8380,1064 @@
 
     // Inject career stats chips and W/L records into player cards — runs after H24/H25 are defined
     loadPlayerTournamentStats();
+
+
+    // ================================================================
+    //  SCORE ENTRY, COMMENTARY & MATCHUP BUILDER — NEW ADMIN FEATURES
+    // ================================================================
+
+    // ---- ROSTER DATA ----
+    // Single source of truth for all player info used in Claude prompts and builder UIs.
+
+    const ROSTER_GVO = [
+      { id:'bova',       name:'Matt Bova',         tier:'t2', hdcp:28 },
+      { id:'cschumann',  name:'Chris Schumann',     tier:'t1', hdcp:16 },
+      { id:'sschumann',  name:'Spencer Schumann',   tier:'t2', hdcp:42 },
+      { id:'touchberry', name:'Taylor Touchberry',  tier:'t1', hdcp:12 },
+      { id:'strobel',    name:'Bash Strobel',       tier:'t1', hdcp:16 },
+      { id:'smith',      name:'Teddy Smith',        tier:'t2', hdcp:42 },
+      { id:'damiani',    name:'Jason Damiani',      tier:'t1', hdcp:12 },
+      { id:'bishop',     name:'Raheem Bishop',      tier:'t2', hdcp:26 },
+      { id:'mucha',      name:'Joe Mucha',          tier:'t2', hdcp:26 },
+      { id:'pletcher',   name:'Mitch Pletcher',     tier:'t1', hdcp:15 },
+      { id:'sharkey',    name:'Joe Sharkey',        tier:'t2', hdcp:22 },
+      { id:'esbrandt',   name:'Cody Esbrandt',      tier:'t1', hdcp:16 }
+    ];
+
+    const ROSTER_TI = [
+      { id:'lewandowski', name:'Adam Lewandowski',  tier:'t2', hdcp:34 },
+      { id:'hermanson',   name:'Jeremy Hermanson',  tier:'t2', hdcp:35 },
+      { id:'bartlett',    name:'Donny Bartlett',    tier:'t1', hdcp:19 },
+      { id:'pannullo',    name:'Ron Pannullo',      tier:'t2', hdcp:30 },
+      { id:'davis',       name:'Mike Davis',        tier:'t1', hdcp:3  },
+      { id:'stephenson',  name:'Robert Stephenson', tier:'t1', hdcp:14 },
+      { id:'gaudet',      name:'Mike Gaudet',       tier:'t1', hdcp:22 },
+      { id:'stone',       name:'Ryne Stone',        tier:'t1', hdcp:18 },
+      { id:'glenn',       name:'Cassady Glenn',     tier:'t2', hdcp:44 },
+      { id:'renato',      name:'Renato',            tier:'t1', hdcp:11 },
+      { id:'meyer',       name:'Karsten Meyer',     tier:'t2', hdcp:24 },
+      { id:'harris',      name:'Max Harris',        tier:'t2', hdcp:26 }
+    ];
+
+    // Round 1 pairings — already shown in the HTML table; also used as Claude context.
+    const ROUND1_PAIRINGS = [
+      { time:'9:03am', tiLabel:'Ryne + Karsten',     tiHdcp:15, gvoLabel:'Cody + Sharkey',      gvoHdcp:13 },
+      { time:'9:13am', tiLabel:'Cass + Renato',      tiHdcp:19, gvoLabel:'Taylor + Joe M',      gvoHdcp:13 },
+      { time:'9:23am', tiLabel:'Davis + Adam',       tiHdcp:13, gvoLabel:'Mitch + Raheem',      gvoHdcp:14 },
+      { time:'9:33am', tiLabel:'Mike G + Hermanson', tiHdcp:20, gvoLabel:'Jason + Bova',        gvoHdcp:14 },
+      { time:'9:43am', tiLabel:'Donny + Max',        tiHdcp:16, gvoLabel:'Bash + Spencer',      gvoHdcp:20 },
+      { time:'9:53am', tiLabel:'Robert + Ron',       tiHdcp:15, gvoLabel:'Schumann + Teddy',   gvoHdcp:20 }
+    ];
+
+    const ROUND2_TIMES = ['7:57am','8:07am','8:17am','8:27am','8:37am','8:47am','8:57am','9:07am','9:17am','9:27am','9:37am','9:47am'];
+    const ROUND3_TIMES = ['8:06am','8:16am','8:26am','8:36am','8:46am','8:56am'];
+
+    // In-memory store for data parsed from screenshots (keyed by round number)
+    let parsedMatchData = {};
+
+
+    // ---- API KEY MANAGEMENT ----
+
+    function saveClaudeKey() {
+      const key = document.getElementById('claudeApiKeyInput').value.trim();
+      if (!key.startsWith('sk-ant-')) {
+        setParseStatus('claudeKeyStatus', 'Key should start with sk-ant-', 'error');
+        return;
+      }
+      localStorage.setItem('bbrc-claude-key', key);
+      document.getElementById('claudeApiKeyInput').value = '';
+      setParseStatus('claudeKeyStatus', '✓ Key saved to this device', 'success');
+    }
+
+    function getClaudeKey() {
+      return localStorage.getItem('bbrc-claude-key') || null;
+    }
+
+    // Show saved status on admin unlock
+    function initApiKeyStatus() {
+      if (getClaudeKey()) setParseStatus('claudeKeyStatus', '✓ Key is saved on this device', 'success');
+    }
+
+
+    // ---- SHARED HELPERS ----
+
+    // Set text + color class on any status div
+    function setParseStatus(elemId, msg, type) {
+      const el = document.getElementById(elemId);
+      if (!el) return;
+      el.textContent = msg;
+      el.className = 'parse-status' + (type ? ' ' + type : '');
+    }
+
+    // Switch active score entry panel
+    function showScoreRound(num, btn) {
+      [1,2,3].forEach(n => {
+        const p = document.getElementById('scorePanel' + n);
+        if (p) p.classList.toggle('active', n === num);
+      });
+      document.getElementById('scoreRoundTabs').querySelectorAll('.admin-round-tab')
+        .forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+
+    // Switch active matchup builder panel
+    function showMatchupRound(num, btn) {
+      [2,3].forEach(n => {
+        const p = document.getElementById('matchupPanel' + n);
+        if (p) p.classList.toggle('active', n === num);
+      });
+      document.getElementById('matchupRoundTabs').querySelectorAll('.admin-round-tab')
+        .forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+
+    // Show thumbnail previews for a file input
+    function previewImgs(input, previewId) {
+      const container = document.getElementById(previewId);
+      if (!container) return;
+      container.innerHTML = '';
+      Array.from(input.files).forEach(file => {
+        const img = document.createElement('img');
+        img.className = 'score-img-thumb';
+        img.src = URL.createObjectURL(file);
+        container.appendChild(img);
+      });
+    }
+
+    // Read a File object as a base64 string (without the data: prefix)
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload  = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+
+    // ---- CLAUDE API ----
+
+    async function callClaude(messages, maxTokens) {
+      const key = getClaudeKey();
+      if (!key) throw new Error('No API key saved. Enter your Claude API key in the section above.');
+
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key':                             key,
+          'anthropic-version':                     '2023-06-01',
+          'content-type':                          'application/json',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model:      'claude-haiku-4-5-20251001',
+          max_tokens: maxTokens || 2000,
+          messages
+        })
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err?.error?.message || 'API error ' + resp.status);
+      }
+
+      const data = await resp.json();
+      return data.content[0].text;
+    }
+
+
+    // ---- SCORE PARSING — build the Claude prompt ----
+
+    function buildParsePrompt(roundNum, knownPairings) {
+      const formats = {
+        1: 'Scramble — each pair plays a scramble (take the best shot each hole). Lower NET total score wins the match.',
+        2: 'Singles Match Play — individual head-to-head, 18-hole match play using net scores.',
+        3: 'Doubles + Singles Match Play — each pod of 4 plays simultaneously: one doubles match (best-ball, same-team players paired together, TI pair vs GVO pair) plus two singles matches (T1 vs T1 and T2 vs T2).'
+      };
+
+      let pairingCtx = '';
+      if (roundNum === 1) {
+        pairingCtx = 'Known pairings:\n' + ROUND1_PAIRINGS.map((p, i) =>
+          `  Match ${i+1} (${p.time}): TI: ${p.tiLabel} (HDCP ${p.tiHdcp}) vs GVO: ${p.gvoLabel} (HDCP ${p.gvoHdcp})`
+        ).join('\n');
+      } else if (knownPairings && knownPairings.length) {
+        if (roundNum === 2) {
+          pairingCtx = 'Known pairings:\n' + knownPairings.map((p, i) =>
+            `  Match ${i+1} (${p.time}): TI: ${p.tiPlayer} vs GVO: ${p.gvoPlayer}`
+          ).join('\n');
+        } else {
+          pairingCtx = 'Known pods:\n' + knownPairings.map((p, i) =>
+            `  Pod ${i+1} (${p.time}): TI T1: ${p.tiT1}, TI T2: ${p.tiT2} vs GVO T1: ${p.gvoT1}, GVO T2: ${p.gvoT2}`
+          ).join('\n');
+        }
+      } else {
+        pairingCtx = 'TI roster: ' + ROSTER_TI.map(p => p.name).join(', ') +
+                    '\nGVO roster: ' + ROSTER_GVO.map(p => p.name).join(', ') +
+                    '\n(Pairings not yet set — infer from player names visible in screenshots)';
+      }
+
+      // Example JSON shape varies by round
+      const exampleJson = roundNum === 1
+        ? `{ "matches": [
+    { "matchIndex":0, "tiLabel":"Ryne + Karsten", "gvoLabel":"Cody + Sharkey",
+      "tiGross":85, "tiNet":70, "gvoGross":79, "gvoNet":66,
+      "winner":"gvo", "notes":"" }
+  ] }`
+        : roundNum === 2
+        ? `{ "matches": [
+    { "matchIndex":0, "tiPlayer":"Mike Davis", "gvoPlayer":"Taylor Touchberry",
+      "tiGross":72, "tiNet":69, "gvoGross":78, "gvoNet":66,
+      "winner":"gvo", "notes":"" }
+  ] }`
+        : `{ "pods": [
+    { "podIndex":0, "tiT1":"Ryne Stone", "tiT2":"Karsten Meyer", "gvoT1":"Cody Esbrandt", "gvoT2":"Joe Sharkey",
+      "tiT1Gross":82,"tiT1Net":64, "gvoT1Gross":78,"gvoT1Net":62,
+      "tiT2Gross":95,"tiT2Net":71, "gvoT2Gross":98,"gvoT2Net":74,
+      "doublesWinner":"gvo", "singlesT1Winner":"gvo", "singlesT2Winner":"ti",
+      "notes":"" }
+  ] }`;
+
+      return `You are reading Squabbit golf scorecard screenshots from the Basic Bros Ryder Cup 2026.
+Teams: Good Vibes Only (GVO) vs Transfusion Intrusion (TI).
+
+Round ${roundNum} format: ${formats[roundNum]}
+
+${pairingCtx}
+
+There may be multiple screenshots covering different scorecards or different parts of the same scorecard. One set shows GROSS scores (raw strokes per hole) and another shows NET scores (strokes after handicap). Extract every match/pod result you can find across all images.
+
+Return ONLY valid JSON matching this structure (no extra text):
+${exampleJson}
+
+Rules:
+- "winner" must be exactly "ti", "gvo", or "tie"
+- Use null for any value you cannot read clearly from the images
+- Note unclear or cut-off values in the "notes" field`;
+    }
+
+
+    // ---- PARSE SCORES ----
+
+    async function parseScores(roundNum) {
+      const grossInput = document.getElementById('grossImgs' + roundNum);
+      const netInput   = document.getElementById('netImgs' + roundNum);
+      const btn        = document.getElementById('parseBtn'  + roundNum);
+      const statusId   = 'parseStatus' + roundNum;
+
+      const allFiles = [
+        ...(grossInput ? Array.from(grossInput.files) : []),
+        ...(netInput   ? Array.from(netInput.files)   : [])
+      ];
+
+      if (!allFiles.length) {
+        setParseStatus(statusId, 'Upload at least one screenshot first.', 'error');
+        return;
+      }
+      if (!getClaudeKey()) {
+        setParseStatus(statusId, 'Save your Claude API key above first.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      setParseStatus(statusId, 'Encoding ' + allFiles.length + ' image' + (allFiles.length > 1 ? 's' : '') + '…');
+
+      try {
+        // Build one content block per image
+        const imageBlocks = await Promise.all(allFiles.map(async file => ({
+          type: 'image',
+          source: {
+            type:       'base64',
+            media_type: (file.type || 'image/png'),
+            data:       await fileToBase64(file)
+          }
+        })));
+
+        // Load existing pairings from Firebase so Claude has context
+        let knownPairings = null;
+        if (roundNum >= 2) {
+          const snap = await db.ref('matchups/round' + roundNum).once('value');
+          const mData = snap.val();
+          if (mData?.published) {
+            knownPairings = mData.pairs || mData.pods || null;
+          }
+        }
+
+        const prompt = buildParsePrompt(roundNum, knownPairings);
+        setParseStatus(statusId, 'Sending to Claude Haiku…');
+
+        const responseText = await callClaude([{
+          role: 'user',
+          content: [...imageBlocks, { type: 'text', text: prompt }]
+        }], 2000);
+
+        // Extract the JSON object from Claude's response
+        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('Claude did not return a valid JSON object. Try again.');
+
+        const parsed = JSON.parse(jsonMatch[0]);
+        parsedMatchData[roundNum] = parsed;
+
+        renderMatchEditor(roundNum, parsed);
+        setParseStatus(statusId, '✓ Parsed ' + allFiles.length + ' screenshot' + (allFiles.length > 1 ? 's' : '') + '. Review and edit below, then save.', 'success');
+      } catch (err) {
+        setParseStatus(statusId, '✗ ' + err.message, 'error');
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+
+    // ---- RESULTS EDITOR — render & sync ----
+
+    function renderMatchEditor(roundNum, parsed) {
+      const container = document.getElementById('matchEditorRows' + roundNum);
+      const editor    = document.getElementById('resultsEditor'   + roundNum);
+      if (!container || !editor) return;
+
+      if (roundNum === 1) renderScrambleEditor(container, parsed.matches || []);
+      else if (roundNum === 2) renderSinglesEditor(container, parsed.matches || []);
+      else renderPodsEditor(container, parsed.pods || []);
+
+      editor.style.display = 'block';
+      updateTotals(roundNum);
+      editor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Build three winner buttons for a match card
+    function winnerBtnsHtml(winner) {
+      return [
+        { val:'ti',  label:'TI Wins',   cls:'sel-ti'  },
+        { val:'gvo', label:'GVO Wins',  cls:'sel-gvo' },
+        { val:'tie', label:'Halved',    cls:'sel-tie' }
+      ].map(o => {
+        const active = winner === o.val ? o.cls : '';
+        return `<button class="winner-btn ${active}" data-winner="${o.val}" onclick="clickWinner(this)">${o.label}</button>`;
+      }).join('');
+    }
+
+    // Handle a winner button click — deselect siblings, select this one, recount totals
+    function clickWinner(btn) {
+      const row  = btn.closest('.match-winner-row');
+      const card = btn.closest('.match-editor-card');
+      row.querySelectorAll('.winner-btn').forEach(b => b.className = 'winner-btn');
+      btn.classList.add(btn.dataset.winner === 'ti' ? 'sel-ti' : btn.dataset.winner === 'gvo' ? 'sel-gvo' : 'sel-tie');
+      const editor = btn.closest('.results-editor');
+      if (editor) {
+        const rn = parseInt(editor.id.replace('resultsEditor',''));
+        updateTotals(rn);
+      }
+    }
+
+    // Two gross+net input pairs in a row, labelled
+    function scoreInputPairHtml(grossVal, netVal, prefix, matchIdx, roundNum) {
+      const g = grossVal != null ? grossVal : '';
+      const n = netVal   != null ? netVal   : '';
+      return `<div class="match-score-inputs">
+        <div>
+          <div class="score-input-label">Gross</div>
+          <input class="score-input" type="number" value="${g}" placeholder="—" data-field="${prefix}Gross" oninput="syncField(this,${matchIdx},${roundNum})">
+        </div>
+        <div>
+          <div class="score-input-label">Net</div>
+          <input class="score-input" type="number" value="${n}" placeholder="—" data-field="${prefix}Net" oninput="syncField(this,${matchIdx},${roundNum})">
+        </div>
+      </div>`;
+    }
+
+    function renderScrambleEditor(container, matches) {
+      // If Claude found no matches, seed empty rows from known pairings
+      if (!matches.length) {
+        matches = ROUND1_PAIRINGS.map((p, i) => ({
+          matchIndex:i, tiLabel:p.tiLabel, gvoLabel:p.gvoLabel,
+          tiGross:null, tiNet:null, gvoGross:null, gvoNet:null, winner:null
+        }));
+      }
+      container.innerHTML = matches.map((m, i) => `
+        <div class="match-editor-card" data-match-index="${i}">
+          <div class="match-editor-header">Match ${i+1} · ${ROUND1_PAIRINGS[i]?.time || ''}</div>
+          <div class="match-editor-row">
+            <div class="match-editor-team">
+              <div class="match-team-name" style="color:#c090d4">TI: <input class="score-input" style="width:140px" type="text" value="${escHtml(m.tiLabel||'')}" data-field="tiLabel" oninput="syncField(this,${i},1)"></div>
+              ${scoreInputPairHtml(m.tiGross, m.tiNet, 'ti', i, 1)}
+            </div>
+            <div class="match-vs">VS</div>
+            <div class="match-editor-team">
+              <div class="match-team-name" style="color:#60ccd8">GVO: <input class="score-input" style="width:140px" type="text" value="${escHtml(m.gvoLabel||'')}" data-field="gvoLabel" oninput="syncField(this,${i},1)"></div>
+              ${scoreInputPairHtml(m.gvoGross, m.gvoNet, 'gvo', i, 1)}
+            </div>
+          </div>
+          <div class="match-winner-row">
+            <span class="match-winner-label">Result:</span>
+            ${winnerBtnsHtml(m.winner)}
+          </div>
+        </div>`).join('');
+    }
+
+    function renderSinglesEditor(container, matches) {
+      if (!matches.length) {
+        matches = Array.from({length:12}, (_, i) => ({
+          matchIndex:i, tiPlayer:'', gvoPlayer:'',
+          tiGross:null, tiNet:null, gvoGross:null, gvoNet:null, winner:null
+        }));
+      }
+      container.innerHTML = matches.map((m, i) => `
+        <div class="match-editor-card" data-match-index="${i}">
+          <div class="match-editor-header">Match ${i+1}</div>
+          <div class="match-editor-row">
+            <div class="match-editor-team">
+              <div class="match-team-name" style="color:#c090d4">TI: <input class="score-input" style="width:140px" type="text" value="${escHtml(m.tiPlayer||'')}" data-field="tiPlayer" oninput="syncField(this,${i},2)"></div>
+              ${scoreInputPairHtml(m.tiGross, m.tiNet, 'ti', i, 2)}
+            </div>
+            <div class="match-vs">VS</div>
+            <div class="match-editor-team">
+              <div class="match-team-name" style="color:#60ccd8">GVO: <input class="score-input" style="width:140px" type="text" value="${escHtml(m.gvoPlayer||'')}" data-field="gvoPlayer" oninput="syncField(this,${i},2)"></div>
+              ${scoreInputPairHtml(m.gvoGross, m.gvoNet, 'gvo', i, 2)}
+            </div>
+          </div>
+          <div class="match-winner-row">
+            <span class="match-winner-label">Result:</span>
+            ${winnerBtnsHtml(m.winner)}
+          </div>
+        </div>`).join('');
+    }
+
+    function renderPodsEditor(container, pods) {
+      if (!pods.length) {
+        pods = Array.from({length:6}, (_, i) => ({
+          podIndex:i, tiT1:'', tiT2:'', gvoT1:'', gvoT2:'',
+          tiT1Gross:null,tiT1Net:null, gvoT1Gross:null,gvoT1Net:null,
+          tiT2Gross:null,tiT2Net:null, gvoT2Gross:null,gvoT2Net:null,
+          doublesWinner:null, singlesT1Winner:null, singlesT2Winner:null
+        }));
+      }
+      container.innerHTML = pods.map((p, i) => `
+        <div class="match-editor-card" data-pod-index="${i}">
+          <div class="match-editor-header">Pod ${i+1} · ${ROUND3_TIMES[i]||''}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.6rem;">
+            <div>
+              <div class="score-input-label" style="color:#c090d4">TI T1</div>
+              <input class="score-input" style="width:100%" type="text" value="${escHtml(p.tiT1||'')}" data-field="tiT1" oninput="syncField(this,${i},3)">
+            </div>
+            <div>
+              <div class="score-input-label" style="color:#60ccd8">GVO T1</div>
+              <input class="score-input" style="width:100%" type="text" value="${escHtml(p.gvoT1||'')}" data-field="gvoT1" oninput="syncField(this,${i},3)">
+            </div>
+            <div>
+              <div class="score-input-label" style="color:#c090d4">TI T2</div>
+              <input class="score-input" style="width:100%" type="text" value="${escHtml(p.tiT2||'')}" data-field="tiT2" oninput="syncField(this,${i},3)">
+            </div>
+            <div>
+              <div class="score-input-label" style="color:#60ccd8">GVO T2</div>
+              <input class="score-input" style="width:100%" type="text" value="${escHtml(p.gvoT2||'')}" data-field="gvoT2" oninput="syncField(this,${i},3)">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.6rem;">
+            <div>
+              <div class="score-input-label">TI T1: Gross / Net</div>
+              <div class="match-score-inputs">
+                <input class="score-input" type="number" value="${p.tiT1Gross??''}" placeholder="—" data-field="tiT1Gross" oninput="syncField(this,${i},3)">
+                <input class="score-input" type="number" value="${p.tiT1Net??''}"   placeholder="—" data-field="tiT1Net"   oninput="syncField(this,${i},3)">
+              </div>
+            </div>
+            <div>
+              <div class="score-input-label">GVO T1: Gross / Net</div>
+              <div class="match-score-inputs">
+                <input class="score-input" type="number" value="${p.gvoT1Gross??''}" placeholder="—" data-field="gvoT1Gross" oninput="syncField(this,${i},3)">
+                <input class="score-input" type="number" value="${p.gvoT1Net??''}"   placeholder="—" data-field="gvoT1Net"   oninput="syncField(this,${i},3)">
+              </div>
+            </div>
+            <div>
+              <div class="score-input-label">TI T2: Gross / Net</div>
+              <div class="match-score-inputs">
+                <input class="score-input" type="number" value="${p.tiT2Gross??''}" placeholder="—" data-field="tiT2Gross" oninput="syncField(this,${i},3)">
+                <input class="score-input" type="number" value="${p.tiT2Net??''}"   placeholder="—" data-field="tiT2Net"   oninput="syncField(this,${i},3)">
+              </div>
+            </div>
+            <div>
+              <div class="score-input-label">GVO T2: Gross / Net</div>
+              <div class="match-score-inputs">
+                <input class="score-input" type="number" value="${p.gvoT2Gross??''}" placeholder="—" data-field="gvoT2Gross" oninput="syncField(this,${i},3)">
+                <input class="score-input" type="number" value="${p.gvoT2Net??''}"   placeholder="—" data-field="gvoT2Net"   oninput="syncField(this,${i},3)">
+              </div>
+            </div>
+          </div>
+          <div class="match-winner-row" data-result-type="doubles">
+            <span class="match-winner-label">Doubles result:</span>
+            ${winnerBtnsHtml(p.doublesWinner)}
+          </div>
+          <div class="match-winner-row" data-result-type="singlesT1">
+            <span class="match-winner-label">T1 Singles:</span>
+            ${winnerBtnsHtml(p.singlesT1Winner)}
+          </div>
+          <div class="match-winner-row" data-result-type="singlesT2">
+            <span class="match-winner-label">T2 Singles:</span>
+            ${winnerBtnsHtml(p.singlesT2Winner)}
+          </div>
+        </div>`).join('');
+    }
+
+    // Keep in-memory store in sync as the admin edits fields
+    function syncField(input, idx, roundNum) {
+      if (!parsedMatchData[roundNum]) parsedMatchData[roundNum] = {};
+      const store = roundNum === 3
+        ? (parsedMatchData[roundNum].pods  || (parsedMatchData[roundNum].pods  = []))
+        : (parsedMatchData[roundNum].matches || (parsedMatchData[roundNum].matches = []));
+      if (!store[idx]) store[idx] = {};
+      store[idx][input.dataset.field] = input.type === 'number'
+        ? (input.value === '' ? null : Number(input.value))
+        : input.value;
+    }
+
+    // Count points from all winner buttons in the editor and update the totals bar
+    function updateTotals(roundNum) {
+      const totalsEl = document.getElementById('resultsTotals' + roundNum);
+      if (!totalsEl) return;
+      let ti = 0, gvo = 0;
+
+      document.querySelectorAll('#matchEditorRows' + roundNum + ' .match-winner-row').forEach(row => {
+        const btn = row.querySelector('.winner-btn.sel-ti, .winner-btn.sel-gvo, .winner-btn.sel-tie');
+        if (!btn) return;
+        const w = btn.dataset.winner;
+        if (w === 'ti') ti += 2; else if (w === 'gvo') gvo += 2; else { ti += 1; gvo += 1; }
+      });
+
+      const avail = roundNum === 1 ? 12 : roundNum === 2 ? 24 : 36;
+      totalsEl.innerHTML = `
+        <div class="totals-team"><span class="totals-pts" style="color:#c090d4">${ti}</span><span class="totals-label">TI pts</span></div>
+        <div class="totals-team"><span class="totals-pts">${ti+gvo}</span><span class="totals-label">/ ${avail} played</span></div>
+        <div class="totals-team"><span class="totals-pts" style="color:#60ccd8">${gvo}</span><span class="totals-label">GVO pts</span></div>`;
+    }
+
+
+    // ---- COLLECT EDITOR STATE ----
+    // Reads every input and winner button from the editor DOM into a clean object.
+
+    function collectEditorState(roundNum) {
+      const container = document.getElementById('matchEditorRows' + roundNum);
+      if (!container) return null;
+
+      if (roundNum === 3) {
+        const pods = [];
+        container.querySelectorAll('.match-editor-card').forEach((card, i) => {
+          const pod = { podIndex: i };
+          card.querySelectorAll('input[data-field]').forEach(inp => {
+            pod[inp.dataset.field] = inp.type === 'number'
+              ? (inp.value ? Number(inp.value) : null) : inp.value;
+          });
+          // Three result rows per pod: doubles, singlesT1, singlesT2
+          const resultKeys = ['doublesWinner','singlesT1Winner','singlesT2Winner'];
+          card.querySelectorAll('.match-winner-row').forEach((row, ri) => {
+            const btn = row.querySelector('.winner-btn.sel-ti, .winner-btn.sel-gvo, .winner-btn.sel-tie');
+            pod[resultKeys[ri]] = btn ? btn.dataset.winner : null;
+          });
+          pods.push(pod);
+        });
+        return { format:'pods', pods };
+      } else {
+        const matches = [];
+        container.querySelectorAll('.match-editor-card').forEach((card, i) => {
+          const match = { matchIndex: i };
+          card.querySelectorAll('input[data-field]').forEach(inp => {
+            match[inp.dataset.field] = inp.type === 'number'
+              ? (inp.value ? Number(inp.value) : null) : inp.value;
+          });
+          const btn = card.querySelector('.winner-btn.sel-ti, .winner-btn.sel-gvo, .winner-btn.sel-tie');
+          match.winner = btn ? btn.dataset.winner : null;
+          if (roundNum === 1) {
+            const p = ROUND1_PAIRINGS[i] || {};
+            if (!match.tiLabel)  match.tiLabel  = p.tiLabel;
+            if (!match.gvoLabel) match.gvoLabel = p.gvoLabel;
+            match.tiHdcp  = p.tiHdcp;
+            match.gvoHdcp = p.gvoHdcp;
+            match.time    = p.time;
+          }
+          matches.push(match);
+        });
+        return { format: roundNum === 1 ? 'Scramble' : 'Singles', matches };
+      }
+    }
+
+
+    // ---- SAVE RESULTS ----
+
+    async function saveRoundResults(roundNum) {
+      const btn = document.getElementById('saveBtn' + roundNum);
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+
+      try {
+        const data = collectEditorState(roundNum);
+        data.published = true;
+        data.savedAt   = Date.now();
+
+        // Count points for this round
+        let ti = 0, gvo = 0;
+        if (data.matches) {
+          data.matches.forEach(m => {
+            if (m.winner === 'ti') ti += 2;
+            else if (m.winner === 'gvo') gvo += 2;
+            else if (m.winner === 'tie') { ti++; gvo++; }
+          });
+        } else if (data.pods) {
+          data.pods.forEach(p => {
+            ['doublesWinner','singlesT1Winner','singlesT2Winner'].forEach(k => {
+              const w = p[k];
+              if (w === 'ti') ti += 2; else if (w === 'gvo') gvo += 2; else if (w === 'tie') { ti++; gvo++; }
+            });
+          });
+        }
+        data.tiPts  = ti;
+        data.gvoPts = gvo;
+
+        await db.ref('rounds/round' + roundNum).set(data);
+        await recalcStandings();
+
+        btn.textContent = '✓ Published!';
+        loadLiveScores();
+
+        // Prompt admin to generate commentary
+        setTimeout(() => {
+          const selEl = document.getElementById('commentaryRoundSel');
+          if (selEl) selEl.value = roundNum;
+          setParseStatus('commentaryStatus', '✓ Results saved! Generate a recap below.');
+        }, 500);
+      } catch (err) {
+        alert('Save failed: ' + err.message);
+        btn.textContent = 'Save & Publish Results';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // Sum points across all published rounds and write to standings/
+    async function recalcStandings() {
+      let ti = 0, gvo = 0;
+      for (let r = 1; r <= 3; r++) {
+        const snap = await db.ref('rounds/round' + r).once('value');
+        const d = snap.val();
+        if (d?.published) { ti += d.tiPts || 0; gvo += d.gvoPts || 0; }
+      }
+      await db.ref('standings').set({ ti, gvo, updatedAt: Date.now() });
+    }
+
+
+    // ---- COMMENTARY ----
+
+    async function generateCommentary() {
+      const roundNum = parseInt(document.getElementById('commentaryRoundSel').value);
+      if (!getClaudeKey()) {
+        setParseStatus('commentaryStatus', 'Save your Claude API key first.', 'error');
+        return;
+      }
+      document.getElementById('commentaryPreview').style.display = 'none';
+      setParseStatus('commentaryStatus', 'Loading round data…');
+
+      try {
+        const [rSnap, sSnap] = await Promise.all([
+          db.ref('rounds/round' + roundNum).once('value'),
+          db.ref('standings').once('value')
+        ]);
+        const roundData = rSnap.val();
+        if (!roundData?.published) {
+          setParseStatus('commentaryStatus', 'No published results for Round ' + roundNum + '. Save scores first.', 'error');
+          return;
+        }
+        const standings = sSnap.val() || { ti:0, gvo:0 };
+        const dayName = ['Friday Scramble at Pawleys Plantation', 'Saturday Singles at True Blue Golf Club', 'Sunday Final at Caledonia Golf & Fish Club'][roundNum-1];
+
+        let resultsLines = '';
+        if (roundData.matches) {
+          resultsLines = roundData.matches.map((m, i) => {
+            const ti  = m.tiLabel  || m.tiPlayer  || 'TI';
+            const gvo = m.gvoLabel || m.gvoPlayer || 'GVO';
+            const res = m.winner === 'ti' ? 'TI wins 2-0' : m.winner === 'gvo' ? 'GVO wins 2-0' : 'Halved 1-1';
+            return `Match ${i+1}: ${ti} vs ${gvo} → ${res}. Scores: TI ${m.tiGross??'?'}g/${m.tiNet??'?'}n, GVO ${m.gvoGross??'?'}g/${m.gvoNet??'?'}n`;
+          }).join('\n');
+        } else if (roundData.pods) {
+          resultsLines = roundData.pods.map((p, i) => {
+            const dRes  = p.doublesWinner   === 'ti' ? 'TI' : p.doublesWinner   === 'gvo' ? 'GVO' : 'Halved';
+            const s1Res = p.singlesT1Winner === 'ti' ? 'TI' : p.singlesT1Winner === 'gvo' ? 'GVO' : 'Halved';
+            const s2Res = p.singlesT2Winner === 'ti' ? 'TI' : p.singlesT2Winner === 'gvo' ? 'GVO' : 'Halved';
+            return `Pod ${i+1}: ${p.tiT1}+${p.tiT2} vs ${p.gvoT1}+${p.gvoT2} — Doubles: ${dRes} | ${p.tiT1} vs ${p.gvoT1}: ${s1Res} | ${p.tiT2} vs ${p.gvoT2}: ${s2Res}`;
+          }).join('\n');
+        }
+
+        const prompt = `You are the official hype writer for the Basic Bros Ryder Cup 2026 — a 3-day match play golf tournament among 24 friends in Pawleys Island, SC.
+
+Round ${roundNum} — Day ${roundNum} — ${dayName}
+${resultsLines}
+
+Round ${roundNum} points: TI ${roundData.tiPts} — GVO ${roundData.gvoPts}
+Overall standings after Round ${roundNum}: TI ${standings.ti} — GVO ${standings.gvo} (first to 36.5 wins)
+
+Write a Day ${roundNum} Recap:
+• 2–3 lines setting the mood and overall narrative for the day
+• One sharp, trash-talk line for the most memorable match (upset, blowout, or comeback) — call the player out by first name
+• A punchy closing line about the standings and what's at stake
+• Tone: ESPN highlight desk meets Ryder Cup locker room — confident, specific, funny
+• Under 250 words. Return only the recap text, no headers or labels.`;
+
+        setParseStatus('commentaryStatus', 'Generating recap…');
+        const text = await callClaude([{ role:'user', content: prompt }], 600);
+        document.getElementById('commentaryText').value = text;
+        document.getElementById('commentaryPreview').style.display = 'block';
+        setParseStatus('commentaryStatus', '✓ Done — edit if needed, then save.', 'success');
+      } catch (err) {
+        setParseStatus('commentaryStatus', '✗ ' + err.message, 'error');
+      }
+    }
+
+    async function saveCommentary() {
+      const roundNum = parseInt(document.getElementById('commentaryRoundSel').value);
+      const text     = document.getElementById('commentaryText').value.trim();
+      if (!text) return;
+      try {
+        await db.ref('recaps/round' + roundNum).set({ text, savedAt: Date.now() });
+        setParseStatus('commentaryStatus', '✓ Commentary published to the live site.', 'success');
+        loadRecaps();
+      } catch (err) {
+        setParseStatus('commentaryStatus', '✗ Save failed: ' + err.message, 'error');
+      }
+    }
+
+
+    // ---- MATCHUP BUILDER ----
+
+    function initMatchupBuilders() {
+      renderMatchupRows2();
+      renderPodRows3();
+      loadStandingsMini();
+    }
+
+    async function loadStandingsMini() {
+      const el = document.getElementById('standingsMini');
+      if (!el) return;
+      const snap = await db.ref('standings').once('value');
+      const s = snap.val() || { ti:0, gvo:0 };
+      el.innerHTML = `
+        <span style="color:#c090d4;font-family:'Cinzel',serif;font-weight:700">TI</span>
+        <span class="standings-mini-pts">${s.ti}</span>
+        <span style="color:var(--color-border);margin:0 0.3rem">—</span>
+        <span class="standings-mini-pts">${s.gvo}</span>
+        <span style="color:#60ccd8;font-family:'Cinzel',serif;font-weight:700">GVO</span>
+        <span style="color:var(--color-text-muted);font-size:0.75rem;margin-left:0.5rem">/ 36.5 to win</span>`;
+    }
+
+    async function renderMatchupRows2() {
+      const container = document.getElementById('matchupRows2');
+      if (!container) return;
+      const snap = await db.ref('matchups/round2').once('value');
+      const existing = snap.val()?.pairs || [];
+
+      const tiOpts  = ROSTER_TI.map(p  => `<option value="${p.name}">${p.name} (${p.hdcp})</option>`).join('');
+      const gvoOpts = ROSTER_GVO.map(p => `<option value="${p.name}">${p.name} (${p.hdcp})</option>`).join('');
+
+      container.innerHTML = ROUND2_TIMES.map((time, i) => {
+        const ex = existing[i] || {};
+        return `<div class="matchup-row-card">
+          <div class="matchup-tee-time">${time}</div>
+          <select class="matchup-select" id="r2ti${i}" style="border-left:3px solid #9b50b0">
+            <option value="">— TI Player —</option>${tiOpts}
+          </select>
+          <div class="matchup-vs-label">VS</div>
+          <select class="matchup-select" id="r2gvo${i}" style="border-left:3px solid #00aac0">
+            <option value="">— GVO Player —</option>${gvoOpts}
+          </select>
+        </div>`;
+      }).join('');
+
+      // Restore previously saved selections
+      existing.forEach((ex, i) => {
+        const tiEl  = document.getElementById('r2ti'  + i);
+        const gvoEl = document.getElementById('r2gvo' + i);
+        if (tiEl  && ex.tiPlayer)  tiEl.value  = ex.tiPlayer;
+        if (gvoEl && ex.gvoPlayer) gvoEl.value = ex.gvoPlayer;
+      });
+    }
+
+    async function renderPodRows3() {
+      const container = document.getElementById('podRows3');
+      if (!container) return;
+      const snap = await db.ref('matchups/round3').once('value');
+      const existing = snap.val()?.pods || [];
+
+      const tiT1Opts  = ROSTER_TI.filter(p  => p.tier === 't1').map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+      const tiT2Opts  = ROSTER_TI.filter(p  => p.tier === 't2').map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+      const gvoT1Opts = ROSTER_GVO.filter(p => p.tier === 't1').map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+      const gvoT2Opts = ROSTER_GVO.filter(p => p.tier === 't2').map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+
+      container.innerHTML = ROUND3_TIMES.map((time, i) => `
+        <div class="pod-card">
+          <div class="pod-card-header">Pod ${i+1} · ${time}</div>
+          <div class="pod-row">
+            <div class="pod-tier-label" style="color:#c090d4">TI T1</div>
+            <select class="matchup-select" id="r3ti1-${i}" style="border-left:3px solid #9b50b0">
+              <option value="">— TI T1 —</option>${tiT1Opts}
+            </select>
+            <div class="matchup-vs-label">VS</div>
+            <select class="matchup-select" id="r3gvo1-${i}" style="border-left:3px solid #00aac0">
+              <option value="">— GVO T1 —</option>${gvoT1Opts}
+            </select>
+          </div>
+          <div class="pod-row">
+            <div class="pod-tier-label" style="color:#c090d4">TI T2</div>
+            <select class="matchup-select" id="r3ti2-${i}" style="border-left:3px solid #9b50b0">
+              <option value="">— TI T2 —</option>${tiT2Opts}
+            </select>
+            <div class="matchup-vs-label">VS</div>
+            <select class="matchup-select" id="r3gvo2-${i}" style="border-left:3px solid #00aac0">
+              <option value="">— GVO T2 —</option>${gvoT2Opts}
+            </select>
+          </div>
+        </div>`).join('');
+
+      existing.forEach((ex, i) => {
+        const set = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+        set('r3ti1-' + i, ex.tiT1); set('r3ti2-' + i, ex.tiT2);
+        set('r3gvo1-' + i, ex.gvoT1); set('r3gvo2-' + i, ex.gvoT2);
+      });
+    }
+
+    async function suggestMatchups(roundNum) {
+      if (!getClaudeKey()) {
+        setParseStatus('suggestStatus' + roundNum, 'Save your Claude API key first.', 'error');
+        return;
+      }
+      setParseStatus('suggestStatus' + roundNum, 'Asking Claude for suggestions…');
+
+      try {
+        const sSnap = await db.ref('standings').once('value');
+        const s = sSnap.val() || { ti:0, gvo:0 };
+        const tiRoster  = ROSTER_TI.map(p  => `${p.name} (hdcp ${p.hdcp}, ${p.tier})`).join(', ');
+        const gvoRoster = ROSTER_GVO.map(p => `${p.name} (hdcp ${p.hdcp}, ${p.tier})`).join(', ');
+
+        const prompt = roundNum === 2
+          ? `You are the captain's strategist for the Basic Bros Ryder Cup 2026.
+Current standings: TI ${s.ti} — GVO ${s.gvo}
+TI: ${tiRoster}
+GVO: ${gvoRoster}
+
+Create 12 singles matchup pairings (Round 2, Saturday, any tier). Match similar handicaps where possible. Give the trailing team slightly favorable matchups (Ryder Cup captain strategy).
+Return ONLY a JSON array: [{"tiPlayer":"Mike Davis","gvoPlayer":"Taylor Touchberry"},...]`
+          : `You are the captain's strategist for the Basic Bros Ryder Cup 2026.
+Current standings: TI ${s.ti} — GVO ${s.gvo}
+TI: ${tiRoster}
+GVO: ${gvoRoster}
+
+Create 6 pods for Round 3 (Sunday). Each pod must have 1 TI T1, 1 TI T2, 1 GVO T1, 1 GVO T2. Doubles pairs same-team players; singles match T1 vs T1 and T2 vs T2.
+Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"Cody Esbrandt","gvoT2":"Joe Sharkey"},...]`;
+
+        const resp = await callClaude([{ role:'user', content: prompt }], 800);
+        const jsonMatch = resp.match(/\[[\s\S]*\]/);
+        if (!jsonMatch) throw new Error('No JSON array returned');
+        const suggestions = JSON.parse(jsonMatch[0]);
+
+        if (roundNum === 2) {
+          suggestions.forEach((sug, i) => {
+            const ti  = document.getElementById('r2ti'  + i);
+            const gvo = document.getElementById('r2gvo' + i);
+            if (ti  && sug.tiPlayer)  ti.value  = sug.tiPlayer;
+            if (gvo && sug.gvoPlayer) gvo.value = sug.gvoPlayer;
+          });
+        } else {
+          suggestions.forEach((sug, i) => {
+            const set = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+            set('r3ti1-' + i, sug.tiT1); set('r3ti2-' + i, sug.tiT2);
+            set('r3gvo1-' + i, sug.gvoT1); set('r3gvo2-' + i, sug.gvoT2);
+          });
+        }
+        setParseStatus('suggestStatus' + roundNum, '✓ Suggestions applied — edit as needed before publishing.', 'success');
+      } catch (err) {
+        setParseStatus('suggestStatus' + roundNum, '✗ ' + err.message, 'error');
+      }
+    }
+
+    async function publishMatchups(roundNum) {
+      const statusId = 'publishStatus' + roundNum;
+      try {
+        if (roundNum === 2) {
+          const pairs = ROUND2_TIMES.map((time, i) => ({
+            time,
+            tiPlayer:  document.getElementById('r2ti'  + i)?.value || '',
+            gvoPlayer: document.getElementById('r2gvo' + i)?.value || ''
+          }));
+          await db.ref('matchups/round2').set({ published:true, format:'Singles Match Play', pairs, savedAt:Date.now() });
+        } else {
+          const pods = ROUND3_TIMES.map((time, i) => ({
+            time,
+            tiT1:  document.getElementById('r3ti1-'  + i)?.value || '',
+            tiT2:  document.getElementById('r3ti2-'  + i)?.value || '',
+            gvoT1: document.getElementById('r3gvo1-' + i)?.value || '',
+            gvoT2: document.getElementById('r3gvo2-' + i)?.value || ''
+          }));
+          await db.ref('matchups/round3').set({ published:true, format:'Doubles + Singles', pods, savedAt:Date.now() });
+        }
+        setParseStatus(statusId, '✓ Round ' + roundNum + ' matchups published!', 'success');
+        loadDynamicMatchups();
+      } catch (err) {
+        setParseStatus(statusId, '✗ ' + err.message, 'error');
+      }
+    }
+
+
+    // ---- PUBLIC: LIVE SCORES ----
+
+    function loadLiveScores() {
+      Promise.all([
+        db.ref('rounds').once('value'),
+        db.ref('standings').once('value')
+      ]).then(([rSnap, sSnap]) => {
+        renderScoringTab(rSnap.val() || {}, sSnap.val() || { ti:0, gvo:0 });
+      });
+    }
+
+    function renderScoringTab(rounds, standings) {
+      const anyPublished = Object.values(rounds).some(r => r?.published);
+
+      // Overall standings bar
+      const bar = document.getElementById('overallStandingsBar');
+      if (bar && anyPublished) {
+        bar.style.display = 'flex';
+        const tiEl  = document.getElementById('standingsTI');
+        const gvoEl = document.getElementById('standingsGVO');
+        if (tiEl)  tiEl.textContent  = standings.ti  || 0;
+        if (gvoEl) gvoEl.textContent = standings.gvo || 0;
+      }
+
+      [1,2,3].forEach(r => {
+        const roundData = rounds['round' + r];
+        const statusEl  = document.getElementById('liveRound' + r + 'Status');
+        const bodyEl    = document.getElementById('liveRound' + r + 'Body');
+        if (!statusEl || !bodyEl) return;
+
+        if (!roundData?.published) return; // leave the placeholder intact
+
+        statusEl.textContent = 'Final';
+        statusEl.className   = 'round-result-status status-final';
+
+        let html = '';
+
+        if (roundData.matches) {
+          html = roundData.matches.map(m => {
+            const tiL  = escHtml(m.tiLabel  || m.tiPlayer  || 'TI');
+            const gvoL = escHtml(m.gvoLabel || m.gvoPlayer || 'GVO');
+            const tiCls  = m.winner==='ti'  ? 'result-win' : m.winner==='tie' ? 'result-halved' : 'result-loss';
+            const gvoCls = m.winner==='gvo' ? 'result-win' : m.winner==='tie' ? 'result-halved' : 'result-loss';
+            const tiPts  = m.winner==='ti'  ? 2 : m.winner==='tie' ? 1 : 0;
+            const gvoPts = m.winner==='gvo' ? 2 : m.winner==='tie' ? 1 : 0;
+            return `<div class="result-match-row">
+              <div class="result-team-cell">
+                <span class="result-player-name" style="color:#c090d4">${tiL}</span>
+                <span class="result-score">${m.tiGross??'—'} gross / ${m.tiNet??'—'} net</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:0.2rem">
+                <span class="result-badge ${tiCls}">TI ${tiPts}pts</span>
+                <span class="result-badge ${gvoCls}">GVO ${gvoPts}pts</span>
+              </div>
+              <div class="result-team-cell" style="align-items:flex-end">
+                <span class="result-player-name" style="color:#60ccd8">${gvoL}</span>
+                <span class="result-score">${m.gvoGross??'—'} gross / ${m.gvoNet??'—'} net</span>
+              </div>
+            </div>`;
+          }).join('');
+        } else if (roundData.pods) {
+          const wTxt = w => w==='ti' ? '<span style="color:#c090d4">TI wins</span>' : w==='gvo' ? '<span style="color:#60ccd8">GVO wins</span>' : '<span style="color:var(--color-gold)">Halved</span>';
+          html = roundData.pods.map((p, i) => `
+            <div class="result-match-row" style="flex-direction:column;align-items:flex-start;gap:0.28rem;padding:0.7rem 0.9rem">
+              <div style="font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;color:var(--color-gold)">Pod ${i+1} · ${escHtml(p.tiT1||'')}+${escHtml(p.tiT2||'')} vs ${escHtml(p.gvoT1||'')}+${escHtml(p.gvoT2||'')}</div>
+              <div style="font-size:0.82rem">Doubles: ${wTxt(p.doublesWinner)}</div>
+              <div style="font-size:0.82rem">${escHtml(p.tiT1||'T1')} vs ${escHtml(p.gvoT1||'T1')}: ${wTxt(p.singlesT1Winner)}</div>
+              <div style="font-size:0.82rem">${escHtml(p.tiT2||'T2')} vs ${escHtml(p.gvoT2||'T2')}: ${wTxt(p.singlesT2Winner)}</div>
+            </div>`).join('');
+        }
+
+        html += `<div class="round-team-total">
+          <span style="color:#c090d4">TI ${roundData.tiPts} pts</span>
+          <span style="color:var(--color-text-muted);font-size:0.75rem">Round ${r}</span>
+          <span style="color:#60ccd8">GVO ${roundData.gvoPts} pts</span>
+        </div>`;
+
+        bodyEl.innerHTML = html;
+      });
+    }
+
+
+    // ---- PUBLIC: RECAPS ----
+
+    function loadRecaps() {
+      db.ref('recaps').once('value').then(snap => {
+        const recaps    = snap.val() || {};
+        const container = document.getElementById('recapsContainer');
+        if (!container) return;
+        const names = { round1:'Day 1 Recap — Friday Scramble', round2:'Day 2 Recap — Saturday Singles', round3:'Day 3 Recap — Sunday Final' };
+        const html = Object.entries(recaps)
+          .sort(([a],[b]) => a.localeCompare(b))
+          .filter(([,v]) => v?.text)
+          .map(([key,v]) => `
+            <div class="recap-card">
+              <div class="recap-card-title">⛳ ${names[key] || key}</div>
+              <div class="recap-card-body">${escHtml(v.text)}</div>
+            </div>`)
+          .join('');
+        container.innerHTML = html;
+      });
+    }
+
+
+    // ---- PUBLIC: DYNAMIC MATCHUPS ----
+
+    function loadDynamicMatchups() {
+      // Round 2 — replace TBD rows if matchups are published
+      db.ref('matchups/round2').once('value').then(snap => {
+        const data  = snap.val();
+        const tbody = document.getElementById('r2-matchup-tbody');
+        if (!tbody || !data?.published || !data.pairs?.length) return;
+        tbody.innerHTML = data.pairs.map(p => `
+          <tr>
+            <td class="hdcp-cell">${escHtml(p.time||'')}</td>
+            <td><span class="name-ti">${escHtml(p.tiPlayer||'—')}</span></td>
+            <td class="vs-cell">VS</td>
+            <td><span class="name-gvo">${escHtml(p.gvoPlayer||'—')}</span></td>
+          </tr>`).join('');
+      });
+
+      // Round 3 — replace TBD rows with pod pairings
+      db.ref('matchups/round3').once('value').then(snap => {
+        const data  = snap.val();
+        const tbody = document.getElementById('r3-matchup-tbody');
+        if (!tbody || !data?.published || !data.pods?.length) return;
+        tbody.innerHTML = data.pods.map(p => `
+          <tr>
+            <td class="hdcp-cell">${escHtml(p.time||'')}</td>
+            <td><span class="name-ti">${escHtml(p.tiT1||'')}</span> + <span class="name-ti">${escHtml(p.tiT2||'')}</span></td>
+            <td class="vs-cell">VS</td>
+            <td><span class="name-gvo">${escHtml(p.gvoT1||'')}</span> + <span class="name-gvo">${escHtml(p.gvoT2||'')}</span></td>
+          </tr>`).join('');
+      });
+    }
+
+
+    // ---- BOOT: public loaders run for everyone on page load ----
+
+    loadLiveScores();
+    loadRecaps();
+    loadDynamicMatchups();
+
+    // Extend unlockAdmin to also init new admin features.
+    // Using a wrapper so the original bio-form logic still runs.
+    const _origUnlockAdmin = unlockAdmin;
+    unlockAdmin = function() {
+      _origUnlockAdmin();
+      initApiKeyStatus();
+      initMatchupBuilders();
+    };
+
+    // If auto-login already ran before this code was reached, init now
+    if (document.getElementById('adminContent')?.classList.contains('unlocked')) {
+      initApiKeyStatus();
+      initMatchupBuilders();
+    }
 
   </script>
 
