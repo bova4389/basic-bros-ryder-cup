@@ -88,18 +88,18 @@ All player profile photos live in the `Bro Pics/` folder in the project root.
 
 | Player | Tier | Hdcp |
 |---|---|---|
-| Taylor Touchberry | T1 | 12 |
-| Jason Damiani | T1 | 12 |
-| Mitch Pletcher | T1 | 15 |
-| Chris Schumann | T1 | 16 |
+| Jason Damiani | T1 | 10 |
+| Taylor Touchberry | T1 | 14 |
+| Chris Schumann | T1 | 15 |
+| Cody Esbrandt | T1 | 15 |
+| Mitch Pletcher | T1 | 16 |
 | Sebastian "Bash" Strobel | T1 | 16 |
-| Cody Esbrandt | T1 | 16 |
-| Matt Bova ★ | T2 | 28 |
-| Spencer Schumann | T2 | 42 |
-| Teddy Smith | T2 | 42 |
+| Joe Sharkey | T2 | 25 |
 | Raheem Bishop | T2 | 26 |
 | Joe Mucha | T2 | 26 |
-| Joe Sharkey | T2 | 22 |
+| Matt Bova ★ | T2 | 26 |
+| Spencer Schumann | T2 | 30 |
+| Teddy Smith | T2 | 42 |
 
 **Transfusion Intrusion — Captain: Adam Lewandowski ★**
 
@@ -107,16 +107,16 @@ All player profile photos live in the `Bro Pics/` folder in the project root.
 |---|---|---|
 | Mike Davis | T1 | 3 |
 | Renato | T1 | 11 |
-| Robert Stephenson | T1 | 14 |
+| Robert Stephenson | T1 | 16 |
+| Donny Bartlett | T1 | 17 |
 | Ryne Stone | T1 | 18 |
-| Donny Bartlett | T1 | 19 |
 | Mike Gaudet | T1 | 22 |
 | Karsten Meyer | T2 | 24 |
 | Max Harris | T2 | 26 |
-| Ron Pannullo | T2 | 30 |
-| Adam Lewandowski ★ | T2 | 34 |
-| Jeremy Hermanson | T2 | 35 |
-| Cassady Glenn | T2 | 44 |
+| Ron Pannullo | T2 | 29 |
+| Adam Lewandowski ★ | T2 | 35 |
+| Jeremy Hermanson | T2 | 39 |
+| Cassady Glenn | T2 | 41 |
 
 **Alumni (not competing in 2026):**
 Justin Reeves (2024–25), Johnny Pullman (2025), Jordan Partou (2024–25), Bennett Heath (2025), Stephen Burleson (2024), Jake Hammer (2025), Chris Schneider (2024–25), Mark Bowman (2025), Mike Gaudet (2025 — now active in 2026)
