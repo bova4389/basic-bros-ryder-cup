@@ -37,7 +37,7 @@ basic-bros-ryder-cup/
 │   └── TaylorPic.PNG
 └── img/
     ├── Pawleys/                 ← hole photos for Pawleys Plantation (18 holes)
-    └── Caledonia/               ← hole photos for Caledonia Golf & Fish Club (18 holes)
+    └── Willbrook/               ← hole photos for Willbrook Plantation Golf Club (18 holes, pending)
 ```
 
 **Stack:**
