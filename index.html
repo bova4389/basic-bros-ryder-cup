@@ -7119,6 +7119,15 @@
         .replace(/"/g, '&quot;');
     }
 
+    // Convert basic markdown to HTML for recap cards.
+    // Handles: **bold**, --- horizontal rules. Newlines preserved by pre-wrap CSS.
+    function markdownToHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/^---+\s*$/gm, '<hr style="border:none;border-top:1px solid var(--color-border);margin:0.5rem 0">');
+    }
+
     // ---- BIO MODAL ----
     // Opens the full-screen bio card when "Show More" is tapped.
     function openBioModal(cardEl) {
@@ -9301,6 +9310,49 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
       ]
     };
 
+    // Hardcoded Day 1 recap text — seeded if Firebase has no round1 recap yet.
+    const RECAP1_SEED = { text: `**Transfusion Intrusion Draws First Blood (And Chris Schumann Makes an 8)**
+
+Welcome to Pawleys Island, South Carolina, where the air is 90% humidity, the golf carts smell like sunscreen and regret, and **Chris Schumann and Teddy Smith somehow made an 8 on a par 5 in a scramble.** A scramble. Where you pick the best shot. Between two people. And the best shot available was an 8. We will be returning to this throughout the recap.
+
+---
+
+**Transfusion Intrusion wins Day 1, 7–5.** A solid but not dominant performance from Adam Lewandowski's crew, who will absolutely act like they won by 20. Adam himself shot a gross 74, which is impressive, except he's playing red tees with a 35 handicap so let's pump the brakes on the victory lap, Captain.
+
+Mike Davis also shot 74. Mike Davis is a 3 handicap. Playing red tees. In a scramble. If Mike Davis does not shoot 74 or better he should retire from golf entirely and reflect on his choices.
+
+---
+
+**The signature result of the day belonged to Cody Esbrandt and Joe Sharkey**, who dismantled Karsten Meyer and Ryne Stone **6&4** — meaning they were so far ahead they didn't even need to finish. Karsten and Ryne had 4 double bogeys each. Combined that's 8 double bogeys. In a scramble. We're not mathematicians but that feels like a lot of opportunities to pick a better shot and declining every single one of them.
+
+Ryne Stone in particular had a day that raises serious questions about his life choices, his swing, and possibly his vision prescription.
+
+---
+
+**Match 4 — Matt Bova and Jason Damiani vs Jeremy Hermanson and Mike Gaudet — finished All Square**, which is the golf equivalent of a two-hour argument that ends with everyone going home mad. Damiani and Bova had 4 birdies and shot a gross 74 together, which is genuinely excellent scramble golf. Unfortunately Hermanson and Gaudet — who between them had 8 double bogeys — somehow kept it close enough to halve. This says less about how well TI played and more about the specific torture Matt Bova is capable of inflicting on himself and his partners in a golf match.
+
+---
+
+**Spencer Schumann and Bash Strobel won Match 5 W2&1** and Spencer posted a net 29 — best on the course. Spencer's handicap is 30. He and Bash essentially played the round for free and still won. Donny Bartlett and Max Harris, their opponents, would like everyone to know they tried their best, and we appreciate the effort, gentlemen.
+
+---
+
+**Cassady Glenn and Renato Antun won Match 2 W2up** over Taylor Touchberry and Joe Mucha, which is the upset of the day. Cassady is a 41 handicap. Taylor and Joe came in with momentum and left with nothing. Taylor Touchberry specifically shot a gross 68 — wait, sorry, that was the team's back 9 net score. Taylor's actual gross contribution to this scramble remains protected under the Geneva Convention.
+
+---
+
+**Match 3 — Lewandowski and Davis over Raheem Bishop and Mitch Pletcher W2&1** — was never really close. When your opponents are a 3 and a 35 handicap and they're choosing between each other's shots all day, Raheem and Mitch were essentially playing against a golf robot and his enthusiastic sidekick.
+
+---
+
+**Match 6 — Ron Pannullo and Robert Stephenson over Chris Schumann and Teddy Smith W2&1** — and here we are. Back to the 8. Hole 4. Par 5. Both men looked at each other's shots, selected the best available option, and carded an 8. A triple bogey. Together. As a unit. This is the scramble equivalent of two people carrying a couch up a staircase and dropping it on themselves. Chris and Teddy also finished with the worst gross rounds of the day at 89 each and were worst on the hardest holes at +5. A complete and total performance from two men who will almost certainly blame the greens.
+
+---
+
+**TI leads 7–5. Day 2 is singles match play at True Blue — 24 points available.** No partners to bail you out. No scramble. Just you, your swing, and your decisions.
+
+Chris Schumann and Teddy Smith are available to caddie if anyone needs them.` };
+
     function loadLiveScores() {
       Promise.all([
         db.ref('rounds').once('value'),
@@ -9405,6 +9457,10 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
         const recaps    = snap.val() || {};
         const container = document.getElementById('recapsContainer');
         if (!container) return;
+
+        // Use hardcoded seed if Firebase has no round1 recap yet
+        if (!recaps.round1?.text) recaps.round1 = RECAP1_SEED;
+
         const names = { round1:'Day 1 Recap — Friday Scramble', round2:'Day 2 Recap — Saturday Singles', round3:'Day 3 Recap — Sunday Final' };
         const html = Object.entries(recaps)
           .sort(([a],[b]) => a.localeCompare(b))
@@ -9412,7 +9468,7 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
           .map(([key,v]) => `
             <div class="recap-card">
               <div class="recap-card-title">⛳ ${names[key] || key}</div>
-              <div class="recap-card-body">${escHtml(v.text)}</div>
+              <div class="recap-card-body">${markdownToHtml(v.text)}</div>
             </div>`)
           .join('');
         container.innerHTML = html;
