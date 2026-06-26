@@ -3620,6 +3620,28 @@
       margin-bottom: 0.7rem;
     }
 
+    .recap-card-collapsible .recap-card-title {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0;
+      user-select: none;
+    }
+
+    .recap-card-collapsible .recap-card-title:hover { opacity: 0.82; }
+
+    .recap-chevron {
+      font-family: sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--color-gold);
+      opacity: 0.75;
+    }
+
+    .recap-card-collapsible .recap-card-body { margin-top: 0.9rem; }
+
     .recap-card-body {
       font-size: 0.9rem;
       color: var(--color-text-muted);
@@ -5489,6 +5511,9 @@
           </div>
         </div>
 
+        <!-- Day recap cards — shown above round results, collapsible -->
+        <div id="recapsContainer"></div>
+
         <!-- Round 1 result block — JS fills .round-result-body when results are published -->
         <div class="round-result-block" id="liveRound1">
           <div class="round-result-header">
@@ -5521,9 +5546,6 @@
             <div class="round-result-placeholder">Results posted after Sunday's final round.</div>
           </div>
         </div>
-
-        <!-- Day recap cards — JS populates from Firebase recaps/ node -->
-        <div id="recapsContainer"></div>
 
       </div><!-- end t26-scoring -->
 
@@ -9466,13 +9488,24 @@ Chris Schumann and Teddy Smith are available to caddie if anyone needs them.` };
           .sort(([a],[b]) => a.localeCompare(b))
           .filter(([,v]) => v?.text)
           .map(([key,v]) => `
-            <div class="recap-card">
-              <div class="recap-card-title">⛳ ${names[key] || key}</div>
-              <div class="recap-card-body">${markdownToHtml(v.text)}</div>
+            <div class="recap-card recap-card-collapsible">
+              <div class="recap-card-title" onclick="toggleRecap(this)">
+                <span>⛳ ${names[key] || key}</span>
+                <span class="recap-chevron">▼ Show</span>
+              </div>
+              <div class="recap-card-body" style="display:none">${markdownToHtml(v.text)}</div>
             </div>`)
           .join('');
         container.innerHTML = html;
       });
+    }
+
+    function toggleRecap(titleEl) {
+      const body    = titleEl.nextElementSibling;
+      const chevron = titleEl.querySelector('.recap-chevron');
+      const isOpen  = body.style.display !== 'none';
+      body.style.display  = isOpen ? 'none' : '';
+      chevron.textContent = isOpen ? '▼ Show' : '▲ Hide';
     }
 
 
