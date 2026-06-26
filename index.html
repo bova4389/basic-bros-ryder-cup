@@ -9285,12 +9285,44 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
 
     // ---- PUBLIC: LIVE SCORES ----
 
+    // Hardcoded Round 1 results seeded from the MD analysis (June 26, 2026).
+    // Used as a fallback if Firebase has no published Round 1 data yet.
+    // If the admin later saves scores via the admin panel, Firebase takes priority.
+    const ROUND1_SEED = {
+      format: 'Scramble', published: true, savedAt: 1750946400000,
+      tiPts: 7, gvoPts: 5,
+      matches: [
+        { matchIndex:0, tiLabel:'Ryne + Karsten', gvoLabel:'Cody + Sharkey',     tiHdcp:15, gvoHdcp:14, time:'9:03am', tiGross:null, tiNet:73, gvoGross:null, gvoNet:65, winner:'gvo', resultText:'GVO W6&4' },
+        { matchIndex:1, tiLabel:'Cass + Renato',  gvoLabel:'Taylor + Joe M',     tiHdcp:18, gvoHdcp:14, time:'9:13am', tiGross:null, tiNet:65, gvoGross:null, gvoNet:68, winner:'ti',  resultText:'TI W2up'  },
+        { matchIndex:2, tiLabel:'Davis + Adam',   gvoLabel:'Mitch + Raheem',     tiHdcp:13, gvoHdcp:15, time:'9:23am', tiGross:null, tiNet:61, gvoGross:null, gvoNet:65, winner:'ti',  resultText:'TI W2&1'  },
+        { matchIndex:3, tiLabel:'Mike G + Hermanson', gvoLabel:'Jason + Bova',   tiHdcp:21, gvoHdcp:13, time:'9:33am', tiGross:null, tiNet:63, gvoGross:null, gvoNet:61, winner:'tie', resultText:'All Square'},
+        { matchIndex:4, tiLabel:'Donny + Max',    gvoLabel:'Bash + Spencer',     tiHdcp:15, gvoHdcp:16, time:'9:43am', tiGross:null, tiNet:64, gvoGross:null, gvoNet:63, winner:'gvo', resultText:'GVO W2&1' },
+        { matchIndex:5, tiLabel:'Robert + Ron',   gvoLabel:'Schumann + Teddy',   tiHdcp:16, gvoHdcp:20, time:'9:53am', tiGross:null, tiNet:68, gvoGross:null, gvoNet:69, winner:'ti',  resultText:'TI W2&1'  }
+      ]
+    };
+
     function loadLiveScores() {
       Promise.all([
         db.ref('rounds').once('value'),
         db.ref('standings').once('value')
       ]).then(([rSnap, sSnap]) => {
-        renderScoringTab(rSnap.val() || {}, sSnap.val() || { ti:0, gvo:0 });
+        const rounds = rSnap.val() || {};
+
+        // If Firebase has no published Round 1 data, use the hardcoded seed
+        if (!rounds.round1?.published) rounds.round1 = ROUND1_SEED;
+
+        // Compute standings locally if Firebase standings are empty
+        let standings = sSnap.val() || {};
+        if (!standings.ti && !standings.gvo) {
+          let ti = 0, gvo = 0;
+          [1,2,3].forEach(r => {
+            const rd = rounds['round' + r];
+            if (rd?.published) { ti += rd.tiPts || 0; gvo += rd.gvoPts || 0; }
+          });
+          standings = { ti, gvo };
+        }
+
+        renderScoringTab(rounds, standings);
       });
     }
 
@@ -9336,6 +9368,7 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
               <div style="display:flex;flex-direction:column;align-items:center;gap:0.2rem">
                 <span class="result-badge ${tiCls}">TI ${tiPts}pts</span>
                 <span class="result-badge ${gvoCls}">GVO ${gvoPts}pts</span>
+                ${m.resultText ? `<span style="font-size:0.68rem;color:var(--color-text-muted);margin-top:0.1rem">${escHtml(m.resultText)}</span>` : ''}
               </div>
               <div class="result-team-cell" style="align-items:flex-end">
                 <span class="result-player-name" style="color:#60ccd8">${gvoL}</span>
