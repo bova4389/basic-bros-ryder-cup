@@ -1941,6 +1941,22 @@
       text-align: center;
     }
 
+    /* Singles match table: compact on mobile so it fits without scrolling */
+    @media (max-width: 560px) {
+      .pairings-table-singles {
+        min-width: 0;
+        width: 100%;
+        font-size: 0.78rem;
+      }
+      .pairings-table-singles th {
+        padding: 0.55rem 0.3rem;
+        font-size: 0.5rem;
+      }
+      .pairings-table-singles td {
+        padding: 0.5rem 0.3rem;
+      }
+    }
+
     /* TBD placeholder for rounds not yet announced */
     .tbd-card {
       background: var(--color-surface);
@@ -5401,7 +5417,7 @@
           True Blue Golf Club &nbsp;·&nbsp; Format: Singles Match Play
         </div>
         <div class="table-scroll">
-          <table class="pairings-table">
+          <table class="pairings-table pairings-table-singles">
             <thead>
               <tr>
                 <th>Tee Time</th>
