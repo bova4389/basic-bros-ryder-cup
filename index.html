@@ -3665,6 +3665,105 @@
       white-space: pre-wrap;
     }
 
+    /* ---- Day-section collapsible cards (scoring tab) ---- */
+    .day-section {
+      border: 1.5px solid var(--color-gold);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .day-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      cursor: pointer;
+      user-select: none;
+      background: rgba(212,175,55,0.07);
+      transition: background 0.15s;
+    }
+
+    .day-section-header:hover { background: rgba(212,175,55,0.14); }
+
+    .day-section-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+      flex: 1;
+    }
+
+    .day-section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      letter-spacing: 0.02em;
+    }
+
+    .day-section-sub {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
+    .day-score-display {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--color-text);
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .day-section-chevron {
+      font-size: 0.78rem;
+      color: var(--color-gold);
+      min-width: 1.4rem;
+      text-align: right;
+    }
+
+    .day-section-body {
+      padding: 0.6rem 0.75rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* Sub-cards (Recap / Scores) inside a day section */
+    .day-sub-card {
+      border: 1px solid var(--color-border);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .day-sub-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-text);
+      background: var(--color-surface);
+      transition: background 0.15s;
+    }
+
+    .day-sub-header:hover { background: var(--color-border); }
+
+    .day-sub-chevron {
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+    }
+
+    .day-sub-body {
+      padding: 0.75rem 0.9rem;
+      background: var(--color-bg);
+    }
+
   </style>
 </head>
 
@@ -5617,39 +5716,93 @@
           </div>
         </div>
 
-        <!-- Day recap cards — shown above round results, collapsible -->
-        <div id="recapsContainer"></div>
-
-        <!-- Round 1 result block — JS fills .round-result-body when results are published -->
-        <div class="round-result-block" id="liveRound1">
-          <div class="round-result-header">
-            <span class="round-result-title">Round 1 — Scramble · Pawleys Plantation</span>
-            <span class="round-result-status status-pending" id="liveRound1Status">Pending</span>
+        <!-- Day 1 collapsible section -->
+        <div class="day-section">
+          <div class="day-section-header" onclick="toggleDaySection(this)">
+            <div class="day-section-info">
+              <span class="day-section-label">Day 1 — Scramble</span>
+              <span class="day-section-sub">Friday · Pawleys Plantation</span>
+            </div>
+            <span class="day-score-display" id="dayScore1"></span>
+            <span class="day-section-chevron">▲</span>
           </div>
-          <div class="round-result-body" id="liveRound1Body">
-            <div class="round-result-placeholder">Results posted after Friday's round wraps up.</div>
+          <div class="day-section-body">
+            <div class="day-sub-card">
+              <div class="day-sub-header" onclick="toggleDaySub(this)">
+                <span>Day 1 Recap</span>
+                <span class="day-sub-chevron">▼ Show</span>
+              </div>
+              <div class="day-sub-body" id="dayRecap1Body" style="display:none"></div>
+            </div>
+            <div class="day-sub-card">
+              <div class="day-sub-header" onclick="toggleDaySub(this)">
+                <span>Round 1 Scores</span>
+                <span class="day-sub-chevron">▼ Show</span>
+              </div>
+              <div class="day-sub-body" id="liveRound1Body" style="display:none">
+                <div class="round-result-placeholder">Results posted after Friday's round wraps up.</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Round 2 result block -->
-        <div class="round-result-block" id="liveRound2">
-          <div class="round-result-header">
-            <span class="round-result-title">Round 2 — Singles · True Blue Golf Club</span>
-            <span class="round-result-status status-pending" id="liveRound2Status">Pending</span>
+        <!-- Day 2 collapsible section -->
+        <div class="day-section">
+          <div class="day-section-header" onclick="toggleDaySection(this)">
+            <div class="day-section-info">
+              <span class="day-section-label">Day 2 — Singles</span>
+              <span class="day-section-sub">Saturday · True Blue Golf Club</span>
+            </div>
+            <span class="day-score-display" id="dayScore2"></span>
+            <span class="day-section-chevron">▲</span>
           </div>
-          <div class="round-result-body" id="liveRound2Body">
-            <div class="round-result-placeholder">Results posted after Saturday's round wraps up.</div>
+          <div class="day-section-body">
+            <div class="day-sub-card">
+              <div class="day-sub-header" onclick="toggleDaySub(this)">
+                <span>Day 2 Recap</span>
+                <span class="day-sub-chevron">▼ Show</span>
+              </div>
+              <div class="day-sub-body" id="dayRecap2Body" style="display:none"></div>
+            </div>
+            <div class="day-sub-card">
+              <div class="day-sub-header" onclick="toggleDaySub(this)">
+                <span>Round 2 Scores</span>
+                <span class="day-sub-chevron">▼ Show</span>
+              </div>
+              <div class="day-sub-body" id="liveRound2Body" style="display:none">
+                <div class="round-result-placeholder">Results posted after Saturday's round wraps up.</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Round 3 result block -->
-        <div class="round-result-block" id="liveRound3">
-          <div class="round-result-header">
-            <span class="round-result-title">Round 3 (Final) — Doubles + Singles · Willbrook</span>
-            <span class="round-result-status status-pending" id="liveRound3Status">Pending</span>
+        <!-- Day 3 collapsible section -->
+        <div class="day-section">
+          <div class="day-section-header" onclick="toggleDaySection(this)">
+            <div class="day-section-info">
+              <span class="day-section-label">Day 3 — Doubles + Singles</span>
+              <span class="day-section-sub">Sunday · Willbrook Plantation</span>
+            </div>
+            <span class="day-score-display" id="dayScore3"></span>
+            <span class="day-section-chevron">▲</span>
           </div>
-          <div class="round-result-body" id="liveRound3Body">
-            <div class="round-result-placeholder">Results posted after Sunday's final round.</div>
+          <div class="day-section-body">
+            <div class="day-sub-card">
+              <div class="day-sub-header" onclick="toggleDaySub(this)">
+                <span>Day 3 Recap</span>
+                <span class="day-sub-chevron">▼ Show</span>
+              </div>
+              <div class="day-sub-body" id="dayRecap3Body" style="display:none"></div>
+            </div>
+            <div class="day-sub-card">
+              <div class="day-sub-header" onclick="toggleDaySub(this)">
+                <span>Round 3 Scores</span>
+                <span class="day-sub-chevron">▼ Show</span>
+              </div>
+              <div class="day-sub-body" id="liveRound3Body" style="display:none">
+                <div class="round-result-placeholder">Results posted after Sunday's final round.</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -9569,14 +9722,16 @@ No pressure, boys. Just don't make a 133.` };
 
       [1,2,3].forEach(r => {
         const roundData = rounds['round' + r];
-        const statusEl  = document.getElementById('liveRound' + r + 'Status');
         const bodyEl    = document.getElementById('liveRound' + r + 'Body');
-        if (!statusEl || !bodyEl) return;
+        if (!bodyEl) return;
 
         if (!roundData?.published) return; // leave the placeholder intact
 
-        statusEl.textContent = 'Final';
-        statusEl.className   = 'round-result-status status-final';
+        // Update the day-score chip in the section header
+        const scoreEl = document.getElementById('dayScore' + r);
+        if (scoreEl) {
+          scoreEl.innerHTML = `<span style="color:#c090d4">TI ${roundData.tiPts}</span> &ndash; <span style="color:#60ccd8">GVO ${roundData.gvoPts}</span>`;
+        }
 
         let html = '';
 
@@ -9630,34 +9785,44 @@ No pressure, boys. Just don't make a 133.` };
 
     function loadRecaps() {
       db.ref('recaps').once('value').then(snap => {
-        const recaps    = snap.val() || {};
-        const container = document.getElementById('recapsContainer');
-        if (!container) return;
+        const recaps = snap.val() || {};
 
         // Use hardcoded seeds if Firebase has no recap yet for each round
         if (!recaps.round1?.text) recaps.round1 = RECAP1_SEED;
         if (!recaps.round2?.text) recaps.round2 = RECAP2_SEED;
 
-        const names = { round1:'Day 1 Recap — Friday Scramble', round2:'Day 2 Recap — Saturday Singles', round3:'Day 3 Recap — Sunday Final' };
-        const html = Object.entries(recaps)
-          .sort(([a],[b]) => a.localeCompare(b))
-          .filter(([,v]) => v?.text)
-          .map(([key,v]) => `
-            <div class="recap-card recap-card-collapsible">
-              <div class="recap-card-title" onclick="toggleRecap(this)">
-                <span>⛳ ${names[key] || key}</span>
-                <span class="recap-chevron">▼ Show</span>
-              </div>
-              <div class="recap-card-body" style="display:none">${markdownToHtml(v.text)}</div>
-            </div>`)
-          .join('');
-        container.innerHTML = html;
+        // Inject each recap's body content directly into its sub-body div
+        [1,2,3].forEach(r => {
+          const recap = recaps['round' + r];
+          const bodyEl = document.getElementById('dayRecap' + r + 'Body');
+          if (!bodyEl || !recap?.text) return;
+          bodyEl.innerHTML = `<div class="recap-card-body" style="white-space:pre-wrap">${markdownToHtml(recap.text)}</div>`;
+        });
       });
     }
 
     function toggleRecap(titleEl) {
       const body    = titleEl.nextElementSibling;
       const chevron = titleEl.querySelector('.recap-chevron');
+      const isOpen  = body.style.display !== 'none';
+      body.style.display  = isOpen ? 'none' : '';
+      chevron.textContent = isOpen ? '▼ Show' : '▲ Hide';
+    }
+
+    // Toggles an entire day-section open/closed
+    function toggleDaySection(headerEl) {
+      const section = headerEl.closest('.day-section');
+      const body    = section.querySelector('.day-section-body');
+      const chevron = headerEl.querySelector('.day-section-chevron');
+      const isOpen  = body.style.display !== 'none';
+      body.style.display  = isOpen ? 'none' : '';
+      chevron.textContent = isOpen ? '▼' : '▲';
+    }
+
+    // Toggles a sub-card (Recap or Scores) inside a day-section
+    function toggleDaySub(subHeaderEl) {
+      const body    = subHeaderEl.nextElementSibling;
+      const chevron = subHeaderEl.querySelector('.day-sub-chevron');
       const isOpen  = body.style.display !== 'none';
       body.style.display  = isOpen ? 'none' : '';
       chevron.textContent = isOpen ? '▼ Show' : '▲ Hide';
