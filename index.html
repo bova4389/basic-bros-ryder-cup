@@ -9438,6 +9438,26 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
       ]
     };
 
+    // Hardcoded Round 2 results seeded from the MD analysis (June 27, 2026).
+    const ROUND2_SEED = {
+      format: 'Singles', published: true, savedAt: 1751032800000,
+      tiPts: 15, gvoPts: 9,
+      matches: [
+        { matchIndex:0,  tiPlayer:'Adam Lewandowski', gvoPlayer:'Matt Bova',            tiGross:119, tiNet:82,  gvoGross:113, gvoNet:86,  winner:'ti',  resultText:'TI W3&1'  },
+        { matchIndex:1,  tiPlayer:'Donny Bartlett',   gvoPlayer:'Chris Schumann',        tiGross:90,  tiNet:74,  gvoGross:92,  gvoNet:null, winner:'ti',  resultText:'TI W5&3'  },
+        { matchIndex:2,  tiPlayer:'Jeremy Hermanson', gvoPlayer:'Joe Mucha',             tiGross:133, tiNet:91,  gvoGross:107, gvoNet:80,  winner:'gvo', resultText:'GVO W5&4' },
+        { matchIndex:3,  tiPlayer:'Mike Davis',       gvoPlayer:'Sebastian Strobel',     tiGross:72,  tiNet:72,  gvoGross:92,  gvoNet:null, winner:'ti',  resultText:'TI W2&1'  },
+        { matchIndex:4,  tiPlayer:'Ron Pannullo',     gvoPlayer:'Spencer Schumann',      tiGross:110, tiNet:null, gvoGross:132, gvoNet:87,  winner:'ti',  resultText:'TI W3&1'  },
+        { matchIndex:5,  tiPlayer:'Mike Gaudet',      gvoPlayer:'Raheem Bishop',         tiGross:102, tiNet:null, gvoGross:113, gvoNet:86,  winner:'ti',  resultText:'TI W3&2'  },
+        { matchIndex:6,  tiPlayer:'Renato Antun',     gvoPlayer:'Cody Esbrandt',         tiGross:85,  tiNet:75,  gvoGross:90,  gvoNet:75,  winner:'ti',  resultText:'TI W2up'  },
+        { matchIndex:7,  tiPlayer:'Robert Stephenson',gvoPlayer:'Taylor Touchberry',     tiGross:88,  tiNet:73,  gvoGross:89,  gvoNet:null, winner:'ti',  resultText:'TI W3&1'  },
+        { matchIndex:8,  tiPlayer:'Cassady Glenn',    gvoPlayer:'Teddy Smith',           tiGross:133, tiNet:89,  gvoGross:132, gvoNet:87,  winner:'tie', resultText:'All Square'},
+        { matchIndex:9,  tiPlayer:'Karsten Meyer',    gvoPlayer:'Joe Sharkey',           tiGross:100, tiNet:75,  gvoGross:96,  gvoNet:70,  winner:'gvo', resultText:'GVO W'    },
+        { matchIndex:10, tiPlayer:'Ryne Stone',       gvoPlayer:'Jason Damiani',         tiGross:null,tiNet:null,gvoGross:79,  gvoNet:71,  winner:'gvo', resultText:'GVO W8&6' },
+        { matchIndex:11, tiPlayer:'Max Harris',       gvoPlayer:'Mitch Pletcher',        tiGross:null,tiNet:null,gvoGross:91,  gvoNet:null, winner:'gvo', resultText:'GVO W'    }
+      ]
+    };
+
     // Hardcoded Day 1 recap text — seeded if Firebase has no round1 recap yet.
     const RECAP1_SEED = { text: `**Transfusion Intrusion Draws First Blood (And Chris Schumann Makes an 8)**
 
@@ -9481,28 +9501,56 @@ Ryne Stone in particular had a day that raises serious questions about his life 
 
 Chris Schumann and Teddy Smith are available to caddie if anyone needs them.` };
 
+    // Hardcoded Day 2 recap text — seeded if Firebase has no round2 recap yet.
+    const RECAP2_SEED = { text: `**Transfusion Intrusion Stretches the Lead While Ryne Stone Gets Publicly Executed**
+
+Welcome back to True Blue Golf Club, a course generous enough to let a 3-handicap shoot even par and cruel enough to make Jeremy Hermanson card a **133**. Singles match play, 12 matches, 24 points on the line. GVO's mandate: keep it close or start drafting a concession speech. Spoiler — they did not keep it close.
+
+**TI takes Day 2, 15–9**, and now leads the whole thing **22–14**. GVO is not dead, but they're at the "doctor wants to run a few more tests" stage.
+
+---
+
+Let's talk about **Mike Davis**, who shot an even-par 72, made three birdies, was the single best player on the hardest holes, and dispatched Bash Strobel like Bash owed him money. Mike Davis is a 3 handicap playing white tees, so this was less an upset and more a man doing exactly what the spreadsheet demanded. Still — gross 72 in a Ryder Cup format is genuinely filthy. Respect.
+
+TI's middle order absolutely bullied GVO. **Bartlett, Davis, Pannullo, Gaudet, Antun, and Stephenson swept Matches 4 through 8** — a six-pack of beatdowns that turned a competitive morning into a quiet, miserable afternoon for the Vibes. Donny Bartlett W5&3, Ron Pannullo handling Spencer Schumann, Gaudet over Bishop — it was less a golf round and more a wood-chipper.
+
+---
+
+Now the part GVO can frame and hang on the wall. **Jason Damiani went 79 gross, 71 net, and beat Ryne Stone 8&6**, which is the golf equivalent of finishing a fistfight, checking your watch, and realizing you still have time for lunch. Stone picked up holes down the stretch because there was nothing left to play for. Damiani also tied for most net birdies on the day. The man came to work.
+
+**Joe Sharkey** quietly posted the best net round of the entire field (70) and took down Karsten Meyer, and **Mitch Pletcher** finished off Max Harris to salvage the back end. So GVO's wins — Mucha, Sharkey, Damiani, Pletcher — were real and earned. There just weren't enough of them.
+
+---
+
+A moment of silence for the bottom of the leaderboard, where **Hermanson (133), Cassady Glenn (133), Teddy Smith (132), and Spencer Schumann (132)** all turned in scores that read more like area codes. Teddy Smith was also the single worst player on the hardest holes at +17 — though to be fair, Smith's match against Glenn was the lone halve of the day, two 42-handicaps clinging to each other for warmth and splitting the point. Beautiful, in its own way.
+
+Special non-shoutout to **Adam Lewandowski**, who beat Matt Bova 3&1 in Match 1 while shooting a gross 119. Both captains will spin this however they need to. Matt Bova carded an 86 net and lost anyway, which is a deeply Matt Bova way to spend a Saturday.
+
+---
+
+**TI leads 22–14 with 36 points still alive on Day 3.** GVO needs **22.5 of 36** in the pods — doable on paper, miraculous in practice. The Vibes have a Damiani and a Sharkey playing real golf. They'll need about four more of those tomorrow.
+
+No pressure, boys. Just don't make a 133.` };
+
     function loadLiveScores() {
       Promise.all([
         db.ref('rounds').once('value'),
         db.ref('standings').once('value')
-      ]).then(([rSnap, sSnap]) => {
+      ]).then(([rSnap]) => {
         const rounds = rSnap.val() || {};
 
-        // If Firebase has no published Round 1 data, use the hardcoded seed
+        // Fill in seeded data for any round not yet published in Firebase
         if (!rounds.round1?.published) rounds.round1 = ROUND1_SEED;
+        if (!rounds.round2?.published) rounds.round2 = ROUND2_SEED;
 
-        // Compute standings locally if Firebase standings are empty
-        let standings = sSnap.val() || {};
-        if (!standings.ti && !standings.gvo) {
-          let ti = 0, gvo = 0;
-          [1,2,3].forEach(r => {
-            const rd = rounds['round' + r];
-            if (rd?.published) { ti += rd.tiPts || 0; gvo += rd.gvoPts || 0; }
-          });
-          standings = { ti, gvo };
-        }
+        // Always recompute standings from rounds so seeds stay in sync
+        let ti = 0, gvo = 0;
+        [1,2,3].forEach(r => {
+          const rd = rounds['round' + r];
+          if (rd?.published) { ti += rd.tiPts || 0; gvo += rd.gvoPts || 0; }
+        });
 
-        renderScoringTab(rounds, standings);
+        renderScoringTab(rounds, { ti, gvo });
       });
     }
 
@@ -9586,8 +9634,9 @@ Chris Schumann and Teddy Smith are available to caddie if anyone needs them.` };
         const container = document.getElementById('recapsContainer');
         if (!container) return;
 
-        // Use hardcoded seed if Firebase has no round1 recap yet
+        // Use hardcoded seeds if Firebase has no recap yet for each round
         if (!recaps.round1?.text) recaps.round1 = RECAP1_SEED;
+        if (!recaps.round2?.text) recaps.round2 = RECAP2_SEED;
 
         const names = { round1:'Day 1 Recap — Friday Scramble', round2:'Day 2 Recap — Saturday Singles', round3:'Day 3 Recap — Sunday Final' };
         const html = Object.entries(recaps)
