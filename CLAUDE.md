@@ -49,6 +49,7 @@ basic-bros-ryder-cup/
 
 **Deployment:**
 - Push to `main` → GitHub Actions runs `.github/workflows/deploy.yml` → files upload to DreamHost via SFTP (port 22)
+- A **"Stage deployable files"** step rsyncs the repo into `_deploy/` minus `CLAUDE.md`, `REQUIREMENTS.md`, `CLAUDE_AI_PHONE_CONTEXT.md`, `.github`, `.gitignore` and `*.pdf`; both upload steps read from `_deploy/`. Without it the action publishes everything tracked — `/CLAUDE.md` and `/REQUIREMENTS.md` used to be live on the domain. It is an exclude list, not an allow list, so a newly added photo still deploys without touching the workflow.
 - DreamHost server path: `/home/mattbova/basic-bros-ryder-cup.com`
 - GitHub secrets required: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD` (stored under Settings → Secrets → Actions)
 - Uses `wlixcc/SFTP-Deploy-Action@v1.2.4` — DreamHost requires SFTP, plain FTP and FTPS do not work
