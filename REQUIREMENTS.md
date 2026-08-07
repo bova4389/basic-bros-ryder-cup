@@ -317,10 +317,12 @@ When Claude Code builds the admin panel, include step-by-step Firebase setup ins
 
 ## OPEN TO-DOS
 
-- [ ] **Matt: add `BBRC Group Photo 2026.png` to the project root.** The 2026 entry
-      in Tournament History shows a "team photo coming soon" placeholder until the
-      file exists — the `<img>` hides itself via `onerror`, so simply dropping the
-      file in is all that is needed. Match the naming of the 2024 and 2025 photos.
+- [x] ~~Add `BBRC Group Photo 2026.png`~~ — done 2026-08-07. Note for future years:
+      the 2026 shot is a wider crop than 2024/25 (3550x1629 vs 3684x2035), so it
+      needs its own `.hist-photo-2026` rule to look right at the same card size.
+      **Shoot future group photos with headroom above and below the group** — a
+      wide, tightly-framed shot cannot be zoomed to match the others without
+      cropping the men on the ends out of frame.
 - [ ] 2027: location, lodging, courses and entry fee. Every 2027 sub-tab currently
       reads "Coming Soon".
 - [ ] 2027: captains Chris Schumann and Donny Bartlett need to draft teams before
