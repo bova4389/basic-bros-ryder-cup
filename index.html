@@ -1237,6 +1237,93 @@
     .inner-section.active  { display: block; }
 
     /* ============================================================
+       2027 TOURNAMENT — captain announcement + coming-soon cards
+    ============================================================ */
+    .captains-announce {
+      background: var(--color-surface);
+      border: 1px solid rgba(212,175,55,0.35);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .captains-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .captains-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem;
+      align-items: center;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 1.25rem;
+    }
+
+    .captain-block { text-align: center; }
+
+    .captain-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--color-cream);
+    }
+
+    .captain-record {
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .captains-vs {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-gold);
+    }
+
+    .captains-copy p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 0.9rem;
+    }
+    .captains-copy p:last-child { margin-bottom: 0; }
+
+    /* Placeholder card used by every 2027 sub-section until real content exists */
+    .coming-soon-card {
+      background: var(--color-surface);
+      border: 1px dashed var(--color-border);
+      border-radius: 12px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .coming-soon-icon { font-size: 2.5rem; margin-bottom: 0.6rem; }
+
+    .coming-soon-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--color-gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .coming-soon-card p {
+      font-size: 0.88rem;
+      color: var(--color-text-muted);
+      max-width: 46ch;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ============================================================
        TOURNAMENT — 2a OVERVIEW
     ============================================================ */
     .overview-hero {
@@ -2093,6 +2180,12 @@
     @media (max-width: 900px) {
       .courses-grid        { grid-template-columns: 1fr; }
       .overview-hero       { grid-template-columns: 1fr; gap: 1.25rem; }
+      /* Captain names are long — give them the full width rather than squeezing
+         two into a 3-column row on a phone. */
+      .captains-announce   { padding: 1.25rem 1.1rem; }
+      .captains-row        { grid-template-columns: 1fr; gap: 0.75rem; }
+      .captains-vs         { padding: 0.15rem 0; text-align: center; }
+      .coming-soon-card    { padding: 2rem 1.1rem; }
     }
 
     @media (max-width: 768px) {
@@ -3798,7 +3891,7 @@
         <img src="Basic_Bros_Logo.png" alt="Basic Bros Ryder Cup logo" class="header-logo">
         <div class="header-title">
           Basic Bros Ryder Cup
-          <span class="header-sub">Est. 2024 &nbsp;·&nbsp; Pawleys Island, SC &nbsp;·&nbsp; June 25, 2026</span>
+          <span class="header-sub">Est. 2024 &nbsp;·&nbsp; TBD, FL &nbsp;·&nbsp; Friday, June 25, 2027</span>
         </div>
       </button>
 
@@ -3815,8 +3908,9 @@
   <nav class="site-nav" id="desktopNav">
     <div class="nav-inner" role="tablist">
       <button class="nav-tab active" role="tab" onclick="showTab('home', this)">Home</button>
-      <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tournament</button>
       <button class="nav-tab" role="tab" onclick="showTab('players', this)">The Bros</button>
+      <button class="nav-tab" role="tab" onclick="showTab('tournament2027', this)">2027 Tournament</button>
+      <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tournament</button>
       <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tournament History</button>
       <button class="nav-tab" role="tab" onclick="showTab('rulebook', this)">Rulebook</button>
       <!-- Submit Bio tab — hidden until admin enables it via the admin panel -->
@@ -3828,8 +3922,9 @@
   <!-- Mobile dropdown nav — hidden until hamburger is tapped -->
   <div class="mobile-nav" id="mobileNav">
     <button class="nav-tab active" onclick="showTab('home', this); closeMobileNav()">Home</button>
-    <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tournament</button>
     <button class="nav-tab" onclick="showTab('players', this); closeMobileNav()">The Bros</button>
+    <button class="nav-tab" onclick="showTab('tournament2027', this); closeMobileNav()">2027 Tournament</button>
+    <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tournament</button>
     <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tournament History</button>
     <button class="nav-tab" onclick="showTab('rulebook', this); closeMobileNav()">Rulebook</button>
     <!-- Submit Bio tab — hidden until admin enables it -->
@@ -3854,16 +3949,15 @@
       <div class="hero">
         <img src="Basic_Bros_Logo.png" alt="Basic Bros Ryder Cup" class="hero-logo">
         <h1 class="hero-title">Basic Bros Ryder Cup</h1>
-        <p class="hero-eyebrow">3rd Annual &nbsp;·&nbsp; June 25–28, 2026</p>
+        <p class="hero-eyebrow">4th Annual &nbsp;·&nbsp; June 25–27, 2027</p>
         <p class="hero-tagline">
-          24 guys. 3 days. 3 courses. One champion team.<br>
           Welcome to the most prestigious event in none of our backyards.
         </p>
       </div>
 
       <!-- Countdown timer: hero element — sits directly below tagline -->
       <div class="countdown-wrapper">
-        <div class="countdown-eyebrow">⛳ Tee Time Countdown — June 26, 2026 · 9:03am ET</div>
+        <div class="countdown-eyebrow">⛳ Tee Time Countdown — Friday, June 25, 2027 · 9:00am ET</div>
         <div class="countdown-grid" id="countdown">
           <div class="countdown-block">
             <span class="countdown-number" id="cd-days">--</span>
@@ -3887,7 +3981,7 @@
       <!-- Quick-stat bar: at-a-glance tournament facts -->
       <div class="stat-bar" aria-label="Tournament quick stats">
         <div class="stat-item">
-          <span class="stat-value">3rd</span>
+          <span class="stat-value">4th</span>
           <span class="stat-label">Annual</span>
         </div>
         <div class="stat-item">
@@ -3895,18 +3989,19 @@
           <span class="stat-label">Players</span>
         </div>
         <div class="stat-item">
-          <span class="stat-value">SC</span>
-          <span class="stat-label">Pawleys Island</span>
+          <span class="stat-value">FL</span>
+          <span class="stat-label">Location TBD</span>
         </div>
         <div class="stat-item">
-          <span class="stat-value">Jun 26</span>
+          <span class="stat-value">Jun 25</span>
           <span class="stat-label">First Tee</span>
         </div>
       </div>
 
       <!-- Quick-link buttons to main sections -->
       <div class="quick-links">
-        <button class="btn btn-primary" onclick="showTab('tournament2026', null)">⛳ View 2026 Tournament</button>
+        <button class="btn btn-primary" onclick="showTab('tournament2027', null)">⛳ View 2027 Tournament</button>
+        <button class="btn btn-primary" onclick="showTab('history', null)">🏆 Tournament History</button>
         <button class="btn btn-primary" onclick="showTab('rulebook', null)">📋 Read the Rulebook</button>
         <button class="btn btn-gold" onclick="showTab('players', null)">👤 The Bros</button>
       </div>
@@ -4211,6 +4306,107 @@
     <!-- ========================================================
          2026 TOURNAMENT TAB — full content
     ======================================================== -->
+    <!-- ========================================================
+         2027 TOURNAMENT TAB — shell only.
+         Nothing is decided yet except the captains and the first tee
+         time, so every sub-section reads "Coming Soon" on purpose.
+         Fill these in the same order the 2026 tab uses.
+    ======================================================== -->
+    <section id="tournament2027" class="tab-section" role="tabpanel">
+
+      <!-- Page title -->
+      <div class="tourney-header">
+        <h2>2027 Basic Bros Ryder Cup</h2>
+        <p>June 25–27, 2027 &nbsp;·&nbsp; Location TBD, FL</p>
+      </div>
+
+      <!-- Captain announcement — the only thing actually settled -->
+      <div class="captains-announce">
+        <div class="captains-eyebrow">⛳ Year 4 &middot; Your Captains</div>
+        <div class="captains-row">
+          <div class="captain-block">
+            <div class="captain-name">Chris Schumann</div>
+            <div class="captain-record">2 Titles &nbsp;·&nbsp; 4&ndash;7&ndash;1 Career</div>
+          </div>
+          <div class="captains-vs">VS</div>
+          <div class="captain-block">
+            <div class="captain-name">Donny Bartlett</div>
+            <div class="captain-record">2 Titles &nbsp;·&nbsp; 7&ndash;5 Career</div>
+          </div>
+        </div>
+        <div class="captains-copy">
+          <p>
+            For the first time in four years, neither Cody Esbrandt nor Ryne Stone is running a team.
+            The keys have been handed to <strong>Chris Schumann</strong> and <strong>Donny Bartlett</strong>,
+            and the two of them arrive at the job from opposite directions.
+          </p>
+          <p>
+            Chris has two championship rings and, remarkably, a losing career record to go with them
+            &mdash; <strong>4&ndash;7&ndash;1</strong>. He won in 2024 and again in 2025 by the time-honoured
+            method of being on Cody&rsquo;s team, and he has never in his life had to make a decision about
+            a golf tournament. Then came 2026, where he went a flawless <strong>0&ndash;4</strong>, shot 101 at
+            Willbrook, and combined with Teddy Smith to make an <strong>8 on a par 5 in a scramble</strong>.
+            He is now a captain. The by-laws permit this.
+          </p>
+          <p>
+            Donny arrives with the better argument: <strong>7&ndash;5</strong> across three years, titles in
+            2024 and 2026, and an actual contribution to the last one &mdash; 3&ndash;1 on the week, a net 70
+            on Sunday, and a 5&amp;4 dismantling of Cody Esbrandt in singles. He has beaten a former captain.
+            Chris has been carried by one.
+          </p>
+          <p>
+            The draft comes first. Twenty-four Bros, two lists, and one of these men has to pick a team
+            without Mike Davis on it. Tee off is <strong>9:00am, Friday June 25, 2027</strong>, somewhere
+            in Florida.
+          </p>
+        </div>
+      </div>
+
+      <!-- Inner sub-navigation — mirrors the 2026 tab's structure -->
+      <div class="inner-tabs" role="tablist">
+        <button class="inner-tab active" role="tab" onclick="showInnerTab('t27', 'overview', this)">Overview</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t27', 'teams', this)">Teams</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t27', 'schedule', this)">Schedule</button>
+        <button class="inner-tab" role="tab" onclick="showInnerTab('t27', 'courses', this)">Courses</button>
+      </div>
+
+      <div id="t27-overview" class="inner-section active">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">⛳</div>
+          <h3>Overview &mdash; Coming Soon</h3>
+          <p>Dates are set: <strong>June 25&ndash;27, 2027</strong>, first tee <strong>9:00am Friday</strong>.
+             Location, lodging, entry fee and prize pool are still being worked out.</p>
+        </div>
+      </div>
+
+      <div id="t27-teams" class="inner-section">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">👥</div>
+          <h3>Teams &mdash; Coming Soon</h3>
+          <p>Captains <strong>Chris Schumann</strong> and <strong>Donny Bartlett</strong> have to draft first.
+             Rosters and team names will appear here once the draft is done.</p>
+        </div>
+      </div>
+
+      <div id="t27-schedule" class="inner-section">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">📅</div>
+          <h3>Schedule &mdash; Coming Soon</h3>
+          <p>Three days, Friday through Sunday. The round-by-round itinerary follows once the courses are booked.</p>
+        </div>
+      </div>
+
+      <div id="t27-courses" class="inner-section">
+        <div class="coming-soon-card">
+          <div class="coming-soon-icon">🏌️</div>
+          <h3>Courses &mdash; Coming Soon</h3>
+          <p>Back to Florida for Year 4. Nothing booked yet &mdash; courses will be listed here as they are confirmed.</p>
+        </div>
+      </div>
+
+    </section><!-- end tournament2027 -->
+
+
     <section id="tournament2026" class="tab-section" role="tabpanel">
 
       <!-- Page title -->
@@ -6895,7 +7091,7 @@
 
     // ---- URL HASH NAVIGATION ----
     // On page load, open the tab matching the URL hash (e.g. #players from a shared link).
-    const VALID_TABS = ['home','tournament2026','players','history','rulebook','submitbio','admin'];
+    const VALID_TABS = ['home','players','tournament2027','tournament2026','history','rulebook','submitbio','admin'];
     document.addEventListener('DOMContentLoaded', function() {
       const hash = window.location.hash.slice(1); // strip the leading #
       if (hash && VALID_TABS.includes(hash)) showTab(hash, null);
@@ -7043,7 +7239,8 @@
     // ---- COUNTDOWN TIMER ----
     // Target: June 26, 2026 at 9:03am Eastern Daylight Time (Day 1 first tee).
     // EDT = UTC-4, so that converts to 13:03:00 UTC.
-    const TEE_TIME = new Date('2026-06-26T13:03:00Z');
+    // 9:00am ET on Friday June 25 2027. Stored as UTC — ET is UTC-4 in June (EDT).
+    const TEE_TIME = new Date('2027-06-25T13:00:00Z');
 
     function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -7053,7 +7250,7 @@
       // If tee time has passed, replace the blocks with a live message
       if (diff <= 0) {
         document.getElementById('countdown').innerHTML =
-          '<span class="countdown-live">🏌️ We\'re live at Pawleys Plantation. Fore!</span>';
+          '<span class="countdown-live">🏌️ We\'re live. Fore!</span>';
         return;
       }
 
