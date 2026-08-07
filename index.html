@@ -2687,6 +2687,18 @@
       border: 1px solid var(--color-border);
     }
     .hist-photo-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+    /* 2026's photo is a wider, shorter crop (3550x1629) than 2025's (3684x2035),
+       so object-fit:cover keeps ~53% of its height versus ~44% for 2025 and the
+       group reads smaller. A modest scale tightens it toward the 2025 look.
+       Kept to 1.05 on purpose: the group spans nearly the full frame with only
+       ~3.5% margin at each end, and anything near 1.2 (what it would take to
+       match 2025 exactly) crops the men on the ends out of the shot.
+       The shared object-position of 25% already lands the row of faces about a
+       quarter of the way down the card; the transform-origin holds them there. */
+    .hist-photo-img.hist-photo-2026 {
+      transform: scale(1.05);
+      transform-origin: center 28%;
+    }
     .hist-photo-placeholder {
       position: absolute; inset: 0;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -8543,14 +8555,10 @@
         '<div class="hist-year-entry">' +
 
           '<div class="hist-photo-card" onclick="histToggleYear(\'y2026\')">' +
-            // TODO (Matt): drop "BBRC Group Photo 2026.png" into the project root.
-            // Until it exists the img hides itself and the placeholder below shows.
-            '<div class="hist-photo-placeholder">' +
-              '<span class="hist-photo-placeholder-icon">📸</span>' +
-              '<span>2026 team photo coming soon</span>' +
-            '</div>' +
-            '<img class="hist-photo-img" src="BBRC Group Photo 2026.png" alt="BBRC 2026 Group Photo" ' +
-                 'onerror="this.style.display=\'none\'" />' +
+            // The 2026 photo is a wider crop than 2024/25 and the group spans the
+            // full frame, so it gets its own object-position rather than the shared
+            // one — see .hist-photo-img.hist-photo-2026.
+            '<img class="hist-photo-img hist-photo-2026" src="BBRC Group Photo 2026.png" alt="BBRC 2026 Group Photo" />' +
             '<div class="hist-photo-overlay">' +
               '<div class="hist-year-badge">Year 3 &middot; 2026</div>' +
               '<div class="hist-venue-line">Pawleys Island, SC &middot; June 26&ndash;28</div>' +
