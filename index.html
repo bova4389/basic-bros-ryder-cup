@@ -3567,6 +3567,23 @@
     .result-loss { background: rgba(136,153,170,0.07); color: var(--color-text-muted); border: 1px solid var(--color-border); }
     .result-halved { background: rgba(212,175,55,0.1);  color: var(--color-gold); border: 1px solid rgba(212,175,55,0.28); }
 
+    /* Day 3 only — groups a pod's three simultaneous matches (one doubles, two
+       singles) under a single heading so it's clear they were played together. */
+    .pod-result-group { border-bottom: 2px solid var(--color-border); }
+    .pod-result-group:last-child { border-bottom: none; }
+    .pod-result-group .result-match-row:last-child { border-bottom: none; }
+
+    .pod-result-header {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      background: var(--color-surface-2);
+      padding: 0.45rem 0.9rem;
+    }
+
     /* Round subtotal footer */
     .round-team-total {
       display: flex;
@@ -5433,8 +5450,8 @@
 
       <!-- ===================================================
            2e — PAIRINGS
-           Round 1 (Friday scramble) is fully populated.
-           Rounds 2 & 3 are TBD — assigned night before each round.
+           All three rounds are now fully populated. Round 3's pods and tee
+           times were recovered from Squabbit after the event.
            All handicaps updated to finalized 2026 values.
       =================================================== -->
       <div id="t26-matchups" class="inner-section">
@@ -5628,11 +5645,11 @@
           </table>
         </div>
 
-        <!-- Round 3: TBD — tee times estimated, matchups assigned Saturday night -->
+        <!-- Round 3: final pods, tee times confirmed against Squabbit -->
         <div class="pairings-round-title">Round 3 — Sunday (Final)</div>
         <div class="pairings-round-sub">
-          Willbrook Plantation Golf Club &nbsp;·&nbsp; Matchups assigned Saturday evening after Round 2<br>
-          Format: Pods / Doubles + Singles
+          Willbrook Plantation Golf Club &nbsp;·&nbsp; 6 pods of 4<br>
+          Format: Doubles (low ball / low total) + two singles matches, played simultaneously
         </div>
         <div class="table-scroll">
           <table class="pairings-table">
@@ -5644,14 +5661,43 @@
                 <th>Good Vibes Only (2026)</th>
               </tr>
             </thead>
-            <tbody>
             <tbody id="r3-matchup-tbody">
-              <tr><td class="hdcp-cell">8:06am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD — announced Saturday night</td></tr>
-              <tr><td class="hdcp-cell">8:16am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
-              <tr><td class="hdcp-cell">8:26am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
-              <tr><td class="hdcp-cell">8:36am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
-              <tr><td class="hdcp-cell">8:46am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
-              <tr><td class="hdcp-cell">8:56am</td><td colspan="3" style="text-align:center;color:var(--color-text-muted);font-style:italic;">TBD</td></tr>
+              <tr>
+                <td class="hdcp-cell">8:06am</td>
+                <td><span class="name-ti">Karsten Meyer</span> + <span class="name-ti">Adam Lewandowski</span></td>
+                <td class="vs-cell">VS</td>
+                <td><span class="name-gvo">Matt Bova</span> + <span class="name-gvo">Joe Mucha</span></td>
+              </tr>
+              <tr>
+                <td class="hdcp-cell">8:16am</td>
+                <td><span class="name-ti">Ryne Stone</span> + <span class="name-ti">Renato Antun</span></td>
+                <td class="vs-cell">VS</td>
+                <td><span class="name-gvo">Mitch Pletcher</span> + <span class="name-gvo">Taylor Touchberry</span></td>
+              </tr>
+              <tr>
+                <td class="hdcp-cell">8:26am</td>
+                <td><span class="name-ti">Jeremy Hermanson</span> + <span class="name-ti">Max Harris</span></td>
+                <td class="vs-cell">VS</td>
+                <td><span class="name-gvo">Raheem Bishop</span> + <span class="name-gvo">Spencer Schumann</span></td>
+              </tr>
+              <tr>
+                <td class="hdcp-cell">8:36am</td>
+                <td><span class="name-ti">Donny Bartlett</span> + <span class="name-ti">Mike Davis</span></td>
+                <td class="vs-cell">VS</td>
+                <td><span class="name-gvo">Cody Esbrandt</span> + <span class="name-gvo">Chris Schumann</span></td>
+              </tr>
+              <tr>
+                <td class="hdcp-cell">8:46am</td>
+                <td><span class="name-ti">Cassady Glenn</span> + <span class="name-ti">Ron Pannullo</span></td>
+                <td class="vs-cell">VS</td>
+                <td><span class="name-gvo">Joe Sharkey</span> + <span class="name-gvo">Teddy Smith</span></td>
+              </tr>
+              <tr>
+                <td class="hdcp-cell">8:56am</td>
+                <td><span class="name-ti">Robert Stephenson</span> + <span class="name-ti">Mike Gaudet</span></td>
+                <td class="vs-cell">VS</td>
+                <td><span class="name-gvo">Jason Damiani</span> + <span class="name-gvo">Sebastian Strobel</span></td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -9611,6 +9657,72 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
       ]
     };
 
+    // Hardcoded Round 3 results, pulled from Squabbit on Aug 7 2026 (played June 28, 2026).
+    // Sunday ran as TWO Squabbit rounds at once inside each pod of four: a Low Ball/Low Total
+    // doubles match plus the two singles matches. Squabbit stores no match results of its own,
+    // so the winners and the "W4&3" strings come from its leaderboard screen; gross came
+    // straight out of Firestore, and net is gross minus the handicap each man actually played
+    // to. 6 pods x 3 matches x 2 pts = 36 points, and TI 24 / GVO 12 reconciles to the 46-26 final.
+    const ROUND3_SEED = {
+      format: 'Doubles + Singles', published: true, savedAt: 1751119200000,
+      tiPts: 24, gvoPts: 12,
+      pods: [
+        { podIndex:0, time:'8:06am',
+          tiT1:'Karsten Meyer',      tiT1Gross:107, tiT1Net:83,
+          tiT2:'Adam Lewandowski',   tiT2Gross:116, tiT2Net:81,
+          gvoT1:'Matt Bova',         gvoT1Gross:113, gvoT1Net:87,
+          gvoT2:'Joe Mucha',         gvoT2Gross:113, gvoT2Net:87,
+          doublesWinner:'ti',   doublesResult:'TI W4&3',
+          singlesT1Winner:'ti', singlesT1Result:'TI W1up',
+          singlesT2Winner:'ti', singlesT2Result:'TI W2up' },
+
+        { podIndex:1, time:'8:16am',
+          tiT1:'Ryne Stone',         tiT1Gross:109, tiT1Net:91,
+          tiT2:'Renato Antun',       tiT2Gross:87,  tiT2Net:76,
+          gvoT1:'Mitch Pletcher',    gvoT1Gross:108, gvoT1Net:92,
+          gvoT2:'Taylor Touchberry', gvoT2Gross:87,  gvoT2Net:73,
+          doublesWinner:'gvo',   doublesResult:'GVO W4&2',
+          singlesT1Winner:'gvo', singlesT1Result:'GVO W1up',
+          singlesT2Winner:'gvo', singlesT2Result:'GVO W2&1' },
+
+        { podIndex:2, time:'8:26am',
+          tiT1:'Jeremy Hermanson',   tiT1Gross:116, tiT1Net:77,
+          tiT2:'Max Harris',         tiT2Gross:109, tiT2Net:83,
+          gvoT1:'Raheem Bishop',     gvoT1Gross:121, gvoT1Net:95,
+          gvoT2:'Spencer Schumann',  gvoT2Gross:130, gvoT2Net:100,
+          doublesWinner:'ti',   doublesResult:'TI W7&5',
+          singlesT1Winner:'ti', singlesT1Result:'TI W7&6',
+          singlesT2Winner:'ti', singlesT2Result:'TI W5&3' },
+
+        { podIndex:3, time:'8:36am',
+          tiT1:'Donny Bartlett',     tiT1Gross:87,  tiT1Net:70,
+          tiT2:'Mike Davis',         tiT2Gross:74,  tiT2Net:71,
+          gvoT1:'Cody Esbrandt',     gvoT1Gross:91,  gvoT1Net:75,
+          gvoT2:'Chris Schumann',    gvoT2Gross:101, gvoT2Net:86,
+          doublesWinner:'ti',   doublesResult:'TI W4&2',
+          singlesT1Winner:'ti', singlesT1Result:'TI W5&4',
+          singlesT2Winner:'ti', singlesT2Result:'TI W4&2' },
+
+        { podIndex:4, time:'8:46am',
+          tiT1:'Cassady Glenn',      tiT1Gross:118, tiT1Net:77,
+          tiT2:'Ron Pannullo',       tiT2Gross:115, tiT2Net:86,
+          gvoT1:'Joe Sharkey',       gvoT1Gross:91,  gvoT1Net:66,
+          gvoT2:'Teddy Smith',       gvoT2Gross:121, gvoT2Net:79,
+          doublesWinner:'tie',   doublesResult:'All Square',
+          singlesT1Winner:'gvo', singlesT1Result:'GVO W6&5',
+          singlesT2Winner:'gvo', singlesT2Result:'GVO W3&2' },
+
+        { podIndex:5, time:'8:56am',
+          tiT1:'Robert Stephenson',  tiT1Gross:88,  tiT1Net:72,
+          tiT2:'Mike Gaudet',        tiT2Gross:92,  tiT2Net:70,
+          gvoT1:'Jason Damiani',     gvoT1Gross:83,  gvoT1Net:73,
+          gvoT2:'Sebastian Strobel', gvoT2Gross:90,  gvoT2Net:74,
+          doublesWinner:'ti',    doublesResult:'TI W4&3',
+          singlesT1Winner:'tie', singlesT1Result:'All Square',
+          singlesT2Winner:'ti',  singlesT2Result:'TI W3&1' }
+      ]
+    };
+
     // Hardcoded Day 1 recap text — seeded if Firebase has no round1 recap yet.
     const RECAP1_SEED = { text: `**Transfusion Intrusion Draws First Blood (And Chris Schumann Makes an 8)**
 
@@ -9685,6 +9797,49 @@ Special non-shoutout to **Adam Lewandowski**, who beat Matt Bova 3&1 in Match 1 
 
 No pressure, boys. Just don't make a 133.` };
 
+    // Hardcoded Day 3 recap text — seeded if Firebase has no round3 recap yet.
+    const RECAP3_SEED = { text: `**Transfusion Intrusion Win the Whole Thing While Ryne Stone Completes a Perfect Season**
+
+Welcome to Willbrook Plantation, final stop on a weekend that stopped being a competition somewhere around Saturday lunch. Pods of four. Doubles and singles running at the same time. Thirty-six points on the table. Good Vibes Only needed 22.5 of them to lift the cup.
+
+**They got 12.**
+
+**Transfusion Intrusion take Day 3 by 24–12 and the 2026 Basic Bros Ryder Cup 46–26.** Adam Lewandowski is going to give a speech. There is nothing any of us can do to stop it.
+
+---
+
+We begin, as we must, with **Ryne Stone**, who has now completed four rounds of this tournament and scored **zero points**. Not a win. Not a halve. Zero, four times, consecutively. He lost the doubles 4&2 and then lost his singles 1up to Mitch Pletcher. Ryne shot 109. There exists a version of this weekend where Ryne Stone stayed home in bed and the final score is identical, except he'd still have the $900.
+
+He has company. **Raheem Bishop and Chris Schumann also finished the week on zero.** Three men, twelve rounds between them, no points whatsoever. Somewhere there is a group chat that has gone very quiet.
+
+---
+
+Now the good news, of which there is a great deal if you happen to be wearing green.
+
+**Adam Lewandowski and Mike Davis both went a perfect 8-for-8.** Every round, every available point. What elevates it is how completely differently they managed it. Davis shot 74 — low gross of the day — and took Chris Schumann apart 4&2. Adam shot **116** off a 35 handicap and beat Joe Mucha 2up. One of these men is a 3 handicap playing golf. The other is operating a handicap like a crowbar. Both finished undefeated, and their captain will be raising it at every opportunity until roughly 2031.
+
+**Pod 3 was a war crime.** Jeremy Hermanson and Max Harris won the doubles **7&5**, then Hermanson beat Raheem Bishop **7&6** and Harris beat Spencer Schumann **5&3**. Six points, no survivors. Hermanson is a 39 handicap who shot 116 and won by seven holes. Spencer shot 130 for a **net 100** — the only man on the property who failed to break 100 after strokes. At a certain point you stop keeping score and start keeping a diary.
+
+**Karsten Meyer and Adam Lewandowski** swept their pod as well, and so did **Donny Bartlett and Mike Davis** — 4&2 in the doubles, then Bartlett 5&4 and Davis 4&2. Three separate 6–0 whitewashes in a single afternoon.
+
+---
+
+Good Vibes Only did not go quietly everywhere, in fairness.
+
+**Joe Sharkey posted a net 66 — the best round of the entire tournament** — off a 25 handicap, and buried Cassady Glenn 6&5. Sharkey finished as GVO's leading scorer on 7 points and was, by a comfortable distance, the best golfer his team had all weekend.
+
+**Pod 2 was GVO's one clean sweep**, and it belonged to **Mitch Pletcher and Taylor Touchberry**, who won the doubles 4&2 before Pletcher handled Stone 1up and Touchberry saw off Renato Antun 2&1. Pletcher shot 108 for a net 92 — third-worst on the golf course — and won both his matches regardless. Golf is not a fair game and Mitch Pletcher is the proof.
+
+**Teddy Smith beat Ron Pannullo 3&2** off a 42 handicap, and **Robert Stephenson and Jason Damiani halved** in the only singles tie of the day.
+
+---
+
+**Final: Transfusion Intrusion 46, Good Vibes Only 26.** Not close. Honestly not close since Saturday.
+
+Congratulations to Adam Lewandowski and Transfusion Intrusion, champions of the 2026 Basic Bros Ryder Cup.
+
+Ryne Stone, we'll see you next June. Bring a pencil you won't need.` };
+
     function loadLiveScores() {
       Promise.all([
         db.ref('rounds').once('value'),
@@ -9695,6 +9850,7 @@ No pressure, boys. Just don't make a 133.` };
         // Fill in seeded data for any round not yet published in Firebase
         if (!rounds.round1?.published) rounds.round1 = ROUND1_SEED;
         if (!rounds.round2?.published) rounds.round2 = ROUND2_SEED;
+        if (!rounds.round3?.published) rounds.round3 = ROUND3_SEED;
 
         // Always recompute standings from rounds so seeds stay in sync
         let ti = 0, gvo = 0;
@@ -9705,6 +9861,36 @@ No pressure, boys. Just don't make a 133.` };
 
         renderScoringTab(rounds, { ti, gvo });
       });
+    }
+
+    // Builds "107 gross / 83 net", with an em dash wherever a number is missing.
+    function scoreText(gross, net) {
+      return `${gross ?? '—'} gross / ${net ?? '—'} net`;
+    }
+
+    // One result row, shared by all three days so they look identical: TI on the
+    // left, the two points badges in the middle, GVO on the right. Pass an empty
+    // string for a score to leave that cell blank (the Day 3 doubles row does this,
+    // since a low ball / low total match has no single team score to show).
+    // Labels must already be escaped by the caller; resultText is escaped here.
+    function resultRowHtml(tiLabel, tiScore, gvoLabel, gvoScore, winner, resultText) {
+      const cls = side => winner === side ? 'result-win' : winner === 'tie' ? 'result-halved' : 'result-loss';
+      const pts = side => winner === side ? 2 : winner === 'tie' ? 1 : 0;
+      return `<div class="result-match-row">
+        <div class="result-team-cell">
+          <span class="result-player-name" style="color:#c090d4">${tiLabel}</span>
+          ${tiScore ? `<span class="result-score">${tiScore}</span>` : ''}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0.2rem">
+          <span class="result-badge ${cls('ti')}">TI ${pts('ti')}pts</span>
+          <span class="result-badge ${cls('gvo')}">GVO ${pts('gvo')}pts</span>
+          ${resultText ? `<span style="font-size:0.68rem;color:var(--color-text-muted);margin-top:0.1rem;text-align:center">${escHtml(resultText)}</span>` : ''}
+        </div>
+        <div class="result-team-cell" style="align-items:flex-end">
+          <span class="result-player-name" style="color:#60ccd8">${gvoLabel}</span>
+          ${gvoScore ? `<span class="result-score">${gvoScore}</span>` : ''}
+        </div>
+      </div>`;
     }
 
     function renderScoringTab(rounds, standings) {
@@ -9736,38 +9922,35 @@ No pressure, boys. Just don't make a 133.` };
         let html = '';
 
         if (roundData.matches) {
-          html = roundData.matches.map(m => {
-            const tiL  = escHtml(m.tiLabel  || m.tiPlayer  || 'TI');
-            const gvoL = escHtml(m.gvoLabel || m.gvoPlayer || 'GVO');
-            const tiCls  = m.winner==='ti'  ? 'result-win' : m.winner==='tie' ? 'result-halved' : 'result-loss';
-            const gvoCls = m.winner==='gvo' ? 'result-win' : m.winner==='tie' ? 'result-halved' : 'result-loss';
-            const tiPts  = m.winner==='ti'  ? 2 : m.winner==='tie' ? 1 : 0;
-            const gvoPts = m.winner==='gvo' ? 2 : m.winner==='tie' ? 1 : 0;
-            return `<div class="result-match-row">
-              <div class="result-team-cell">
-                <span class="result-player-name" style="color:#c090d4">${tiL}</span>
-                <span class="result-score">${m.tiGross??'—'} gross / ${m.tiNet??'—'} net</span>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:0.2rem">
-                <span class="result-badge ${tiCls}">TI ${tiPts}pts</span>
-                <span class="result-badge ${gvoCls}">GVO ${gvoPts}pts</span>
-                ${m.resultText ? `<span style="font-size:0.68rem;color:var(--color-text-muted);margin-top:0.1rem">${escHtml(m.resultText)}</span>` : ''}
-              </div>
-              <div class="result-team-cell" style="align-items:flex-end">
-                <span class="result-player-name" style="color:#60ccd8">${gvoL}</span>
-                <span class="result-score">${m.gvoGross??'—'} gross / ${m.gvoNet??'—'} net</span>
-              </div>
+          // Days 1 and 2 — one match per row, one score per side.
+          html = roundData.matches.map(m => resultRowHtml(
+            escHtml(m.tiLabel  || m.tiPlayer  || 'TI'),  scoreText(m.tiGross,  m.tiNet),
+            escHtml(m.gvoLabel || m.gvoPlayer || 'GVO'), scoreText(m.gvoGross, m.gvoNet),
+            m.winner, m.resultText
+          )).join('');
+
+        } else if (roundData.pods) {
+          // Day 3 — each pod of four played a doubles match and two singles matches
+          // simultaneously. Shown as three rows in the same style as Days 1 and 2.
+          // The doubles row names both partners but carries no score of its own: it
+          // was a low ball / low total format, so each man's gross and net appear
+          // once, in his own singles row underneath.
+          html = roundData.pods.map((p, i) => {
+            const t1 = escHtml(p.tiT1  || 'TI 1'),  t2 = escHtml(p.tiT2  || 'TI 2');
+            const g1 = escHtml(p.gvoT1 || 'GVO 1'), g2 = escHtml(p.gvoT2 || 'GVO 2');
+            const label = (kind, res) => res ? kind + ' · ' + res : kind;
+            return `<div class="pod-result-group">
+              <div class="pod-result-header">Pod ${i+1}${p.time ? ' &middot; ' + escHtml(p.time) : ''}</div>
+              ${resultRowHtml(`${t1} + ${t2}`, '', `${g1} + ${g2}`, '',
+                              p.doublesWinner, label('Doubles', p.doublesResult))}
+              ${resultRowHtml(t1, scoreText(p.tiT1Gross, p.tiT1Net),
+                              g1, scoreText(p.gvoT1Gross, p.gvoT1Net),
+                              p.singlesT1Winner, label('Singles', p.singlesT1Result))}
+              ${resultRowHtml(t2, scoreText(p.tiT2Gross, p.tiT2Net),
+                              g2, scoreText(p.gvoT2Gross, p.gvoT2Net),
+                              p.singlesT2Winner, label('Singles', p.singlesT2Result))}
             </div>`;
           }).join('');
-        } else if (roundData.pods) {
-          const wTxt = w => w==='ti' ? '<span style="color:#c090d4">TI wins</span>' : w==='gvo' ? '<span style="color:#60ccd8">GVO wins</span>' : '<span style="color:var(--color-gold)">Halved</span>';
-          html = roundData.pods.map((p, i) => `
-            <div class="result-match-row" style="flex-direction:column;align-items:flex-start;gap:0.28rem;padding:0.7rem 0.9rem">
-              <div style="font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;color:var(--color-gold)">Pod ${i+1} · ${escHtml(p.tiT1||'')}+${escHtml(p.tiT2||'')} vs ${escHtml(p.gvoT1||'')}+${escHtml(p.gvoT2||'')}</div>
-              <div style="font-size:0.82rem">Doubles: ${wTxt(p.doublesWinner)}</div>
-              <div style="font-size:0.82rem">${escHtml(p.tiT1||'T1')} vs ${escHtml(p.gvoT1||'T1')}: ${wTxt(p.singlesT1Winner)}</div>
-              <div style="font-size:0.82rem">${escHtml(p.tiT2||'T2')} vs ${escHtml(p.gvoT2||'T2')}: ${wTxt(p.singlesT2Winner)}</div>
-            </div>`).join('');
         }
 
         html += `<div class="round-team-total">
@@ -9790,6 +9973,7 @@ No pressure, boys. Just don't make a 133.` };
         // Use hardcoded seeds if Firebase has no recap yet for each round
         if (!recaps.round1?.text) recaps.round1 = RECAP1_SEED;
         if (!recaps.round2?.text) recaps.round2 = RECAP2_SEED;
+        if (!recaps.round3?.text) recaps.round3 = RECAP3_SEED;
 
         // Inject each recap's body content directly into its sub-body div
         [1,2,3].forEach(r => {
