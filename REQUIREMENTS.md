@@ -36,6 +36,19 @@ A public-facing league website for the **Basic Bros Ryder Cup** — an annual 3-
 
 ## SECTION 2 — 2026 TOURNAMENT PAGE
 
+> **Planned change — make this tab admin-only.** The 2026 event is finished and its
+> scoring and recaps now live in Tournament History, which is the public home for
+> them. This tab stays up for a while longer because it holds things History does
+> not: courses, schedule, lodging, condo assignments and pairings. Once nobody is
+> referring back to it, **hide the tab from everyone except admins rather than
+> deleting it** — the content is worth keeping, it just doesn't belong in the main
+> nav. Do the same with 2027 the year after, and so on.
+>
+> **Do not duplicate the scoring markup to achieve this.** The standings bar and the
+> three day sections are a shared component (`scoringBlockHtml(ns)` /
+> `mountScoringBlock(id, ns)`); the 2026 tab and the History entry each mount their
+> own namespaced copy. 2027 onwards should mount it too.
+
 ### Sub-sections (use inner tabs or accordion):
 
 #### 2a. Overview
@@ -297,6 +310,21 @@ When Claude Code builds the admin panel, include step-by-step Firebase setup ins
 | Repo | New GitHub repo: `basic-bros-ryder-cup` |
 | Single file | Yes — one index.html, all CSS/JS inline |
 | Year 1 data | Limited — 1 round, 12 players, rough handicaps. Mark with disclaimer. |
+| Finished tournaments | Scoring + recaps move to Tournament History, newest at the top. The year's own tab stays up a while, then becomes admin-only. |
+| History detail format | 2024/25 show per-round scorecards because that is all that was captured. 2026 onwards shows the full scoring block instead. They will not match, on purpose. |
+
+---
+
+## OPEN TO-DOS
+
+- [ ] **Matt: add `BBRC Group Photo 2026.png` to the project root.** The 2026 entry
+      in Tournament History shows a "team photo coming soon" placeholder until the
+      file exists — the `<img>` hides itself via `onerror`, so simply dropping the
+      file in is all that is needed. Match the naming of the 2024 and 2025 photos.
+- [ ] 2027: location, lodging, courses and entry fee. Every 2027 sub-tab currently
+      reads "Coming Soon".
+- [ ] 2027: captains Chris Schumann and Donny Bartlett need to draft teams before
+      the Teams sub-tab can be filled in.
 
 ---
 

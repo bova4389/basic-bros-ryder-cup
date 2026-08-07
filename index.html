@@ -6178,7 +6178,9 @@
             <span class="tier-badge tier-badge-t1">T1</span>
           </div>
           <div class="player-card-stats">
-            <div class="player-stat"><span class="player-stat-label">Hdcp</span><span class="player-stat-val">15</span></div>
+            <!-- 16, not 15 — this is the handicap he actually played off in 2026
+                 per Squabbit's per-round match cards. -->
+            <div class="player-stat"><span class="player-stat-label">Hdcp</span><span class="player-stat-val">16</span></div>
                         <div class="player-stat"><span class="player-stat-label">Record</span><span class="player-stat-val">—</span></div>
           </div>
           <div class="player-card-bio">Bio coming soon</div>
@@ -7635,7 +7637,9 @@
       let stats = null;
       try { stats = cardEl.dataset.statsJson ? JSON.parse(cardEl.dataset.statsJson) : null; } catch(e) {}
 
-      // Always show career history — include both years, "Did not participate" if absent
+      // Always show career history — every year the cup has been played,
+      // with "Did not participate" for the ones a Bro sat out
+      const stat26row = stats && stats.find(s => s.year === '2026');
       const stat25row = stats && stats.find(s => s.year === '2025');
       const stat24row = stats && stats.find(s => s.year === '2024');
 
@@ -7647,6 +7651,15 @@
 
       let h = '<hr class="bio-modal-divider"><div class="bio-modal-history-title">Career History</div>';
       h += '<table class="bio-modal-history-table"><thead><tr><th>Year</th><th>Team</th><th>Hdcp</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>Total</th></tr></thead><tbody>';
+
+      if (stat26row) {
+        const s = stat26row;
+        const tLabel = s.team === 'ti' ? 'Transfusion' : s.team === 'gvo' ? 'Good Vibes' : s.team;
+        const r1 = s.r1_res || '—', r2 = s.r2_res || '—', r3 = s.r3_res || '—', r4 = s.r4_res || '—';
+        h += `<tr><td>2026</td><td>${escHtml(tLabel)}</td><td>${s.hdcp !== undefined ? s.hdcp : '—'}</td><td>${escHtml(r1)}</td><td>${escHtml(r2)}</td><td>${escHtml(r3)}</td><td>${escHtml(r4)}</td><td>${calcTotal(r1,r2,r3,r4)}</td></tr>`;
+      } else {
+        h += '<tr><td>2026</td><td colspan="7" style="color:var(--color-text-muted);font-style:italic;text-align:left;">Did not participate</td></tr>';
+      }
 
       if (stat25row) {
         const s = stat25row;
@@ -7682,8 +7695,11 @@
     // Reads H24 and H25 stats, injects history chips and career W/L record into each
     // matching player card. Called after H24/H25 data objects are defined.
     function loadPlayerTournamentStats() {
-      // Build lookup maps (name → stats object) for both years
-      const statsMap25 = {}, statsMap24 = {};
+      // Build lookup maps (name → stats object) for all three years
+      const statsMap26 = {}, statsMap25 = {}, statsMap24 = {};
+      if (typeof H26 !== 'undefined' && H26.stats) {
+        H26.stats.forEach(s => { statsMap26[s.name.toLowerCase().trim()] = s; });
+      }
       if (typeof H25 !== 'undefined' && H25.stats) {
         H25.stats.forEach(s => { statsMap25[s.name.toLowerCase().trim()] = s; });
       }
@@ -7695,24 +7711,28 @@
         const nameEl = card.querySelector('.player-card-name');
         if (!nameEl) return;
         const nameKey = nameEl.textContent.replace(/★/g, '').trim().toLowerCase();
+        const stat26 = statsMap26[nameKey];
         const stat25 = statsMap25[nameKey];
         const stat24 = statsMap24[nameKey];
-        if (!stat25 && !stat24) return;
+        if (!stat26 && !stat25 && !stat24) return;
 
-        // Store on card for the bio modal to read
+        // Store on card for the bio modal to read — newest year first
         const statsArr = [];
+        if (stat26) statsArr.push({ year: '2026', ...stat26 });
         if (stat25) statsArr.push({ year: '2025', ...stat25 });
         if (stat24) statsArr.push({ year: '2024', ...stat24 });
         card.dataset.statsJson = JSON.stringify(statsArr);
 
         // Compute career W/L/T across all years and update the Record chip on the card
         let w = 0, l = 0, t = 0;
-        if (stat25) {
+        [stat26, stat25].forEach(s => {
+          if (!s) return;
           ['r1_res','r2_res','r3_res','r4_res'].forEach(k => {
-            if (stat25[k] === 'W') w++; else if (stat25[k] === 'L') l++; else if (stat25[k] === 'T') t++;
+            if (s[k] === 'W') w++; else if (s[k] === 'L') l++; else if (s[k] === 'T') t++;
           });
-        }
+        });
         if (stat24) {
+          // 2024 predates the _res naming
           ['r1','r2','r3','r4'].forEach(k => {
             if (stat24[k] === 'W') w++; else if (stat24[k] === 'L') l++; else if (stat24[k] === 'T') t++;
           });
@@ -8226,6 +8246,52 @@
         { name:"Mike Gaudet",      team:"baggers", hdcp:22.0, r1:"+15", r2:"−10", r3:"+8",       r4:"−2", payout:75,  r2_res:'W', r3_res:'L', r4_res:'W', r1_res:'W' },
         { name:"Ron Pannullo",     team:"baggers", hdcp:28.0, r1:"+50", r2:"−13", r3:"+12",      r4:"+24", payout:75,  r2_res:'W', r3_res:'L', r4_res:'L', r1_res:'L' },
         { name:"Ryne Stone",       team:"baggers", hdcp:22.0, r1:"+21", r2:"−16", r3:"−6",  r4:"+4",  payout:75,  r2_res:'L', r3_res:'W', r4_res:'L', r1_res:'W' }
+      ]
+    };
+
+
+    /* ================================================================
+       TOURNAMENT HISTORY — 2026 PLAYER RESULTS
+       Only what the career-record chip and the bio modal need: each Bro's
+       W/L/T for the four 2026 rounds, plus the handicap he actually played to.
+       Derived from ROUND1_SEED / ROUND2_SEED / ROUND3_SEED further down this
+       file, so it cannot drift from the scoring the site already shows.
+       Rounds are already chronological here — r1_res..r4_res map straight to
+       R1 scramble, R2 singles, R3 doubles, R4 singles. (2025 needed remapping;
+       2026 does not.)
+       Reconciles to the published round scores: 7-5, 15-9, 9-3, 15-9.
+    ================================================================ */
+    const H26 = {
+      stats: [
+        // Transfusion Intrusion — Capt. Adam Lewandowski (winners, 46-26)
+        { name:"Adam Lewandowski",  team:"ti",  hdcp:35, r1_res:'W', r2_res:'W', r3_res:'W', r4_res:'W' },
+        { name:"Cassady Glenn",     team:"ti",  hdcp:41, r1_res:'W', r2_res:'T', r3_res:'T', r4_res:'L' },
+        { name:"Donny Bartlett",    team:"ti",  hdcp:17, r1_res:'L', r2_res:'W', r3_res:'W', r4_res:'W' },
+        { name:"Jeremy Hermanson",  team:"ti",  hdcp:39, r1_res:'T', r2_res:'L', r3_res:'W', r4_res:'W' },
+        { name:"Karsten Meyer",     team:"ti",  hdcp:24, r1_res:'L', r2_res:'L', r3_res:'W', r4_res:'W' },
+        { name:"Max Harris",        team:"ti",  hdcp:26, r1_res:'L', r2_res:'L', r3_res:'W', r4_res:'W' },
+        { name:"Mike Davis",        team:"ti",  hdcp:3,  r1_res:'W', r2_res:'W', r3_res:'W', r4_res:'W' },
+        { name:"Mike Gaudet",       team:"ti",  hdcp:22, r1_res:'T', r2_res:'W', r3_res:'W', r4_res:'W' },
+        // Names must match the .player-card-name text exactly — that is the lookup
+        // key for the career record chip. Renato and Bash have no surname / a
+        // nickname on their cards, so they are spelled that way here too.
+        { name:"Renato",            team:"ti",  hdcp:11, r1_res:'W', r2_res:'W', r3_res:'L', r4_res:'L' },
+        { name:"Robert Stephenson", team:"ti",  hdcp:16, r1_res:'W', r2_res:'W', r3_res:'W', r4_res:'T' },
+        { name:"Ron Pannullo",      team:"ti",  hdcp:29, r1_res:'W', r2_res:'W', r3_res:'T', r4_res:'L' },
+        { name:"Ryne Stone",        team:"ti",  hdcp:18, r1_res:'L', r2_res:'L', r3_res:'L', r4_res:'L' },
+        // Good Vibes Only — Capt. Matt Bova
+        { name:"Chris Schumann",    team:"gvo", hdcp:15, r1_res:'L', r2_res:'L', r3_res:'L', r4_res:'L' },
+        { name:"Cody Esbrandt",     team:"gvo", hdcp:16, r1_res:'W', r2_res:'L', r3_res:'L', r4_res:'L' },
+        { name:"Jason Damiani",     team:"gvo", hdcp:10, r1_res:'T', r2_res:'W', r3_res:'L', r4_res:'T' },
+        { name:"Joe Mucha",         team:"gvo", hdcp:26, r1_res:'L', r2_res:'W', r3_res:'L', r4_res:'L' },
+        { name:"Joe Sharkey",       team:"gvo", hdcp:25, r1_res:'W', r2_res:'W', r3_res:'T', r4_res:'W' },
+        { name:"Matt Bova",         team:"gvo", hdcp:26, r1_res:'T', r2_res:'L', r3_res:'L', r4_res:'L' },
+        { name:"Mitch Pletcher",    team:"gvo", hdcp:16, r1_res:'L', r2_res:'W', r3_res:'W', r4_res:'W' },
+        { name:"Raheem Bishop",     team:"gvo", hdcp:26, r1_res:'L', r2_res:'L', r3_res:'L', r4_res:'L' },
+        { name:'Sebastian "Bash" Strobel', team:"gvo", hdcp:16, r1_res:'W', r2_res:'L', r3_res:'L', r4_res:'L' },
+        { name:"Spencer Schumann",  team:"gvo", hdcp:30, r1_res:'W', r2_res:'L', r3_res:'L', r4_res:'L' },
+        { name:"Taylor Touchberry", team:"gvo", hdcp:14, r1_res:'L', r2_res:'L', r3_res:'W', r4_res:'W' },
+        { name:"Teddy Smith",       team:"gvo", hdcp:42, r1_res:'L', r2_res:'T', r3_res:'T', r4_res:'W' }
       ]
     };
 
