@@ -3918,10 +3918,10 @@
     <div class="nav-inner" role="tablist">
       <button class="nav-tab active" role="tab" onclick="showTab('home', this)">Home</button>
       <button class="nav-tab" role="tab" onclick="showTab('players', this)">The Bros</button>
-      <button class="nav-tab" role="tab" onclick="showTab('tournament2027', this)">2027 Tournament</button>
-      <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tournament</button>
-      <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tournament History</button>
-      <button class="nav-tab" role="tab" onclick="showTab('rulebook', this)">Rulebook</button>
+      <button class="nav-tab" role="tab" onclick="showTab('tournament2027', this)">2027 Tourney</button>
+      <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tourney</button>
+      <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tourney History</button>
+      <button class="nav-tab" role="tab" onclick="showTab('rulebook', this)">The Rules</button>
       <!-- Submit Bio tab — hidden until admin enables it via the admin panel -->
       <button class="nav-tab" role="tab" id="bioFormTab" style="display:none;" onclick="showTab('submitbio', this)">Submit Bio</button>
       <button class="nav-tab" role="tab" onclick="showTab('admin', this)">Admin</button>
@@ -3932,10 +3932,10 @@
   <div class="mobile-nav" id="mobileNav">
     <button class="nav-tab active" onclick="showTab('home', this); closeMobileNav()">Home</button>
     <button class="nav-tab" onclick="showTab('players', this); closeMobileNav()">The Bros</button>
-    <button class="nav-tab" onclick="showTab('tournament2027', this); closeMobileNav()">2027 Tournament</button>
-    <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tournament</button>
-    <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tournament History</button>
-    <button class="nav-tab" onclick="showTab('rulebook', this); closeMobileNav()">Rulebook</button>
+    <button class="nav-tab" onclick="showTab('tournament2027', this); closeMobileNav()">2027 Tourney</button>
+    <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tourney</button>
+    <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tourney History</button>
+    <button class="nav-tab" onclick="showTab('rulebook', this); closeMobileNav()">The Rules</button>
     <!-- Submit Bio tab — hidden until admin enables it -->
     <button class="nav-tab" id="bioFormTabMobile" style="display:none;" onclick="showTab('submitbio', this); closeMobileNav()">Submit Bio</button>
     <button class="nav-tab" onclick="showTab('admin', this); closeMobileNav()">Admin</button>
@@ -4009,9 +4009,9 @@
 
       <!-- Quick-link buttons to main sections -->
       <div class="quick-links">
-        <button class="btn btn-primary" onclick="showTab('tournament2027', null)">⛳ View 2027 Tournament</button>
-        <button class="btn btn-primary" onclick="showTab('history', null)">🏆 Tournament History</button>
-        <button class="btn btn-primary" onclick="showTab('rulebook', null)">📋 Read the Rulebook</button>
+        <button class="btn btn-primary" onclick="showTab('tournament2027', null)">⛳ View 2027 Tourney</button>
+        <button class="btn btn-primary" onclick="showTab('history', null)">🏆 Tourney History</button>
+        <button class="btn btn-primary" onclick="showTab('rulebook', null)">📋 Read The Rules</button>
         <button class="btn btn-gold" onclick="showTab('players', null)">👤 The Bros</button>
       </div>
 
@@ -9871,12 +9871,16 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
       format: 'Scramble', published: true, savedAt: 1750946400000,
       tiPts: 7, gvoPts: 5,
       matches: [
-        { matchIndex:0, tiLabel:'Ryne + Karsten', gvoLabel:'Cody + Sharkey',     tiHdcp:15, gvoHdcp:14, time:'9:03am', tiGross:null, tiNet:73, gvoGross:null, gvoNet:65, winner:'gvo', resultText:'GVO W6&4' },
-        { matchIndex:1, tiLabel:'Cass + Renato',  gvoLabel:'Taylor + Joe M',     tiHdcp:18, gvoHdcp:14, time:'9:13am', tiGross:null, tiNet:65, gvoGross:null, gvoNet:68, winner:'ti',  resultText:'TI W2up'  },
-        { matchIndex:2, tiLabel:'Davis + Adam',   gvoLabel:'Mitch + Raheem',     tiHdcp:13, gvoHdcp:15, time:'9:23am', tiGross:null, tiNet:61, gvoGross:null, gvoNet:65, winner:'ti',  resultText:'TI W2&1'  },
-        { matchIndex:3, tiLabel:'Mike G + Hermanson', gvoLabel:'Jason + Bova',   tiHdcp:21, gvoHdcp:13, time:'9:33am', tiGross:null, tiNet:63, gvoGross:null, gvoNet:61, winner:'tie', resultText:'All Square'},
-        { matchIndex:4, tiLabel:'Donny + Max',    gvoLabel:'Bash + Spencer',     tiHdcp:15, gvoHdcp:16, time:'9:43am', tiGross:null, tiNet:64, gvoGross:null, gvoNet:63, winner:'gvo', resultText:'GVO W2&1' },
-        { matchIndex:5, tiLabel:'Robert + Ron',   gvoLabel:'Schumann + Teddy',   tiHdcp:16, gvoHdcp:20, time:'9:53am', tiGross:null, tiNet:68, gvoGross:null, gvoNet:69, winner:'ti',  resultText:'TI W2&1'  }
+        // Team gross filled in from Squabbit (both partners share the scramble score).
+        // Net was already correct throughout; every value below checks out as
+        // gross - team handicap. The only correction is match 4's GVO handicap,
+        // which read 16 but was 18 — its net of 63 already reflected the 18.
+        { matchIndex:0, tiLabel:'Ryne + Karsten', gvoLabel:'Cody + Sharkey',     tiHdcp:15, gvoHdcp:14, time:'9:03am', tiGross:88, tiNet:73, gvoGross:79, gvoNet:65, winner:'gvo', resultText:'GVO W6&4' },
+        { matchIndex:1, tiLabel:'Cass + Renato',  gvoLabel:'Taylor + Joe M',     tiHdcp:18, gvoHdcp:14, time:'9:13am', tiGross:83, tiNet:65, gvoGross:82, gvoNet:68, winner:'ti',  resultText:'TI W2up'  },
+        { matchIndex:2, tiLabel:'Davis + Adam',   gvoLabel:'Mitch + Raheem',     tiHdcp:13, gvoHdcp:15, time:'9:23am', tiGross:74, tiNet:61, gvoGross:80, gvoNet:65, winner:'ti',  resultText:'TI W2&1'  },
+        { matchIndex:3, tiLabel:'Mike G + Hermanson', gvoLabel:'Jason + Bova',   tiHdcp:21, gvoHdcp:13, time:'9:33am', tiGross:84, tiNet:63, gvoGross:74, gvoNet:61, winner:'tie', resultText:'All Square'},
+        { matchIndex:4, tiLabel:'Donny + Max',    gvoLabel:'Bash + Spencer',     tiHdcp:15, gvoHdcp:18, time:'9:43am', tiGross:79, tiNet:64, gvoGross:81, gvoNet:63, winner:'gvo', resultText:'GVO W2&1' },
+        { matchIndex:5, tiLabel:'Robert + Ron',   gvoLabel:'Schumann + Teddy',   tiHdcp:16, gvoHdcp:20, time:'9:53am', tiGross:84, tiNet:68, gvoGross:89, gvoNet:69, winner:'ti',  resultText:'TI W2&1'  }
       ]
     };
 
@@ -9885,18 +9889,29 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
       format: 'Singles', published: true, savedAt: 1751032800000,
       tiPts: 15, gvoPts: 9,
       matches: [
-        { matchIndex:0,  tiPlayer:'Adam Lewandowski', gvoPlayer:'Matt Bova',            tiGross:119, tiNet:82,  gvoGross:113, gvoNet:86,  winner:'ti',  resultText:'TI W3&1'  },
-        { matchIndex:1,  tiPlayer:'Donny Bartlett',   gvoPlayer:'Chris Schumann',        tiGross:90,  tiNet:74,  gvoGross:92,  gvoNet:null, winner:'ti',  resultText:'TI W5&3'  },
-        { matchIndex:2,  tiPlayer:'Jeremy Hermanson', gvoPlayer:'Joe Mucha',             tiGross:133, tiNet:91,  gvoGross:107, gvoNet:80,  winner:'gvo', resultText:'GVO W5&4' },
-        { matchIndex:3,  tiPlayer:'Mike Davis',       gvoPlayer:'Sebastian Strobel',     tiGross:72,  tiNet:72,  gvoGross:92,  gvoNet:null, winner:'ti',  resultText:'TI W2&1'  },
-        { matchIndex:4,  tiPlayer:'Ron Pannullo',     gvoPlayer:'Spencer Schumann',      tiGross:110, tiNet:null, gvoGross:132, gvoNet:87,  winner:'ti',  resultText:'TI W3&1'  },
-        { matchIndex:5,  tiPlayer:'Mike Gaudet',      gvoPlayer:'Raheem Bishop',         tiGross:102, tiNet:null, gvoGross:113, gvoNet:86,  winner:'ti',  resultText:'TI W3&2'  },
-        { matchIndex:6,  tiPlayer:'Renato Antun',     gvoPlayer:'Cody Esbrandt',         tiGross:85,  tiNet:75,  gvoGross:90,  gvoNet:75,  winner:'ti',  resultText:'TI W2up'  },
-        { matchIndex:7,  tiPlayer:'Robert Stephenson',gvoPlayer:'Taylor Touchberry',     tiGross:88,  tiNet:73,  gvoGross:89,  gvoNet:null, winner:'ti',  resultText:'TI W3&1'  },
-        { matchIndex:8,  tiPlayer:'Cassady Glenn',    gvoPlayer:'Teddy Smith',           tiGross:133, tiNet:89,  gvoGross:132, gvoNet:87,  winner:'tie', resultText:'All Square'},
-        { matchIndex:9,  tiPlayer:'Karsten Meyer',    gvoPlayer:'Joe Sharkey',           tiGross:100, tiNet:75,  gvoGross:96,  gvoNet:70,  winner:'gvo', resultText:'GVO W'    },
-        { matchIndex:10, tiPlayer:'Ryne Stone',       gvoPlayer:'Jason Damiani',         tiGross:null,tiNet:null,gvoGross:79,  gvoNet:71,  winner:'gvo', resultText:'GVO W8&6' },
-        { matchIndex:11, tiPlayer:'Max Harris',       gvoPlayer:'Mitch Pletcher',        tiGross:null,tiNet:null,gvoGross:91,  gvoNet:null, winner:'gvo', resultText:'GVO W'    }
+        // Gross and net both taken straight from Squabbit. The handicaps were revised
+        // manually after the original screenshots were parsed, so every stored net was
+        // computed from stale numbers — net is gross minus the as-played handicap, which
+        // is identical across rounds 2, 3 and 4. Winners and result text are untouched:
+        // match play was decided hole by hole, so none of this moves a result.
+        { matchIndex:0,  tiPlayer:'Adam Lewandowski', gvoPlayer:'Matt Bova',            tiGross:119, tiNet:84, gvoGross:113, gvoNet:87,  winner:'ti',  resultText:'TI W3&1'  },
+        { matchIndex:1,  tiPlayer:'Donny Bartlett',   gvoPlayer:'Chris Schumann',        tiGross:90,  tiNet:73, gvoGross:92,  gvoNet:77,  winner:'ti',  resultText:'TI W5&3'  },
+        { matchIndex:2,  tiPlayer:'Jeremy Hermanson', gvoPlayer:'Joe Mucha',             tiGross:133, tiNet:94, gvoGross:107, gvoNet:81,  winner:'gvo', resultText:'GVO W5&4' },
+        { matchIndex:3,  tiPlayer:'Mike Davis',       gvoPlayer:'Sebastian Strobel',     tiGross:72,  tiNet:69, gvoGross:92,  gvoNet:76,  winner:'ti',  resultText:'TI W2&1'  },
+        { matchIndex:4,  tiPlayer:'Ron Pannullo',     gvoPlayer:'Spencer Schumann',      tiGross:110, tiNet:81, gvoGross:132, gvoNet:102, winner:'ti',  resultText:'TI W3&1'  },
+        { matchIndex:5,  tiPlayer:'Mike Gaudet',      gvoPlayer:'Raheem Bishop',         tiGross:102, tiNet:80, gvoGross:113, gvoNet:87,  winner:'ti',  resultText:'TI W3&2'  },
+        // Cody's net is 90-15, not 90-16: Squabbit recorded him at 16 but the site
+        // shows 15 everywhere, and a net that doesn't match the displayed handicap
+        // just reads as a mistake. This is the one value that intentionally differs
+        // from Squabbit, and only by a stroke.
+        { matchIndex:6,  tiPlayer:'Renato Antun',     gvoPlayer:'Cody Esbrandt',         tiGross:85,  tiNet:74, gvoGross:90,  gvoNet:75,  winner:'ti',  resultText:'TI W2up'  },
+        { matchIndex:7,  tiPlayer:'Robert Stephenson',gvoPlayer:'Taylor Touchberry',     tiGross:88,  tiNet:72, gvoGross:89,  gvoNet:75,  winner:'ti',  resultText:'TI W3&1'  },
+        { matchIndex:8,  tiPlayer:'Cassady Glenn',    gvoPlayer:'Teddy Smith',           tiGross:133, tiNet:92, gvoGross:132, gvoNet:90,  winner:'tie', resultText:'All Square'},
+        { matchIndex:9,  tiPlayer:'Karsten Meyer',    gvoPlayer:'Joe Sharkey',           tiGross:100, tiNet:76, gvoGross:96,  gvoNet:71,  winner:'gvo', resultText:'GVO W'    },
+        { matchIndex:10, tiPlayer:'Ryne Stone',       gvoPlayer:'Jason Damiani',         tiGross:97,  tiNet:79, gvoGross:79,  gvoNet:69,  winner:'gvo', resultText:'GVO W8&6' },
+        // Mitch's gross read 91; Squabbit has 86. Corrected here along with the two
+        // missing TI gross values, which were never captured from the screenshots.
+        { matchIndex:11, tiPlayer:'Max Harris',       gvoPlayer:'Mitch Pletcher',        tiGross:106, tiNet:80, gvoGross:86,  gvoNet:70,  winner:'gvo', resultText:'GVO W'    }
       ]
     };
 
