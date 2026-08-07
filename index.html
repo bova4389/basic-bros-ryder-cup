@@ -2749,6 +2749,11 @@
     .clr-pirates { color: var(--color-green-light); }
     .hist-team.prba    { text-align: left; }
     .hist-team.pirates { text-align: right; }
+    /* 2026 teams — same purple/cyan the live scoring block uses */
+    .clr-ti  { color: #c090d4; }
+    .clr-gvo { color: #60ccd8; }
+    .hist-team.ti  { text-align: left; }
+    .hist-team.gvo { text-align: right; }
 
     /* Detail section */
     .hist-detail { padding-top: 1.25rem; }
@@ -5942,111 +5947,11 @@
           </div>
         </div>
 
-        <!-- Overall standings bar — hidden until at least one round is published -->
-        <div class="overall-standings-bar" id="overallStandingsBar">
-          <div class="standings-team-block">
-            <span class="standings-team-pts" style="color:#c090d4" id="standingsTI">0</span>
-            <span class="standings-team-name">Transfusion Intrusion</span>
-          </div>
-          <div style="text-align:center">
-            <div class="standings-divider">—</div>
-            <div class="standings-to-win">Final</div>
-          </div>
-          <div class="standings-team-block">
-            <span class="standings-team-pts" style="color:#60ccd8" id="standingsGVO">0</span>
-            <span class="standings-team-name">Good Vibes Only</span>
-          </div>
-        </div>
-
-        <!-- Day 1 collapsible section -->
-        <div class="day-section">
-          <div class="day-section-header" onclick="toggleDaySection(this)">
-            <div class="day-section-info">
-              <span class="day-section-label">Day 1 — Scramble</span>
-              <span class="day-section-sub">Friday · Pawleys Plantation</span>
-            </div>
-            <span class="day-score-display" id="dayScore1"></span>
-            <span class="day-section-chevron">▲</span>
-          </div>
-          <div class="day-section-body">
-            <div class="day-sub-card">
-              <div class="day-sub-header" onclick="toggleDaySub(this)">
-                <span>Day 1 Recap</span>
-                <span class="day-sub-chevron">▼ Show</span>
-              </div>
-              <div class="day-sub-body" id="dayRecap1Body" style="display:none"></div>
-            </div>
-            <div class="day-sub-card">
-              <div class="day-sub-header" onclick="toggleDaySub(this)">
-                <span>Round 1 Scores</span>
-                <span class="day-sub-chevron">▼ Show</span>
-              </div>
-              <div class="day-sub-body" id="liveRound1Body" style="display:none">
-                <div class="round-result-placeholder">Results posted after Friday's round wraps up.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 2 collapsible section -->
-        <div class="day-section">
-          <div class="day-section-header" onclick="toggleDaySection(this)">
-            <div class="day-section-info">
-              <span class="day-section-label">Day 2 — Singles</span>
-              <span class="day-section-sub">Saturday · True Blue Golf Club</span>
-            </div>
-            <span class="day-score-display" id="dayScore2"></span>
-            <span class="day-section-chevron">▲</span>
-          </div>
-          <div class="day-section-body">
-            <div class="day-sub-card">
-              <div class="day-sub-header" onclick="toggleDaySub(this)">
-                <span>Day 2 Recap</span>
-                <span class="day-sub-chevron">▼ Show</span>
-              </div>
-              <div class="day-sub-body" id="dayRecap2Body" style="display:none"></div>
-            </div>
-            <div class="day-sub-card">
-              <div class="day-sub-header" onclick="toggleDaySub(this)">
-                <span>Round 2 Scores</span>
-                <span class="day-sub-chevron">▼ Show</span>
-              </div>
-              <div class="day-sub-body" id="liveRound2Body" style="display:none">
-                <div class="round-result-placeholder">Results posted after Saturday's round wraps up.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Day 3 collapsible section -->
-        <div class="day-section">
-          <div class="day-section-header" onclick="toggleDaySection(this)">
-            <div class="day-section-info">
-              <span class="day-section-label">Day 3 — Doubles + Singles</span>
-              <span class="day-section-sub">Sunday · Willbrook Plantation</span>
-            </div>
-            <span class="day-score-display" id="dayScore3"></span>
-            <span class="day-section-chevron">▲</span>
-          </div>
-          <div class="day-section-body">
-            <div class="day-sub-card">
-              <div class="day-sub-header" onclick="toggleDaySub(this)">
-                <span>Day 3 Recap</span>
-                <span class="day-sub-chevron">▼ Show</span>
-              </div>
-              <div class="day-sub-body" id="dayRecap3Body" style="display:none"></div>
-            </div>
-            <div class="day-sub-card">
-              <div class="day-sub-header" onclick="toggleDaySub(this)">
-                <span>Round 3 Scores</span>
-                <span class="day-sub-chevron">▼ Show</span>
-              </div>
-              <div class="day-sub-body" id="liveRound3Body" style="display:none">
-                <div class="round-result-placeholder">Results posted after Sunday's final round.</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Standings bar + the three day sections are rendered by
+             mountScoringBlock('t26-scoring-block','t26'). The same component is
+             mounted again inside Tournament History under the 'hist26'
+             namespace, which is why the IDs are prefixed rather than fixed. -->
+        <div id="t26-scoring-block"></div>
 
       </div><!-- end t26-scoring -->
 
@@ -8336,7 +8241,13 @@
       if (!detail) return;
       const isOpen = detail.style.display !== 'none';
       detail.style.display = isOpen ? 'none' : 'block';
-      if (btn) btn.textContent = isOpen ? '▼ View Full Scorecards & Stats' : '▲ Hide Scorecards & Stats';
+      // 2024/2025 expand to scorecards; 2026 onwards expands to scoring + recaps,
+      // so each button can override the wording via data attributes.
+      if (btn) {
+        const shut = btn.dataset.labelClosed || '▼ View Full Scorecards & Stats';
+        const open = btn.dataset.labelOpen   || '▲ Hide Scorecards & Stats';
+        btn.textContent = isOpen ? shut : open;
+      }
     }
 
     // Toggle a match card open/closed; scorecard is built lazily on first open
@@ -8563,8 +8474,72 @@
       const root = document.getElementById('hist-root');
       if (!root) return;
 
-      // --- Year card / photo entry ---
+      // --- Year 3: 2026 — most recent, so it sits at the top ---
+      // The expandable detail mounts the shared scoring block under the 'hist26'
+      // namespace rather than duplicating the 2026 tab's markup. Years 2024 and
+      // 2025 below use the older per-round scorecard tables, because that level of
+      // detail was never captured for them. 2027 onwards should follow 2026.
       let html =
+        '<div class="hist-year-entry">' +
+
+          '<div class="hist-photo-card" onclick="histToggleYear(\'y2026\')">' +
+            // TODO (Matt): drop "BBRC Group Photo 2026.png" into the project root.
+            // Until it exists the img hides itself and the placeholder below shows.
+            '<div class="hist-photo-placeholder">' +
+              '<span class="hist-photo-placeholder-icon">📸</span>' +
+              '<span>2026 team photo coming soon</span>' +
+            '</div>' +
+            '<img class="hist-photo-img" src="BBRC Group Photo 2026.png" alt="BBRC 2026 Group Photo" ' +
+                 'onerror="this.style.display=\'none\'" />' +
+            '<div class="hist-photo-overlay">' +
+              '<div class="hist-year-badge">Year 3 &middot; 2026</div>' +
+              '<div class="hist-venue-line">Pawleys Island, SC &middot; June 26&ndash;28</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="hist-meta">' +
+            '<div class="hist-teams-row">' +
+              '<div class="hist-team ti">' +
+                '<div class="hist-team-name clr-ti">Transfusion Intrusion</div>' +
+                '<div class="hist-team-captain">Capt. Adam Lewandowski</div>' +
+              '</div>' +
+              '<div class="hist-vs-block">' +
+                '<div class="hist-score-display">46&thinsp;:&thinsp;26</div>' +
+                '<div class="hist-winner-label">Transfusion Intrusion Win &middot; Year 3</div>' +
+              '</div>' +
+              '<div class="hist-team gvo">' +
+                '<div class="hist-team-name clr-gvo">Good Vibes Only</div>' +
+                '<div class="hist-team-captain">Capt. Matt Bova</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="hist-narrative">' +
+              '<p>Year 3 took the Bros out of Florida for the first time &mdash; three days, three courses, ' +
+              'Pawleys Island &mdash; and it was effectively over by Saturday lunch. Adam Lewandowski&rsquo;s ' +
+              'Transfusion Intrusion took Friday&rsquo;s scramble 7&ndash;5, then buried Matt Bova&rsquo;s Good ' +
+              'Vibes Only 15&ndash;9 in the singles at True Blue. By Sunday morning GVO needed 22.5 of the 36 ' +
+              'remaining points to keep the cup; they managed 12. TI closed it out <strong>46&ndash;26</strong>, ' +
+              'the widest margin since the inaugural year. <strong>Mike Davis and Adam Lewandowski both went a ' +
+              'perfect 8-for-8</strong> &mdash; Davis by shooting 74, his captain by shooting 116 off a 35 ' +
+              'handicap and simply refusing to lose. Joe Sharkey posted the best round of the week, a net 66, ' +
+              'and finished as GVO&rsquo;s leading scorer on 7 points, which says rather more about Good Vibes ' +
+              'Only than it does about Sharkey. Spare a thought for Ryne Stone, Raheem Bishop and Chris ' +
+              'Schumann, who played twelve rounds between them and scored <strong>zero points</strong>. One of ' +
+              'those three men is a 2027 captain. The by-laws contain no minimum standard.</p>' +
+            '</div>' +
+            '<button class="hist-expand-btn" id="hist-expand-btn-y2026" onclick="histToggleYear(\'y2026\')" ' +
+                    'data-label-closed="▼ View Full Scoring &amp; Recaps" ' +
+                    'data-label-open="▲ Hide Scoring &amp; Recaps">' +
+              '▼ View Full Scoring &amp; Recaps' +
+            '</button>' +
+          '</div>' + // end hist-meta
+
+          '<div class="hist-detail" id="hist-detail-y2026" style="display:none">' +
+            '<div id="hist26-scoring-block"></div>' +
+          '</div>' +
+        '</div>'; // end hist-year-entry
+
+      // --- Year 2: 2025 ---
+      html +=
         '<div class="hist-year-entry">' +
 
           // Clickable photo card (placeholder until photo is uploaded)
@@ -8908,6 +8883,9 @@
       html += '</div></div>'; // end hist-detail-y2024, hist-year-entry
 
       root.innerHTML = html;
+      // The 2026 entry's scoring block is mounted in the boot sequence at the
+      // bottom of this script, not here — initHistory() runs before the scoring
+      // component's own consts are initialised.
     }
 
     // Generate the history section content (H24 and H25 data are now defined above)
@@ -10060,6 +10038,78 @@ Ryne Stone, we'll see you next June. Bring a pencil you won't need.` };
       });
     }
 
+    // ---- SCORING BLOCK COMPONENT ----
+    // The standings bar + three collapsible day sections are needed in two places:
+    // the 2026 Tournament tab and the 2026 entry in Tournament History. Rendering
+    // the same markup twice would duplicate every element ID and the renderer would
+    // silently fill only the first copy, so every ID is prefixed with a namespace.
+    // 2027 onwards should mount this same component rather than copying markup.
+
+    const SCORING_DAYS = [
+      { n:1, label:'Day 1 &mdash; Scramble',          sub:'Friday &middot; Pawleys Plantation' },
+      { n:2, label:'Day 2 &mdash; Singles',           sub:'Saturday &middot; True Blue Golf Club' },
+      { n:3, label:'Day 3 &mdash; Doubles + Singles', sub:'Sunday &middot; Willbrook Plantation' }
+    ];
+
+    // Every namespace currently mounted on the page. The loaders below fill all of them.
+    const SCORING_NAMESPACES = [];
+
+    function scoringBlockHtml(ns) {
+      return `
+        <div class="overall-standings-bar" id="${ns}-overallStandingsBar">
+          <div class="standings-team-block">
+            <span class="standings-team-pts" style="color:#c090d4" id="${ns}-standingsTI">0</span>
+            <span class="standings-team-name">Transfusion Intrusion</span>
+          </div>
+          <div style="text-align:center">
+            <div class="standings-divider">&mdash;</div>
+            <div class="standings-to-win">Final</div>
+          </div>
+          <div class="standings-team-block">
+            <span class="standings-team-pts" style="color:#60ccd8" id="${ns}-standingsGVO">0</span>
+            <span class="standings-team-name">Good Vibes Only</span>
+          </div>
+        </div>` +
+        SCORING_DAYS.map(d => `
+        <div class="day-section">
+          <div class="day-section-header" onclick="toggleDaySection(this)">
+            <div class="day-section-info">
+              <span class="day-section-label">${d.label}</span>
+              <span class="day-section-sub">${d.sub}</span>
+            </div>
+            <span class="day-score-display" id="${ns}-dayScore${d.n}"></span>
+            <span class="day-section-chevron">&#9650;</span>
+          </div>
+          <div class="day-section-body">
+            <div class="day-sub-card">
+              <div class="day-sub-header" onclick="toggleDaySub(this)">
+                <span>Day ${d.n} Recap</span>
+                <span class="day-sub-chevron">&#9660; Show</span>
+              </div>
+              <div class="day-sub-body" id="${ns}-dayRecap${d.n}Body" style="display:none"></div>
+            </div>
+            <div class="day-sub-card">
+              <div class="day-sub-header" onclick="toggleDaySub(this)">
+                <span>Round ${d.n} Scores</span>
+                <span class="day-sub-chevron">&#9660; Show</span>
+              </div>
+              <div class="day-sub-body" id="${ns}-liveRound${d.n}Body" style="display:none">
+                <div class="round-result-placeholder">Results not posted yet.</div>
+              </div>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    // Renders the block into a container and registers the namespace so that
+    // loadLiveScores() and loadRecaps() know to populate it.
+    function mountScoringBlock(containerId, ns) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      el.innerHTML = scoringBlockHtml(ns);
+      if (!SCORING_NAMESPACES.includes(ns)) SCORING_NAMESPACES.push(ns);
+    }
+
     // Builds "107 gross / 83 net", with an em dash wherever a number is missing.
     function scoreText(gross, net) {
       return `${gross ?? '—'} gross / ${net ?? '—'} net`;
@@ -10090,28 +10140,33 @@ Ryne Stone, we'll see you next June. Bring a pencil you won't need.` };
       </div>`;
     }
 
+    // Fills every mounted copy of the scoring block.
     function renderScoringTab(rounds, standings) {
+      SCORING_NAMESPACES.forEach(ns => renderScoringInto(ns, rounds, standings));
+    }
+
+    function renderScoringInto(ns, rounds, standings) {
       const anyPublished = Object.values(rounds).some(r => r?.published);
 
       // Overall standings bar
-      const bar = document.getElementById('overallStandingsBar');
+      const bar = document.getElementById(ns + '-overallStandingsBar');
       if (bar && anyPublished) {
         bar.style.display = 'flex';
-        const tiEl  = document.getElementById('standingsTI');
-        const gvoEl = document.getElementById('standingsGVO');
+        const tiEl  = document.getElementById(ns + '-standingsTI');
+        const gvoEl = document.getElementById(ns + '-standingsGVO');
         if (tiEl)  tiEl.textContent  = standings.ti  || 0;
         if (gvoEl) gvoEl.textContent = standings.gvo || 0;
       }
 
       [1,2,3].forEach(r => {
         const roundData = rounds['round' + r];
-        const bodyEl    = document.getElementById('liveRound' + r + 'Body');
+        const bodyEl    = document.getElementById(ns + '-liveRound' + r + 'Body');
         if (!bodyEl) return;
 
         if (!roundData?.published) return; // leave the placeholder intact
 
         // Update the day-score chip in the section header
-        const scoreEl = document.getElementById('dayScore' + r);
+        const scoreEl = document.getElementById(ns + '-dayScore' + r);
         if (scoreEl) {
           scoreEl.innerHTML = `<span style="color:#c090d4">TI ${roundData.tiPts}</span> &ndash; <span style="color:#60ccd8">GVO ${roundData.gvoPts}</span>`;
         }
@@ -10172,12 +10227,14 @@ Ryne Stone, we'll see you next June. Bring a pencil you won't need.` };
         if (!recaps.round2?.text) recaps.round2 = RECAP2_SEED;
         if (!recaps.round3?.text) recaps.round3 = RECAP3_SEED;
 
-        // Inject each recap's body content directly into its sub-body div
-        [1,2,3].forEach(r => {
-          const recap = recaps['round' + r];
-          const bodyEl = document.getElementById('dayRecap' + r + 'Body');
-          if (!bodyEl || !recap?.text) return;
-          bodyEl.innerHTML = `<div class="recap-card-body" style="white-space:pre-wrap">${markdownToHtml(recap.text)}</div>`;
+        // Inject each recap into every mounted copy of the scoring block
+        SCORING_NAMESPACES.forEach(ns => {
+          [1,2,3].forEach(r => {
+            const recap = recaps['round' + r];
+            const bodyEl = document.getElementById(ns + '-dayRecap' + r + 'Body');
+            if (!bodyEl || !recap?.text) return;
+            bodyEl.innerHTML = `<div class="recap-card-body" style="white-space:pre-wrap">${markdownToHtml(recap.text)}</div>`;
+          });
         });
       });
     }
@@ -10244,6 +10301,12 @@ Ryne Stone, we'll see you next June. Bring a pencil you won't need.` };
 
 
     // ---- BOOT: public loaders run for everyone on page load ----
+
+    // Mount both copies of the scoring block before the loaders run: one in the
+    // 2026 Tournament tab, one inside the 2026 entry in Tournament History.
+    // initHistory() has already injected the history container by this point.
+    mountScoringBlock('t26-scoring-block', 't26');
+    mountScoringBlock('hist26-scoring-block', 'hist26');
 
     loadLiveScores();
     loadRecaps();
