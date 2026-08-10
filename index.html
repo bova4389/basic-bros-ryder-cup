@@ -2390,12 +2390,16 @@
       margin-bottom: 1.5rem;
     }
 
+    /* Stacked so the email field, password field and button each get a full
+       row — a single flex line would squeeze all three off a phone screen. */
     .admin-gate-row {
       display: flex;
+      flex-direction: column;
       gap: 0.5rem;
+      text-align: left;
     }
 
-    .admin-gate-row .form-input { flex: 1; }
+    .admin-gate-row .form-input { width: 100%; }
 
     .admin-gate-btn {
       padding: 0.7rem 1.1rem;
@@ -2412,6 +2416,9 @@
     }
 
     .admin-gate-btn:hover { background: var(--color-green-light); color: #0f1923; }
+
+    /* Greyed out while a sign-in is in flight */
+    .admin-gate-btn:disabled { opacity: 0.6; cursor: default; }
 
     .admin-gate-error {
       margin-top: 0.75rem;
@@ -6628,13 +6635,18 @@
     ======================================================== -->
     <section id="admin" class="tab-section" role="tabpanel">
 
-      <!-- Password gate — shown until correct password entered -->
+      <!-- Login gate — shown until a real Firebase admin account signs in.
+           This is a genuine login against Firebase Authentication, not a
+           password compared in the browser. The database rules trust this
+           sign-in and nothing else, so a fake "unlock" would not be able to
+           save anything anyway. -->
       <div class="admin-gate" id="adminGate">
         <div class="admin-gate-title">Commissioner Access</div>
-        <div class="admin-gate-sub">Enter the admin password to continue.</div>
+        <div class="admin-gate-sub">Sign in with your admin account to continue.</div>
         <div class="admin-gate-row">
-          <input class="form-input" type="password" id="adminPwInput" placeholder="Password" onkeydown="if(event.key==='Enter') checkAdminPw()">
-          <button class="admin-gate-btn" onclick="checkAdminPw()">Unlock</button>
+          <input class="form-input" type="email" id="adminEmailInput" placeholder="Email" autocomplete="username" onkeydown="if(event.key==='Enter') adminSignIn()">
+          <input class="form-input" type="password" id="adminPwInput" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') adminSignIn()">
+          <button class="admin-gate-btn" id="adminSignInBtn" onclick="adminSignIn()">Sign in</button>
         </div>
         <div class="admin-gate-error" id="adminGateError"></div>
       </div>
@@ -6869,11 +6881,17 @@
 
   <!-- ============================================================
        FIREBASE SDK — loaded from Google CDN before our script runs
-       Using compat (v8-style) API so we can call firebase.firestore()
+       Using compat (v8-style) API so we can call firebase.database()
        without ES module imports.
+
+       This site uses Realtime Database (not Firestore) for all stored data,
+       plus Firebase Authentication to gate the admin panel. The auth SDK is
+       required: the database security rules only allow writes to scores,
+       recaps, matchups and bio approvals when a real admin is signed in.
   ============================================================ -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
   <!-- ============================================================
        JAVASCRIPT
@@ -7196,7 +7214,8 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    const db   = firebase.database();
+    const auth = firebase.auth();
 
 
     // ---- BIO FORM: DUPLICATE PREVENTION ----
@@ -7283,23 +7302,55 @@
 
 
     // ---- ADMIN PANEL ----
-    // Simple password gate — stored in localStorage so you stay logged in.
-    // Password can be changed below. All submission reads/writes go through db.ref().
-    const ADMIN_PW = 'bbrcadmin';
+    // Real sign-in against Firebase Authentication. The old version compared a
+    // password inside this file, which meant anyone who viewed the page source
+    // could read it. Now the browser sends the email and password to Firebase,
+    // Firebase hands back a signed token, and the database rules check that
+    // token before allowing any write. Nothing in this file is a secret.
+    //
+    // Firebase remembers the session in the browser by default, so signing in
+    // once keeps you signed in on that device until you press Log out.
 
-    function checkAdminPw() {
-      const entered = document.getElementById('adminPwInput').value;
-      if (entered === ADMIN_PW) {
-        localStorage.setItem('bbrc-admin', 'true');
-        unlockAdmin();
-      } else {
-        document.getElementById('adminGateError').textContent = 'Wrong password. Try again.';
+    function adminSignIn() {
+      const email = document.getElementById('adminEmailInput').value.trim();
+      const pw    = document.getElementById('adminPwInput').value;
+      const err   = document.getElementById('adminGateError');
+      const btn   = document.getElementById('adminSignInBtn');
+
+      if (!email || !pw) {
+        err.textContent = 'Enter both your email and password.';
+        return;
       }
+
+      // Lock the button so a slow connection can't be double-tapped
+      btn.disabled = true;
+      btn.textContent = 'Signing in…';
+      err.textContent = '';
+
+      auth.signInWithEmailAndPassword(email, pw)
+        .catch(e => {
+          // Firebase returns specific codes; translate the common ones to plain English
+          const wrongLogin = ['auth/wrong-password', 'auth/user-not-found', 'auth/invalid-credential', 'auth/invalid-email'];
+          err.textContent = wrongLogin.includes(e.code)
+            ? 'Wrong email or password. Try again.'
+            : (e.code === 'auth/too-many-requests'
+                ? 'Too many attempts. Wait a minute and try again.'
+                : 'Could not sign in — check your connection and try again.');
+          console.error('Admin sign-in error:', e);
+        })
+        .finally(() => {
+          btn.disabled = false;
+          btn.textContent = 'Sign in';
+        });
+      // On success, onAuthStateChanged below opens the panel — no code needed here.
     }
 
     function unlockAdmin() {
-      document.getElementById('adminGate').style.display    = 'none';
-      document.getElementById('adminContent').classList.add('unlocked');
+      const gate    = document.getElementById('adminGate');
+      const content = document.getElementById('adminContent');
+      if (!gate || !content) return;      // admin tab not in the DOM yet
+      gate.style.display = 'none';
+      content.classList.add('unlocked');
       // Sync the bio form toggle with current database value
       db.ref('settings/bioFormOpen').once('value').then(snap => {
         document.getElementById('bioFormToggle').checked = snap.val() === true;
@@ -7307,20 +7358,35 @@
       loadSubmissions();
     }
 
-    function adminLogout() {
-      localStorage.removeItem('bbrc-admin');
-      document.getElementById('adminGate').style.display = '';
-      document.getElementById('adminContent').classList.remove('unlocked');
-      document.getElementById('adminPwInput').value = '';
+    function lockAdmin() {
+      const gate    = document.getElementById('adminGate');
+      const content = document.getElementById('adminContent');
+      if (!gate || !content) return;
+      gate.style.display = '';
+      content.classList.remove('unlocked');
+      const pwInput = document.getElementById('adminPwInput');
+      if (pwInput) pwInput.value = '';
     }
 
-    // Auto-unlock if they were already logged in from a previous visit
-    if (localStorage.getItem('bbrc-admin') === 'true') {
-      // Wait until the DOM has the admin tab rendered before unlocking
-      document.addEventListener('DOMContentLoaded', unlockAdmin);
-      // Also try immediately in case DOMContentLoaded already fired
-      if (document.readyState !== 'loading') unlockAdmin();
+    function adminLogout() {
+      auth.signOut();                     // onAuthStateChanged closes the panel
     }
+
+    // Single source of truth for whether the admin panel is open. Firebase calls
+    // this on page load once it has restored any saved session, and again on
+    // every sign-in and sign-out — so we never have to guess from localStorage.
+    auth.onAuthStateChanged(user => {
+      const apply = () => (user ? unlockAdmin() : lockAdmin());
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', apply);
+      } else {
+        apply();
+      }
+    });
+
+    // Clear the stale flag left behind by the old browser-side password gate,
+    // so an old visit can't leave the panel looking unlocked.
+    localStorage.removeItem('bbrc-admin');
 
     // Toggle bioFormOpen in database and show/hide the nav tab live
     function toggleBioForm(isOpen) {
@@ -9920,7 +9986,7 @@ Return ONLY a JSON array: [{"tiT1":"Ryne Stone","tiT2":"Karsten Meyer","gvoT1":"
     // Sunday ran as TWO Squabbit rounds at once inside each pod of four: a Low Ball/Low Total
     // doubles match plus the two singles matches. Squabbit stores no match results of its own,
     // so the winners and the "W4&3" strings come from its leaderboard screen; gross came
-    // straight out of Firestore, and net is gross minus the handicap each man actually played
+    // straight out of the database, and net is gross minus the handicap each man actually played
     // to. 6 pods x 3 matches x 2 pts = 36 points, and TI 24 / GVO 12 reconciles to the 46-26 final.
     const ROUND3_SEED = {
       format: 'Doubles + Singles', published: true, savedAt: 1751119200000,

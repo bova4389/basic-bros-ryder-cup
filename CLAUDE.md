@@ -42,7 +42,8 @@ basic-bros-ryder-cup/
 
 **Stack:**
 - Frontend: Single-file HTML + vanilla JS (no frameworks, no build step)
-- Backend: Google Firebase Firestore (player bios, bio form submissions, tournament data)
+- Backend: Google Firebase **Realtime Database** — not Firestore (player bios, bio form submissions, tournament data). The site calls `firebase.database()`; there is no Firestore SDK loaded.
+- Admin auth: Firebase Authentication (Email/Password), one commissioner account. The admin panel is gated by a real sign-in, and the database security rules only permit writes when signed in. Master copy of the rules lives in `database.rules.json` — keep it in sync with the Firebase console.
 - Scoring data: Squabbit CSV export → admin upload panel (no public API exists)
 - Hosting: DreamHost (static) — deploys automatically via GitHub Actions on every push to `main`
 - Version control: GitHub (`https://github.com/bova4389/basic-bros-ryder-cup`)
