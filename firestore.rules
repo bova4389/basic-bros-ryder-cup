@@ -1,0 +1,36 @@
+// ===================================================================
+// BASIC BROS RYDER CUP — CLOUD FIRESTORE SECURITY RULES
+//
+// Paste the whole contents of this file into:
+//   Firebase console -> Build -> Firestore Database -> Rules tab
+//   then click Publish.
+//
+// WHY THIS FILE EXISTS EVEN THOUGH THE SITE DOES NOT USE FIRESTORE:
+//
+// The site stores everything in Realtime Database (see
+// database.rules.json). Firestore was switched on early in the build,
+// in "test mode", and then never used. An empty Firestore database in
+// test mode is still wide open to the whole internet, and Google emails
+// a warning about that every day until it is locked down or deleted.
+//
+// These rules slam it shut. Nothing can read it, nothing can write to
+// it, which is correct: no part of the site talks to Firestore.
+//
+// If you would rather remove Firestore from the project entirely, you
+// can delete the database in the console instead — Firestore Database
+// -> the "..." menu next to the database name -> Delete database. Both
+// options stop the emails. Publishing these rules is the safer one,
+// because it is instantly reversible.
+// ===================================================================
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Deny everything, at every path. No exceptions.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
