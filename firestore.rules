@@ -1,0 +1,54 @@
+// ===================================================================
+// BASIC BROS RYDER CUP — CLOUD FIRESTORE SECURITY RULES
+//
+// Paste the whole contents of this file into:
+//   Firebase console -> Build -> Firestore Database -> Rules tab -> Publish
+//
+// ---- WHY THIS FILE EXISTS ----------------------------------------
+// This website does NOT use Cloud Firestore. Every piece of stored
+// data — bios, scores, recaps, matchups, settings — lives in the
+// Realtime Database instead (see database.rules.json). The site only
+// ever loads firebase-database-compat.js; the Firestore SDK is never
+// loaded and firebase.firestore() is never called.
+//
+// But a Firestore database still EXISTS in the Firebase project, left
+// over from when the project was created. It is empty and unused, and
+// it was started in "test mode", which means its rules allow anyone on
+// the internet to read and write it. Google notices that and emails a
+// security warning about it on a recurring basis.
+//
+// Locking the rules below to deny-all is what stops those emails. The
+// site cannot break as a result, because nothing in the site talks to
+// Firestore in the first place.
+//
+// (If you would rather remove the unused database entirely instead of
+// locking it, that also stops the emails — see CLAUDE.md. Deleting is
+// permanent, so locking it down is the safer of the two.)
+//
+// This file is the master copy. Nothing deploys it automatically — the
+// GitHub Action only ships the website to DreamHost, it never talks to
+// Firebase. These rules do nothing at all until they are pasted into
+// the console and published by hand.
+// ===================================================================
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Deny everything, to every path, for everyone.
+    //
+    // "{document=**}" means "any document at any depth". "if false"
+    // means the request is never allowed, signed in or not. This is the
+    // most locked-down rule Firestore accepts, and it is the correct
+    // one here precisely because no part of this project reads or
+    // writes Firestore.
+    //
+    // If the site is ever genuinely changed to use Firestore, replace
+    // this block with real per-collection rules — do not simply loosen
+    // it back to allowing everything.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

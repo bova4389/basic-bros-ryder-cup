@@ -221,6 +221,14 @@ Firebase is the backend for player bio submissions and tournament data storage. 
 3. Show exactly where to paste them in the HTML file
 4. Test that the connection works before moving on
 
+**Security rules are NOT deployed by this repo.** `database.rules.json` (Realtime Database) and `firestore.rules` (Cloud Firestore) are master copies only. The GitHub Action ships the website to DreamHost and never talks to Firebase, so neither file has any effect until it is pasted into the Firebase console and published by hand. If rules look wrong in the console, the repo copy is not the thing that fixes it — the console is. Both files are excluded from the deploy staging step so they never land on the public web server.
+
+**The recurring "insecure rules" emails from Google.** These come from Firebase, not from any code in this project — nothing here sends email. They fire when a database in the project has rules that allow public read/write. Two separate databases can trigger them, and each has its own rules:
+- **Realtime Database** — the one the site actually uses. Rules master copy: `database.rules.json`.
+- **Cloud Firestore** — created with the project but completely unused; the Firestore SDK is never loaded and `firebase.firestore()` is never called. It was left in test mode, so its rules are wide open and Google keeps warning about it. Rules master copy: `firestore.rules` (deny-all). Locking it cannot break the site, since nothing reads it. Deleting the unused Firestore database in the console also stops the emails, but that is permanent — locking the rules is the safer option.
+
+Fixing one does not silence the other. If the emails continue after locking one database, check the other one's Rules tab in the console.
+
 ---
 
 ## HOW TO WORK ON THIS PROJECT
