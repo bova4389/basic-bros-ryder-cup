@@ -1,0 +1,118 @@
+{
+  // ===================================================================
+  // BASIC BROS RYDER CUP — REALTIME DATABASE SECURITY RULES
+  //
+  // Paste the whole contents of this file into:
+  //   Firebase console -> Build -> Realtime Database -> Rules tab
+  //
+  // This file is the master copy. If you ever change the rules in the
+  // console, copy them back here so the two never drift apart.
+  //
+  // THE SHORT VERSION:
+  //   - Anyone can READ the parts of the database the public site shows.
+  //   - Nobody can WRITE anything unless they are signed in as an admin,
+  //     with one deliberate exception: a visitor may create a brand new
+  //     bio submission (and it is always forced to "pending").
+  //   - "auth != null" means "a real Firebase Authentication account is
+  //     signed in." Since the only account is Matt's, that means Matt.
+  // ===================================================================
+
+  "rules": {
+
+    // Default deny. Anything not explicitly listed below is locked to
+    // everyone. Nothing can be read or written at the top level.
+    ".read": false,
+    ".write": false,
+
+    // ---- SITE SETTINGS ----------------------------------------------
+    // Currently just settings/bioFormOpen, the flag that shows or hides
+    // the "Submit Bio" nav tab. The public site reads it on every page
+    // load, so it must be readable; only an admin can flip it.
+    "settings": {
+      ".read": true,
+      ".write": "auth != null",
+      "bioFormOpen": { ".validate": "newData.isBoolean()" },
+      "$other": { ".validate": false }
+    },
+
+    // ---- BIO SUBMISSIONS --------------------------------------------
+    // The one place the public is allowed to write. A visitor may add a
+    // NEW submission; they may not edit or delete anything that already
+    // exists, and they cannot approve their own bio.
+    "bio_submissions": {
+      ".read": true,
+      ".write": false,
+
+      "$submissionId": {
+        // Admin can do anything here. A visitor can only create: the
+        // "!data.exists()" half means the record must not already be
+        // there, and the hasChildren check means they must submit a whole
+        // bio in one go. That second half matters — without it someone
+        // could create a half-empty record one field at a time.
+        ".write": "auth != null || (!data.exists() && newData.hasChildren(['firstName','lastName','discordUsername','hometown','status']))",
+
+        // Every submission must carry at least these fields.
+        ".validate": "newData.hasChildren(['firstName','lastName','discordUsername','hometown','status'])",
+
+        // A visitor can only ever write "pending". Approving or rejecting
+        // requires a signed-in admin.
+        "status": {
+          ".validate": "newData.isString() && (newData.val() === 'pending' || (auth != null && (newData.val() === 'approved' || newData.val() === 'rejected')))"
+        },
+
+        // Required text fields — must be non-empty, with length caps so
+        // nobody can paste a novel into the database.
+        "firstName":       { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60"  },
+        "lastName":        { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60"  },
+        "discordUsername": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60"  },
+        "hometown":        { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120" },
+
+        // Optional text fields — may be blank, still length capped.
+        "nickname":        { ".validate": "newData.isString() && newData.val().length <= 60"  },
+        "occupation":      { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "familyStatus":    { ".validate": "newData.isString() && newData.val().length <= 300" },
+        "walkUpSong":      { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "yearbookQuote":   { ".validate": "newData.isString() && newData.val().length <= 500" },
+        "funFact":         { ".validate": "newData.isString() && newData.val().length <= 500" },
+        "photoUrl":        { ".validate": "newData.isString() && newData.val().length <= 500" },
+
+        // Admin-only fields. playerId is set by hand in the admin panel to
+        // pin a bio to a specific player card.
+        "playerId":        { ".validate": "auth != null && newData.isString() && newData.val().length <= 60" },
+
+        // Set by firebase.database.ServerValue.TIMESTAMP on submit, which
+        // the server resolves to a number before these rules run.
+        "submittedAt":     { ".validate": "newData.isNumber()" },
+
+        // Reject any field not named above, so nobody can smuggle extra
+        // junk into a submission.
+        "$other": { ".validate": false }
+      }
+    },
+
+    // ---- ROUND SCORES -----------------------------------------------
+    // Written by the admin panel after each round, read by everyone.
+    "rounds": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    // ---- OVERALL CUP STANDINGS --------------------------------------
+    "standings": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    // ---- ROUND RECAPS -----------------------------------------------
+    "recaps": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+
+    // ---- PAIRINGS / MATCHUPS ----------------------------------------
+    "matchups": {
+      ".read": true,
+      ".write": "auth != null"
+    }
+  }
+}
