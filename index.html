@@ -3890,6 +3890,543 @@
       background: var(--color-bg);
     }
 
+
+    /* ========================================================
+       BRO GLOBE TAB
+       A 3D globe of where every Bro is from, plus a gold pin at
+       each course the Cup has been played. Pin colors come from
+       GLOBE_TEAMS in the script below -- update that one constant
+       when new teams are drawn, not these rules.
+    ======================================================== */
+    /* ==== BRO GLOBE ==== */
+    .globe-stage {
+      position: relative;
+      width: 100%;
+      /* Tall enough to read on a phone, capped so it never eats a laptop screen */
+      height: clamp(380px, 62vh, 640px);
+      margin: 0 auto 1.25rem;
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 45%, rgba(111,179,210,0.20), transparent 58%),
+        linear-gradient(170deg, #24405c 0%, #16273a 55%, #101d2b 100%);
+      /* The globe swallows drag/pinch; without this the page scrolls instead of spinning */
+      touch-action: none;
+    }
+    body.light-mode .globe-stage {
+      background:
+        radial-gradient(ellipse at 50% 45%, rgba(111,179,210,0.30), transparent 58%),
+        linear-gradient(170deg, #d7e4ef 0%, #c3d5e5 100%);
+    }
+
+    .globe-canvas { width: 100%; height: 100%; }
+
+    /* Loading + failure states, both centered in the stage */
+    .globe-status {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--color-text-muted);
+      font-size: .9rem;
+      pointer-events: none;
+    }
+    .globe-status.hidden { display: none; }
+    .globe-status-spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(212,175,55,0.25);
+      border-top-color: var(--color-gold);
+      border-radius: 50%;
+      animation: globeSpin 0.9s linear infinite;
+    }
+    @keyframes globeSpin { to { transform: rotate(360deg); } }
+    .globe-status-retry {
+      pointer-events: auto;
+      margin-top: .4rem;
+      background: rgba(212,175,55,0.15);
+      border: 1px solid rgba(212,175,55,0.45);
+      color: var(--color-gold);
+      padding: .4rem .9rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .82rem;
+    }
+
+    /* ---- Pins ---- */
+    /* We position pins ourselves in this overlay rather than using globe.gl's
+       built-in html layer, which renders nothing in the bundled three.js build. */
+    .globe-overlay {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .globe-pin {
+      position: absolute;
+      left: 0;
+      top: 0;
+      cursor: pointer;
+      pointer-events: auto;
+      will-change: transform;
+      transition: filter .18s ease;
+    }
+    .globe-pin:hover { filter: brightness(1.15); z-index: 5; }
+
+    /* A single Bro: his face (or initials) in his team's color */
+    .globe-face {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--pin-color, var(--color-muted));
+      background: var(--pin-bg, var(--color-surface-2));
+      box-shadow: 0 0 0 2px rgba(0,0,0,.45), 0 3px 8px rgba(0,0,0,.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .globe-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .globe-face img.pos-top { object-position: top; }
+    .globe-face-initials {
+      font-family: 'Cinzel', serif;
+      font-size: .62rem;
+      font-weight: 700;
+      color: var(--pin-color, var(--color-muted));
+      letter-spacing: .02em;
+    }
+
+    /* A city with more than one Bro: count badge, tap to expand */
+    .globe-cluster {
+      min-width: 38px;
+      height: 38px;
+      padding: 0 .3rem;
+      border-radius: 19px;
+      border: 2px solid var(--pin-color, var(--color-muted));
+      background: var(--pin-bg, rgba(26,37,53,.95));
+      box-shadow: 0 0 0 2px rgba(0,0,0,.45), 0 3px 8px rgba(0,0,0,.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .15rem;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: .82rem;
+      color: var(--pin-color, var(--color-muted));
+    }
+    .globe-cluster-caret { font-size: .5rem; opacity: .7; }
+
+    /* A tournament venue */
+    .globe-event {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .globe-event-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--color-gold);
+      background: rgba(212,175,55,.18);
+      box-shadow: 0 0 0 2px rgba(0,0,0,.45), 0 0 14px rgba(212,175,55,.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .95rem;
+      line-height: 1;
+    }
+    .globe-event-year {
+      font-family: 'Cinzel', serif;
+      font-size: .6rem;
+      font-weight: 700;
+      color: var(--color-gold);
+      background: rgba(15,25,35,.85);
+      padding: 1px 5px;
+      border-radius: 4px;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    /* ---- Year filter ---- */
+    .globe-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .4rem;
+      margin-bottom: .6rem;
+    }
+    .globe-filter {
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      padding: .38rem .95rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .02em;
+      transition: all .15s;
+    }
+    .globe-filter:hover { color: var(--color-cream); border-color: rgba(212,175,55,.5); }
+    .globe-filter.active {
+      background: rgba(212,175,55,.16);
+      border-color: var(--color-gold);
+      color: var(--color-gold);
+    }
+    body.light-mode .globe-filter { background: rgba(20,32,44,.05); }
+
+    .globe-summary {
+      text-align: center;
+      font-size: .78rem;
+      color: var(--color-text-muted);
+      margin-bottom: .85rem;
+    }
+
+    /* Every season a Bro has played, on his card */
+    .globe-bro-seasons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem;
+      margin-bottom: 1.1rem;
+    }
+    .globe-bro-season {
+      font-size: .68rem;
+      padding: .18rem .5rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    /* ---- Off-screen arrows ---- */
+    /* The default framing is Florida, so most of the roster starts outside
+       the frame. These point at whoever is out there. */
+    .globe-edge-layer { z-index: 4; }
+    .globe-edge {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+      gap: .18rem;
+      padding: .16rem .42rem .16rem .3rem;
+      border-radius: 999px;
+      background: rgba(15,25,35,.86);
+      border: 1px solid rgba(245,240,232,.28);
+      color: var(--color-cream);
+      font-size: .72rem;
+      font-weight: 700;
+      font-family: 'Cinzel', serif;
+      cursor: pointer;
+      pointer-events: auto;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,.45);
+    }
+    .globe-edge:hover { border-color: var(--color-gold); }
+    .globe-edge-cup { border-color: rgba(212,175,55,.6); color: var(--color-gold); }
+    .globe-edge-arrow {
+      display: inline-block;
+      font-size: .68rem;
+      line-height: 1;
+      transform: rotate(var(--edge-angle, 0deg));
+    }
+    body.light-mode .globe-edge {
+      background: rgba(255,255,255,.92);
+      border-color: rgba(20,32,44,.25);
+      color: #14202c;
+    }
+
+    /* ---- "more Bros out there" prompt ---- */
+    .globe-offscreen {
+      position: absolute;
+      top: .6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .34rem .8rem;
+      border-radius: 999px;
+      background: rgba(15,25,35,.88);
+      border: 1px solid rgba(212,175,55,.5);
+      cursor: pointer;
+      font-size: .76rem;
+      color: var(--color-cream);
+      box-shadow: 0 2px 12px rgba(0,0,0,.5);
+    }
+    .globe-offscreen.hidden { display: none; }
+    .globe-offscreen:hover { border-color: var(--color-gold); }
+    .globe-offscreen-cta { color: var(--color-gold); font-weight: 700; }
+    body.light-mode .globe-offscreen {
+      background: rgba(255,255,255,.94);
+      color: #14202c;
+    }
+
+    /* ---- Zoom buttons ---- */
+    .globe-zoom {
+      position: absolute;
+      right: .6rem;
+      top: .6rem;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+    }
+    .globe-zoom-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: rgba(15,25,35,.86);
+      border: 1px solid rgba(245,240,232,.25);
+      color: var(--color-cream);
+      font-size: 1.05rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
+    }
+    .globe-zoom-btn:hover { border-color: var(--color-gold); color: var(--color-gold); }
+    .globe-zoom-all { font-size: .7rem; }
+    body.light-mode .globe-zoom-btn {
+      background: rgba(255,255,255,.92);
+      border-color: rgba(20,32,44,.22);
+      color: #14202c;
+    }
+
+    .globe-credit {
+      text-align: center;
+      font-size: .68rem;
+      color: var(--color-text-muted);
+      opacity: .65;
+      margin-top: -.9rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ---- Single Bro card (the step before the full profile) ---- */
+    .globe-panel-back {
+      background: none;
+      border: none;
+      color: var(--color-text-muted);
+      font-size: .82rem;
+      cursor: pointer;
+      padding: 0 0 .6rem;
+    }
+    .globe-panel-back:hover { color: var(--color-gold); }
+    .globe-bro-head {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      margin-bottom: 1rem;
+    }
+    .globe-bro-face {
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--pin-color, var(--color-muted));
+      background: var(--pin-bg, var(--color-surface-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .globe-bro-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .globe-bro-face img.pos-top { object-position: top; }
+    .globe-bro-face .globe-face-initials { font-size: 1.2rem; }
+    .globe-bro-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: var(--color-cream);
+      margin-bottom: .1rem;
+    }
+    .globe-bro-team { font-size: .82rem; font-weight: 600; margin-bottom: .12rem; }
+    .globe-bro-town { font-size: .76rem; color: var(--color-text-muted); }
+    .globe-bro-stats {
+      display: flex;
+      gap: .6rem;
+      margin-bottom: 1.1rem;
+    }
+    .globe-bro-stat {
+      flex: 1;
+      background: var(--color-surface-2);
+      border: 1px solid var(--color-border);
+      border-radius: 9px;
+      padding: .5rem;
+      text-align: center;
+    }
+    .globe-bro-stat-lbl {
+      display: block;
+      font-size: .66rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--color-text-muted);
+      margin-bottom: .15rem;
+    }
+    .globe-bro-stat-val {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-cream);
+    }
+
+    /* ---- Legend + controls ---- */
+    .globe-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .5rem .9rem;
+      margin-bottom: .9rem;
+      font-size: .78rem;
+      color: var(--color-text-muted);
+    }
+    .globe-legend-item { display: flex; align-items: center; gap: .35rem; }
+    .globe-legend-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      flex-shrink: 0;
+    }
+    .globe-hint {
+      text-align: center;
+      font-size: .76rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1.25rem;
+    }
+    .globe-reset {
+      background: rgba(255,255,255,.07);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      padding: .3rem .75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .74rem;
+      margin-left: .4rem;
+    }
+    .globe-reset:hover { color: var(--color-cream); background: rgba(255,255,255,.12); }
+
+    /* ---- Detail panel (shares the bio modal's shape) ---- */
+    .globe-panel-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.78);
+      z-index: 1500;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .globe-panel-overlay.open { display: flex; }
+    .globe-panel-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 14px;
+      max-width: 460px;
+      width: 100%;
+      max-height: 86vh;
+      overflow-y: auto;
+      position: relative;
+      padding: 1.35rem 1.35rem 1.5rem;
+    }
+    .globe-panel-close {
+      position: absolute;
+      top: .7rem;
+      right: .7rem;
+      background: rgba(255,255,255,.1);
+      border: none;
+      color: var(--color-cream);
+      font-size: 1.1rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+    .globe-panel-close:hover { background: rgba(255,255,255,.2); }
+    .globe-panel-city {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--color-cream);
+      margin-bottom: .15rem;
+      padding-right: 2rem;
+    }
+    .globe-panel-sub {
+      font-size: .78rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 1rem;
+    }
+    .globe-panel-row {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .55rem 0;
+      border-top: 1px solid var(--color-border);
+      cursor: pointer;
+    }
+    .globe-panel-row:hover .globe-panel-row-name { color: var(--color-gold); }
+    .globe-panel-row-name {
+      font-weight: 600;
+      color: var(--color-cream);
+      font-size: .92rem;
+      transition: color .15s;
+    }
+    .globe-panel-row-team { font-size: .75rem; color: var(--color-text-muted); }
+    .globe-panel-row-go { margin-left: auto; color: var(--color-text-muted); font-size: .85rem; }
+
+    /* Tournament flavor of the panel */
+    .globe-panel-photo {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--color-border);
+      display: block;
+      margin-bottom: .9rem;
+    }
+    .globe-panel-score {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      color: var(--color-gold);
+      margin-bottom: .5rem;
+    }
+    .globe-panel-blurb {
+      font-size: .86rem;
+      line-height: 1.55;
+      color: var(--color-text-muted);
+      margin-bottom: 1rem;
+    }
+    .globe-panel-link {
+      display: inline-block;
+      background: rgba(212,175,55,.15);
+      border: 1px solid rgba(212,175,55,.45);
+      color: var(--color-gold);
+      padding: .5rem 1rem;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: .85rem;
+      font-weight: 600;
+    }
+    .globe-panel-link:hover { background: rgba(212,175,55,.28); }
+
+    @media (max-width: 600px) {
+      .globe-stage { height: clamp(340px, 56vh, 480px); border-radius: 10px; }
+      .globe-face, .globe-event-dot { width: 32px; height: 32px; }
+      .globe-cluster { min-width: 34px; height: 34px; font-size: .76rem; }
+    }
+
   </style>
 </head>
 
@@ -3925,6 +4462,7 @@
     <div class="nav-inner" role="tablist">
       <button class="nav-tab active" role="tab" onclick="showTab('home', this)">Home</button>
       <button class="nav-tab" role="tab" onclick="showTab('players', this)">The Bros</button>
+      <button class="nav-tab" role="tab" onclick="showTab('globe', this)">Bro Globe</button>
       <button class="nav-tab" role="tab" onclick="showTab('tournament2027', this)">2027 Tourney</button>
       <button class="nav-tab" role="tab" onclick="showTab('tournament2026', this)">2026 Tourney</button>
       <button class="nav-tab" role="tab" onclick="showTab('history', this)">Tourney History</button>
@@ -3939,6 +4477,7 @@
   <div class="mobile-nav" id="mobileNav">
     <button class="nav-tab active" onclick="showTab('home', this); closeMobileNav()">Home</button>
     <button class="nav-tab" onclick="showTab('players', this); closeMobileNav()">The Bros</button>
+    <button class="nav-tab" onclick="showTab('globe', this); closeMobileNav()">Bro Globe</button>
     <button class="nav-tab" onclick="showTab('tournament2027', this); closeMobileNav()">2027 Tourney</button>
     <button class="nav-tab" onclick="showTab('tournament2026', this); closeMobileNav()">2026 Tourney</button>
     <button class="nav-tab" onclick="showTab('history', this); closeMobileNav()">Tourney History</button>
@@ -5973,6 +6512,65 @@
     <!-- ========================================================
          TOURNAMENT HISTORY TAB — 2025 results, populated by JS
     ======================================================== -->
+    <!-- ========================================================
+         BRO GLOBE TAB
+         Spinnable 3D globe. Bro pins are built from the player
+         cards in the Bros tab (data-hometown / data-team / data-photo),
+         so the roster can never drift out of sync with this map.
+         The globe library is fetched on first open, not page load.
+    ======================================================== -->
+    <section id="globe" class="tab-section" role="tabpanel">
+
+      <div class="tourney-header">
+        <h2>The Bro Globe</h2>
+        <p>Where we&rsquo;re from &middot; Where the Cup has been</p>
+      </div>
+
+      <!-- Year filter: pick a season and the map shows only that year's
+           Bros, recolored into that season's two teams, plus its venue -->
+      <div class="globe-filters" id="globeFilters"></div>
+      <div class="globe-summary" id="globeSummary"></div>
+
+      <div class="globe-legend" id="globeLegend"></div>
+
+      <div class="globe-stage" id="globeStage">
+        <div class="globe-canvas" id="globeCanvas"></div>
+
+        <!-- Tells people there is more map than they can see, since the
+             default framing is Florida and most of the roster is outside it -->
+        <div class="globe-offscreen hidden" id="globeOffscreen" onclick="globeShowAll()"></div>
+
+        <!-- Explicit zoom controls: scroll-to-zoom is not discoverable, and
+             there is nothing to scroll on a phone -->
+        <div class="globe-zoom">
+          <button class="globe-zoom-btn" onclick="globeZoom(0.62)" aria-label="Zoom in" title="Zoom in">+</button>
+          <button class="globe-zoom-btn" onclick="globeZoom(1.6)" aria-label="Zoom out" title="Zoom out">&minus;</button>
+          <button class="globe-zoom-btn globe-zoom-all" onclick="globeShowAll()" aria-label="Show every Bro" title="Show every Bro">&#9679;</button>
+        </div>
+
+        <div class="globe-status" id="globeStatus">
+          <div class="globe-status-spinner"></div>
+          <div>Spinning up the globe&hellip;</div>
+        </div>
+      </div>
+
+      <div class="globe-hint">
+        <strong>Zoom out to find every Bro.</strong>
+        Scroll or pinch to zoom &middot; drag to move &middot; tap any pin
+        <button class="globe-reset" onclick="globeResetView()">Back to Florida</button>
+      </div>
+      <div class="globe-credit">Satellite imagery &copy; Esri, Maxar, Earthstar Geographics</div>
+
+    </section>
+
+    <!-- Globe detail panel: Bros for a city pin, tournament recap for a gold pin -->
+    <div class="globe-panel-overlay" id="globePanel" onclick="if(event.target===this)closeGlobePanel()">
+      <div class="globe-panel-card">
+        <button class="globe-panel-close" onclick="closeGlobePanel()" aria-label="Close">&times;</button>
+        <div id="globePanelBody"></div>
+      </div>
+    </div>
+
     <section id="history" class="tab-section" role="tabpanel">
       <div id="hist-root" class="hist-wrapper"></div>
     </section>
@@ -6004,7 +6602,7 @@
 
         <!-- ==================== GOOD VIBES ONLY ==================== -->
 
-        <div class="player-card" id="player-bova" data-team="gvo" data-tier="t2" data-history='["2025-baggers","2024-pirates"]' data-photo="Bro Pics/BovaPic.png">
+        <div class="player-card" id="player-bova" data-hometown="Greenwood, IN" data-team="gvo" data-tier="t2" data-history='["2025-baggers","2024-pirates"]' data-photo="Bro Pics/BovaPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">MB</div>
             <div class="player-card-info">
@@ -6020,7 +6618,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-cschumann" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/SchuPic.png">
+        <div class="player-card" id="player-cschumann" data-hometown="Titusville, FL" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/SchuPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">CS</div>
             <div class="player-card-info">
@@ -6036,7 +6634,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-sschumann" data-team="gvo" data-tier="t2" data-photo="Bro Pics/SpencerPic.png">
+        <div class="player-card" id="player-sschumann" data-hometown="Titusville, FL" data-team="gvo" data-tier="t2" data-photo="Bro Pics/SpencerPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">SS</div>
             <div class="player-card-info">
@@ -6052,7 +6650,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-touchberry" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]' data-photo="Bro Pics/TaylorPic.PNG" data-photo-position="top">
+        <div class="player-card" id="player-touchberry" data-hometown="Orlando, FL" data-team="gvo" data-tier="t1" data-history='["2025-ducks"]' data-photo="Bro Pics/TaylorPic.PNG" data-photo-position="top">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">TT</div>
             <div class="player-card-info">
@@ -6068,7 +6666,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-strobel" data-team="gvo" data-tier="t1">
+        <div class="player-card" id="player-strobel" data-hometown="Titusville, FL" data-team="gvo" data-tier="t1">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">BS</div>
             <div class="player-card-info">
@@ -6084,7 +6682,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-smith" data-team="gvo" data-tier="t2" data-history='["2025-ducks"]' data-photo="Bro Pics/TeddyPic.png">
+        <div class="player-card" id="player-smith" data-hometown="Houston, TX" data-team="gvo" data-tier="t2" data-history='["2025-ducks"]' data-photo="Bro Pics/TeddyPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">TS</div>
             <div class="player-card-info">
@@ -6100,7 +6698,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-damiani" data-team="gvo" data-tier="t1" data-photo="Bro Pics/JasonPic.png">
+        <div class="player-card" id="player-damiani" data-hometown="Durham, NC" data-team="gvo" data-tier="t1" data-photo="Bro Pics/JasonPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JD</div>
             <div class="player-card-info">
@@ -6116,7 +6714,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-bishop" data-team="gvo" data-tier="t2" data-photo="Bro Pics/RaheemPic.png">
+        <div class="player-card" id="player-bishop" data-hometown="Orlando, FL" data-team="gvo" data-tier="t2" data-photo="Bro Pics/RaheemPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">RB</div>
             <div class="player-card-info">
@@ -6132,7 +6730,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-mucha" data-team="gvo" data-tier="t2" data-history='["2025-ducks","2024-prba"]' data-photo="Bro Pics/MuchaPic.png">
+        <div class="player-card" id="player-mucha" data-hometown="Winter Garden, FL" data-team="gvo" data-tier="t2" data-history='["2025-ducks","2024-prba"]' data-photo="Bro Pics/MuchaPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JM</div>
             <div class="player-card-info">
@@ -6148,7 +6746,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-pletcher" data-team="gvo" data-tier="t1" data-photo="Bro Pics/PletcherPic.png">
+        <div class="player-card" id="player-pletcher" data-hometown="Indianapolis, IN" data-team="gvo" data-tier="t1" data-photo="Bro Pics/PletcherPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">MP</div>
             <div class="player-card-info">
@@ -6164,7 +6762,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-sharkey" data-team="gvo" data-tier="t2" data-photo="Bro Pics/SharkeyPic.png">
+        <div class="player-card" id="player-sharkey" data-hometown="Merritt Island, FL" data-team="gvo" data-tier="t2" data-photo="Bro Pics/SharkeyPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">JS</div>
             <div class="player-card-info">
@@ -6180,7 +6778,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-esbrandt" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/CodyPic.png">
+        <div class="player-card" id="player-esbrandt" data-hometown="Titusville, FL" data-team="gvo" data-tier="t1" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/CodyPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-gvo">CE</div>
             <div class="player-card-info">
@@ -6198,7 +6796,7 @@
 
         <!-- ==================== LUBEN DUBERS ==================== -->
 
-        <div class="player-card" id="player-lewandowski" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-prba"]'>
+        <div class="player-card" id="player-lewandowski" data-hometown="Orlando, FL" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">AL</div>
             <div class="player-card-info">
@@ -6214,7 +6812,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-hermanson" data-team="ti" data-tier="t2" data-photo="Bro Pics/JeremyPic.png">
+        <div class="player-card" id="player-hermanson" data-hometown="Titusville, FL" data-team="ti" data-tier="t2" data-photo="Bro Pics/JeremyPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">JH</div>
             <div class="player-card-info">
@@ -6230,7 +6828,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-bartlett" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-pirates"]' data-photo="Bro Pics/Donny2025.png">
+        <div class="player-card" id="player-bartlett" data-hometown="Orlando, FL" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-pirates"]' data-photo="Bro Pics/Donny2025.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">DB</div>
             <div class="player-card-info">
@@ -6246,7 +6844,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-pannullo" data-team="ti" data-tier="t2" data-history='["2025-baggers"]' data-photo="Bro Pics/RonPic.png">
+        <div class="player-card" id="player-pannullo" data-hometown="Palm Coast, FL" data-team="ti" data-tier="t2" data-history='["2025-baggers"]' data-photo="Bro Pics/RonPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">RP</div>
             <div class="player-card-info">
@@ -6262,7 +6860,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-davis" data-team="ti" data-tier="t1">
+        <div class="player-card" id="player-davis" data-hometown="Boiling Springs, SC" data-team="ti" data-tier="t1">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">MD</div>
             <div class="player-card-info">
@@ -6278,7 +6876,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-stephenson" data-team="ti" data-tier="t1" data-photo="Bro Pics/RobertPic.png">
+        <div class="player-card" id="player-stephenson" data-hometown="Daytona Beach, FL" data-team="ti" data-tier="t1" data-photo="Bro Pics/RobertPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">RS</div>
             <div class="player-card-info">
@@ -6294,7 +6892,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-gaudet" data-team="ti" data-tier="t1" data-history='["2025-baggers"]'>
+        <div class="player-card" id="player-gaudet" data-hometown="Orlando, FL" data-team="ti" data-tier="t1" data-history='["2025-baggers"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">MG</div>
             <div class="player-card-info">
@@ -6310,7 +6908,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-stone" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]' data-photo="Bro Pics/RynePic.png">
+        <div class="player-card" id="player-stone" data-hometown="Orlando, FL" data-team="ti" data-tier="t1" data-history='["2025-baggers","2024-prba"]' data-photo="Bro Pics/RynePic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">RS</div>
             <div class="player-card-info">
@@ -6326,7 +6924,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-glenn" data-team="ti" data-tier="t2" data-history='["2025-baggers"]' data-photo="Bro Pics/CassPic.png">
+        <div class="player-card" id="player-glenn" data-hometown="Acworth, GA" data-team="ti" data-tier="t2" data-history='["2025-baggers"]' data-photo="Bro Pics/CassPic.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">CG</div>
             <div class="player-card-info">
@@ -6342,7 +6940,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-renato" data-team="ti" data-tier="t1">
+        <div class="player-card" id="player-renato" data-hometown="Nashville, TN" data-team="ti" data-tier="t1">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">R</div>
             <div class="player-card-info">
@@ -6358,7 +6956,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-meyer" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/Karsten2025.png">
+        <div class="player-card" id="player-meyer" data-hometown="Pittsburgh, PA" data-team="ti" data-tier="t2" data-history='["2025-ducks","2024-pirates"]' data-photo="Bro Pics/Karsten2025.png">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">KM</div>
             <div class="player-card-info">
@@ -6374,7 +6972,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-harris" data-team="ti" data-tier="t2">
+        <div class="player-card" id="player-harris" data-hometown="Titusville, FL" data-team="ti" data-tier="t2">
           <div class="player-card-top">
             <div class="player-avatar player-avatar-ti">MH</div>
             <div class="player-card-info">
@@ -6396,7 +6994,7 @@
              data-history drives which year/team tabs they appear under.
         -->
 
-        <div class="player-card" id="player-pullman" data-team="alumni" data-history='["2025-baggers"]'>
+        <div class="player-card" id="player-pullman" data-hometown="Orlando, FL" data-team="alumni" data-history='["2025-baggers"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">JP</div>
             <div class="player-card-info">
@@ -6411,7 +7009,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-partou" data-team="alumni" data-history='["2025-baggers","2024-pirates"]'>
+        <div class="player-card" id="player-partou" data-hometown="Orlando, FL" data-team="alumni" data-history='["2025-baggers","2024-pirates"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">JP</div>
             <div class="player-card-info">
@@ -6426,7 +7024,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-heath" data-team="alumni" data-history='["2025-baggers"]'>
+        <div class="player-card" id="player-heath" data-hometown="Orlando, FL" data-team="alumni" data-history='["2025-baggers"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">BH</div>
             <div class="player-card-info">
@@ -6441,7 +7039,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-burleson" data-team="alumni" data-history='["2024-prba"]'>
+        <div class="player-card" id="player-burleson" data-hometown="Stuart, FL" data-team="alumni" data-history='["2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">SB</div>
             <div class="player-card-info">
@@ -6456,7 +7054,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-hammer" data-team="alumni" data-history='["2025-ducks"]'>
+        <div class="player-card" id="player-hammer" data-hometown="Tampa, FL" data-team="alumni" data-history='["2025-ducks"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">JH</div>
             <div class="player-card-info">
@@ -6471,7 +7069,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-cschneider" data-team="alumni" data-history='["2025-ducks","2024-prba"]'>
+        <div class="player-card" id="player-cschneider" data-hometown="Longwood, FL" data-team="alumni" data-history='["2025-ducks","2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">CS</div>
             <div class="player-card-info">
@@ -6486,7 +7084,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-bowman" data-team="alumni" data-history='["2025-ducks"]'>
+        <div class="player-card" id="player-bowman" data-hometown="Seattle, WA" data-team="alumni" data-history='["2025-ducks"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">MB</div>
             <div class="player-card-info">
@@ -6501,7 +7099,7 @@
           <div class="player-card-bio">Bio coming soon</div>
         </div>
 
-        <div class="player-card" id="player-reeves" data-team="alumni" data-history='["2025-baggers","2024-prba"]'>
+        <div class="player-card" id="player-reeves" data-hometown="Winter Garden, FL" data-team="alumni" data-history='["2025-baggers","2024-prba"]'>
           <div class="player-card-top">
             <div class="player-avatar player-avatar-alumni">JR</div>
             <div class="player-card-info">
@@ -6953,6 +7551,10 @@
       if (window.location.hash !== '#' + tabId) {
         history.pushState(null, '', '#' + tabId);
       }
+
+      // The Globe builds itself the first time this tab is opened. Its
+      // library is ~1MB, so it is never fetched for anyone who never looks.
+      if (tabId === 'globe' && typeof initGlobeTab === 'function') initGlobeTab();
     }
 
 
@@ -7019,7 +7621,7 @@
 
     // ---- URL HASH NAVIGATION ----
     // On page load, open the tab matching the URL hash (e.g. #players from a shared link).
-    const VALID_TABS = ['home','players','tournament2027','tournament2026','history','rulebook','submitbio','admin'];
+    const VALID_TABS = ['home','players','globe','tournament2027','tournament2026','history','rulebook','submitbio','admin'];
     document.addEventListener('DOMContentLoaded', function() {
       const hash = window.location.hash.slice(1); // strip the leading #
       if (hash && VALID_TABS.includes(hash)) showTab(hash, null);
@@ -7029,6 +7631,1057 @@
     window.addEventListener('hashchange', function() {
       const hash = window.location.hash.slice(1);
       showTab(hash && VALID_TABS.includes(hash) ? hash : 'home', null);
+    });
+
+
+    /* ========================================================
+       BRO GLOBE
+       ---------------------------------------------------------
+       A US-locked globe opening on Florida, with two kinds of pin:
+         - Bro pins, colored by the team they played for
+         - gold pins for each Cup that has been played
+
+       Roster data is read out of the .player-card elements in the
+       Bros tab -- names, teams, photos, initials, handicap, record
+       and every past-season team all come from there, so this map
+       cannot drift out of sync with that tab. The only things
+       stored here are coordinates and team colors.
+
+       Things worth knowing before editing:
+
+       1. globe.gl's built-in htmlElementsData layer renders nothing
+          in this build (it creates its container and leaves it
+          empty, no error). So we project the pins ourselves with
+          getScreenCoords() into our own overlay div.
+
+       2. The Bros are stacked on top of each other geographically.
+          Orlando and Winter Garden can land on the SAME PIXEL. So
+          hometown pins are clustered in SCREEN space and regrouped
+          as the camera moves. Clustering by city name does not work.
+
+       3. Cup pins cluster SEPARATELY from hometown pins, so a venue
+          is always its own marker. Where a gold pin would cover a
+          hometown pin it is nudged clear by globeEventNudge(), which
+          eases back to zero as you zoom -- at full zoom Dubsdread
+          sits on the actual course.
+
+       4. The map is a TILE ENGINE, not a single texture. A flat
+          image went to mush the moment you zoomed into Florida;
+          tiles fetch detail to match the zoom level instead. State
+          borders are drawn on top as vector paths, because the
+          satellite imagery shows coastlines but no state lines.
+
+       The globe.gl bundle is ~1MB, so it is fetched the first time
+       someone opens this tab, never on page load.
+    ======================================================== */
+
+    // Every team that has ever existed, with the colors the rest of the site
+    // already uses for them (see the .chip-* and .clr-* rules above), so the
+    // globe matches the Bros tab and the history write-ups.
+    var GLOBE_TEAM_STYLES = {
+      gvo:     { label: 'Good Vibes Only',               color: '#00BCD4', bg: 'rgba(0,188,212,0.22)'   },
+      ti:      { label: 'Transfusion Intrusion',         color: '#b06bc0', bg: 'rgba(123,45,139,0.38)'  },
+      ducks:   { label: 'The Mighty Cluster Ducks',      color: '#4a9de0', bg: 'rgba(26,110,181,0.34)'  },
+      baggers: { label: 'Tee Baggers',                   color: '#e8529a', bg: 'rgba(232,82,154,0.30)'  },
+      prba:    { label: "Patrick Reed's Burner Account", color: '#7a9fd4', bg: 'rgba(26,45,90,0.60)'    },
+      pirates: { label: 'Putt Pirates',                  color: '#52b788', bg: 'rgba(45,106,79,0.42)'   },
+      alumni:  { label: 'Alumni',                        color: '#8899aa', bg: 'rgba(136,153,170,0.18)' }
+    };
+
+    // The year filter. Each season had exactly two teams; picking a year shows
+    // only the Bros who played it, recolors them into that season's two teams,
+    // and leaves only that season's Cup pin on the map.
+    var GLOBE_YEARS = [
+      { key: 'all',  label: 'All Bros', teams: ['gvo', 'ti', 'alumni'] },
+      { key: '2026', label: '2026',     teams: ['gvo', 'ti'] },
+      { key: '2025', label: '2025',     teams: ['ducks', 'baggers'] },
+      { key: '2024', label: '2024',     teams: ['prba', 'pirates'] }
+    ];
+    var globeYear = 'all';
+
+    // Hometown coordinates -- downtown / city center for each town,
+    // deliberately not anyone's actual address.
+    var GLOBE_CITIES = {
+      'Greenwood, IN':      [39.6137,  -86.1067],
+      'Titusville, FL':     [28.6122,  -80.8076],
+      'Durham, NC':         [35.9940,  -78.8986],
+      'Orlando, FL':        [28.5421,  -81.3790],  // downtown, Lake Eola
+      'Indianapolis, IN':   [39.7684,  -86.1581],
+      'Merritt Island, FL': [28.3583,  -80.7000],
+      'Winter Garden, FL':  [28.5653,  -81.5862],
+      'Houston, TX':        [29.7604,  -95.3698],
+      'Boiling Springs, SC':[35.0454,  -81.9773],
+      'Nashville, TN':      [36.1627,  -86.7816],
+      'Daytona Beach, FL':  [29.2108,  -81.0228],
+      'Pittsburgh, PA':     [40.4406,  -79.9959],
+      'Palm Coast, FL':     [29.5850,  -81.2078],
+      'Acworth, GA':        [34.0659,  -84.6769],
+      'Stuart, FL':         [27.1973,  -80.2528],
+      'Tampa, FL':          [27.9506,  -82.4572],
+      'Longwood, FL':       [28.7031,  -81.3384],
+      'Seattle, WA':        [47.6062, -122.3321]
+    };
+
+    // One gold pin per Cup that has actually been played, on the course
+    // itself. 2027 is not here yet: its location is still TBD.
+    var GLOBE_EVENTS = [
+      {
+        year: '2026', lat: 33.4179, lng: -79.1298,
+        venue: 'Pawleys Island, SC',
+        detail: 'Pawleys Plantation &middot; True Blue &middot; Willbrook &middot; Caledonia',
+        dates: 'June 26&ndash;28, 2026',
+        score: 'Transfusion Intrusion 46 &ndash; 26',
+        photo: 'BBRC Group Photo 2026.png',
+        blurb: 'Year 3 took the Bros to the South Carolina Lowcountry for the first multi-course Cup, and Transfusion Intrusion buried it early.'
+      },
+      {
+        year: '2025', lat: 28.2620, lng: -81.6030,
+        venue: 'Reunion Resort & Golf Club',
+        detail: 'Orlando, FL &middot; Palmer and Nicklaus courses',
+        dates: 'June 20&ndash;22, 2025',
+        score: 'The Mighty Cluster Ducks 31 &ndash; 29',
+        photo: 'BBRC Group Photo 2025.png',
+        blurb: 'Two points separated the teams after three days. The Ducks took Saturday 13&ndash;7 and held on, leaving Ryne Stone 0&ndash;2 as a captain.'
+      },
+      {
+        year: '2024', lat: 28.5766, lng: -81.3999,
+        venue: 'Dubsdread Golf Course',
+        detail: 'Orlando, FL &middot; Par 70',
+        dates: '2024',
+        score: 'Putt Pirates 27 &ndash; 9',
+        photo: 'BBRC Group Photo 2024.png',
+        blurb: 'The inaugural Cup: twelve Bros, one round, four concurrent formats, and a scoreline that was never in doubt after Cody Esbrandt posted a 64.'
+      }
+    ];
+
+    var GLOBE_SCRIPT_URL  = 'https://unpkg.com/globe.gl@2.46.2/dist/globe.gl.min.js';
+    var GLOBE_TOPO_URL    = 'https://unpkg.com/topojson-client@3';
+    var GLOBE_STATES_URL  = 'https://unpkg.com/us-atlas@3/states-10m.json';
+    // Fallback texture, only seen for the moment before tiles arrive.
+    var GLOBE_TEXTURE     = 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg';
+    // Satellite tiles, so zooming in sharpens instead of smearing.
+    function globeTileUrl(x, y, l) {
+      return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/' +
+             l + '/' + y + '/' + x;
+    }
+    var GLOBE_TILE_MAXLEVEL = 13;
+
+    // Opening framing: the Florida cluster, where most of the Bros are.
+    var GLOBE_HOME_LAT    = 28.60;
+    var GLOBE_HOME_LNG    = -81.40;
+
+    // How far the view may roam. OrbitControls measures azimuth as longitude
+    // and polar as (90 - latitude) -- verified against getCoords() -- so these
+    // are literally the corners of the map we allow. You cannot spin off to
+    // Asia; the globe stays over the US.
+    var GLOBE_LNG_MIN     = -128;
+    var GLOBE_LNG_MAX     = -64;
+    var GLOBE_LAT_MIN     = 20;
+    var GLOBE_LAT_MAX     = 52;
+    // 0.015 is deliberate: at this zoom Dubsdread sits 78px off downtown
+    // Orlando, so its pin lands on the real course with no nudge at all.
+    // Going below ~0.012 makes the projection blow up (getScreenCoords starts
+    // returning millions of pixels as the camera nears the surface).
+    var GLOBE_ALT_MIN     = 0.015;
+    var GLOBE_ALT_MAX     = 1.10;   // no zooming out to the whole planet
+    var GLOBE_ALT_WIDE    = 0.55;   // "show me everyone" framing
+
+    var GLOBE_CLUSTER_PX  = 46;   // hometown pins closer than this merge into one
+    var GLOBE_NUDGE_PX    = 58;   // how close a gold pin may sit to a hometown pin
+    var GLOBE_PIN_ALT     = 0.01; // how far off the surface pins are anchored
+    var GLOBE_EDGE_GAP    = 40;   // min spacing between off-screen arrows
+
+    var globeInstance   = null;  // the globe.gl object, once built
+    var globeLoading    = false; // guards against double-loading the script
+    var globeRoster     = [];    // every city with every Bro, unfiltered
+    var globeMarkers    = [];    // the filtered markers currently mapped
+    var globeSizeTries  = 0;     // bounds the wait-for-layout retry loop
+    var globeOverlay    = null;  // the DOM layer the pins live in
+    var globeEdgeLayer  = null;  // the DOM layer the off-screen arrows live in
+    var globePins       = [];    // [{el, g}] currently rendered
+    var globeEdges      = [];    // [{el, m}] one arrow per marker
+    var globeRafId      = null;  // handle for the positioning loop
+    var globeClusterSig = '';    // last clustering result, avoids DOM churn
+    var globeBroByPid   = {};    // pid -> bro, for the single-Bro card
+    var globeGroupByKey = {};    // key -> group, for the back button
+
+    // How far back to sit so the Florida group frames up the way it does on a
+    // desktop. Measured, not guessed: a 1150px stage wants altitude 0.08, and
+    // a 341px phone stage needs ~0.20 to show the same ground. Interpolate.
+    function globeHomeView() {
+      var stage = document.getElementById('globeStage');
+      var w = (stage && stage.clientWidth) ? stage.clientWidth : 1000;
+      var alt = 0.20 - (w - 341) * (0.12 / 809);
+      return {
+        lat: GLOBE_HOME_LAT,
+        lng: GLOBE_HOME_LNG,
+        altitude: Math.max(0.07, Math.min(0.26, alt))
+      };
+    }
+
+    // ---- Roster, read once out of the Bros tab ----
+    function buildGlobeRoster() {
+      var byCity = {};
+      globeBroByPid = {};
+
+      document.querySelectorAll('.player-card[data-hometown]').forEach(function(card) {
+        var city = card.dataset.hometown;
+        var coords = GLOBE_CITIES[city];
+        if (!coords) return;  // unknown city: skip rather than pin it at 0,0
+
+        var nameEl = card.querySelector('.player-card-name');
+        var avaEl  = card.querySelector('.player-avatar');
+        var teamEl = card.querySelector('.player-card-team');
+        var tierEl = card.querySelector('.tier-badge');
+
+        var stats = [];
+        card.querySelectorAll('.player-stat').forEach(function(s) {
+          var l = s.querySelector('.player-stat-label');
+          var v = s.querySelector('.player-stat-val');
+          if (l && v) stats.push({ label: l.textContent.trim(), val: v.textContent.trim() });
+        });
+
+        // Which team this Bro played for in each season. 2026 comes from
+        // data-team; earlier years come from the data-history chips
+        // ("2025-ducks" -> teams['2025'] = 'ducks").
+        var teams = {};
+        if (card.dataset.team && card.dataset.team !== 'alumni') {
+          teams['2026'] = card.dataset.team;
+        }
+        try {
+          JSON.parse(card.dataset.history || '[]').forEach(function(k) {
+            var bits = k.split('-');
+            if (bits.length === 2) teams[bits[0]] = bits[1];
+          });
+        } catch (e) { /* a malformed chip list should not kill the map */ }
+
+        if (!byCity[city]) {
+          byCity[city] = { kind: 'city', city: city, lat: coords[0], lng: coords[1], bros: [] };
+        }
+        var bro = {
+          pid:       card.id,
+          city:      city,
+          name:      nameEl ? nameEl.textContent.replace('★', '').trim() : card.id,
+          captain:   !!(nameEl && nameEl.textContent.indexOf('★') !== -1),
+          teams:     teams,
+          teamText26: teamEl ? teamEl.textContent.trim() : '',
+          tier:      tierEl ? tierEl.textContent.trim() : '',
+          stats:     stats,
+          photo:     card.dataset.photo || '',
+          photoPos:  card.dataset.photoPosition || '',
+          initials:  avaEl ? avaEl.textContent.trim() : ''
+        };
+        byCity[city].bros.push(bro);
+        globeBroByPid[bro.pid] = bro;
+      });
+
+      globeRoster = Object.keys(byCity).map(function(c) { return byCity[c]; });
+    }
+
+    // Which team's colors a Bro wears under the current filter.
+    // Null means he did not play that year and should not be on the map.
+    function globeBroTeam(b) {
+      if (globeYear === 'all') return b.teams['2026'] || 'alumni';
+      return b.teams[globeYear] || null;
+    }
+
+    function globeBroTeamText(b) {
+      var k = globeBroTeam(b);
+      if (!k) return '';
+      if (globeYear === 'all' || globeYear === '2026') return b.teamText26 || GLOBE_TEAM_STYLES[k].label;
+      return GLOBE_TEAM_STYLES[k].label;
+    }
+
+    function globeTeamStyle(b) {
+      return GLOBE_TEAM_STYLES[globeBroTeam(b) || 'alumni'] || GLOBE_TEAM_STYLES.alumni;
+    }
+
+    // Apply the year filter: which cities, which Bros in them, which Cups.
+    function buildGlobeMarkers() {
+      var markers = [];
+      globeRoster.forEach(function(cityRec) {
+        var bros = cityRec.bros.filter(function(b) { return !!globeBroTeam(b); });
+        if (!bros.length) return;
+        bros = bros.slice().sort(globeBroSort);
+        markers.push({ kind: 'city', city: cityRec.city, lat: cityRec.lat, lng: cityRec.lng, bros: bros });
+      });
+      GLOBE_EVENTS.forEach(function(e) {
+        if (globeYear !== 'all' && e.year !== globeYear) return;
+        markers.push({ kind: 'event', event: e, lat: e.lat, lng: e.lng });
+      });
+      return markers;
+    }
+
+    // Team order within a pin follows the current season's two teams,
+    // alumni last, alphabetical inside a team.
+    function globeBroSort(a, b) {
+      var order = {};
+      (GLOBE_YEARS.filter(function(y) { return y.key === globeYear; })[0] || GLOBE_YEARS[0])
+        .teams.forEach(function(t, i) { order[t] = i; });
+      var ra = order[globeBroTeam(a)], rb = order[globeBroTeam(b)];
+      if (ra === undefined) ra = 9;
+      if (rb === undefined) rb = 9;
+      return (ra - rb) || a.name.localeCompare(b.name);
+    }
+
+    // Which team owns a pin's color: whoever has the most Bros in it.
+    function globeDominantTeam(bros) {
+      var counts = {};
+      bros.forEach(function(b) {
+        var k = globeBroTeam(b) || 'alumni';
+        counts[k] = (counts[k] || 0) + 1;
+      });
+      var best = null, bestN = -1;
+      Object.keys(GLOBE_TEAM_STYLES).forEach(function(k) {
+        if ((counts[k] || 0) > bestN) { bestN = counts[k] || 0; best = k; }
+      });
+      return best || 'alumni';
+    }
+
+    // ---- Year filter UI ----
+    function buildGlobeFilters() {
+      var box = document.getElementById('globeFilters');
+      if (!box || box.dataset.built) return;
+      box.innerHTML = GLOBE_YEARS.map(function(y) {
+        return '<button class="globe-filter' + (y.key === globeYear ? ' active' : '') +
+               '" data-year="' + y.key + '" onclick="globeSetYear(\'' + y.key + '\')">' +
+               y.label + '</button>';
+      }).join('');
+      box.dataset.built = '1';
+    }
+
+    function globeSetYear(year) {
+      if (globeYear === year) return;
+      globeYear = year;
+
+      document.querySelectorAll('.globe-filter').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.year === year);
+      });
+
+      closeGlobePanel();
+      globeMarkers = buildGlobeMarkers();
+      globeClusterSig = '';      // force a re-cluster with the new roster
+      globeLastNote = -1;        // force the off-screen note to recompute
+      buildGlobeEdges(true);     // arrows are per-marker, so they rebuild too
+      buildGlobeLegend(true);
+      globeUpdateSummary();
+    }
+
+    // A line under the filters saying what you are looking at
+    function globeUpdateSummary() {
+      var el = document.getElementById('globeSummary');
+      if (!el) return;
+      var bros = 0;
+      globeMarkers.forEach(function(m) { if (m.kind === 'city') bros += m.bros.length; });
+      if (globeYear === 'all') {
+        el.innerHTML = bros + ' Bros &middot; every Cup so far';
+      } else {
+        var ev = GLOBE_EVENTS.filter(function(e) { return e.year === globeYear; })[0];
+        el.innerHTML = globeYear + ' &middot; ' + bros + ' Bros &middot; ' +
+                       (ev ? ev.venue : 'venue TBD');
+      }
+    }
+
+    // ---- Visibility helpers ----
+    function globePinVisible(c, cam) {
+      return c.x * (cam.x - c.x) + c.y * (cam.y - c.y) + c.z * (cam.z - c.z) > 0;
+    }
+
+    function globeViewCenter() {
+      var p = globeInstance.camera().position;
+      var r = p.length() || 1;
+      return {
+        lat: 90 - Math.acos(p.y / r) * 180 / Math.PI,
+        lng: Math.atan2(p.x, p.z) * 180 / Math.PI
+      };
+    }
+
+    // Group the visible markers by SCREEN distance, so the grouping tightens
+    // when zoomed out and breaks apart as you zoom in. Hometowns and Cup
+    // venues are clustered in separate passes.
+    function globeComputeGroups() {
+      var cam = globeInstance.camera().position;
+      var groups = [];
+
+      ['city', 'event'].forEach(function(kind) {
+        var pts = [];
+        globeMarkers.forEach(function(m) {
+          if (m.kind !== kind) return;
+          var c = globeInstance.getCoords(m.lat, m.lng, GLOBE_PIN_ALT);
+          if (!globePinVisible(c, cam)) return;
+          var s = globeInstance.getScreenCoords(m.lat, m.lng, GLOBE_PIN_ALT);
+          if (!isFinite(s.x) || !isFinite(s.y)) return;
+          pts.push({ m: m, x: s.x, y: s.y });
+        });
+
+        var used = [];
+        for (var i = 0; i < pts.length; i++) {
+          if (used[i]) continue;
+          used[i] = true;
+          var members = [pts[i]];
+          var cx = pts[i].x, cy = pts[i].y;
+          for (var j = i + 1; j < pts.length; j++) {
+            if (used[j]) continue;
+            if (Math.hypot(pts[j].x - cx, pts[j].y - cy) <= GLOBE_CLUSTER_PX) {
+              used[j] = true;
+              members.push(pts[j]);
+              cx = 0; cy = 0;
+              members.forEach(function(p) { cx += p.x; cy += p.y; });
+              cx /= members.length; cy /= members.length;
+            }
+          }
+          groups.push(globeMakeGroup(kind, members.map(function(p) { return p.m; })));
+        }
+      });
+
+      return groups;
+    }
+
+    function globeMakeGroup(kind, markers) {
+      var g = {
+        kind: kind,
+        markers: markers,
+        key: kind + ':' + markers.map(function(m) { return m.city || m.event.year; }).sort().join('|')
+      };
+
+      if (kind === 'event') {
+        g.events = markers.map(function(m) { return m.event; });
+        g.events.sort(function(a, b) { return b.year.localeCompare(a.year); });
+        var elat = 0, elng = 0;
+        markers.forEach(function(m) { elat += m.lat; elng += m.lng; });
+        g.lat = elat / markers.length;
+        g.lng = elng / markers.length;
+        return g;
+      }
+
+      g.bros = [];
+      markers.forEach(function(m) { g.bros = g.bros.concat(m.bros); });
+      g.bros.sort(globeBroSort);
+      g.dominant = globeDominantTeam(g.bros);
+      g.title = markers.length === 1 ? markers[0].city : markers.length + ' towns';
+
+      // Anchor a merged hometown pin on the town with the most Bros in it,
+      // rather than on the average of the towns. That keeps the pin sitting
+      // on downtown Orlando instead of drifting into the swamp between towns.
+      var anchor = markers[0];
+      markers.forEach(function(m) { if (m.bros.length > anchor.bros.length) anchor = m; });
+      g.lat = anchor.lat;
+      g.lng = anchor.lng;
+      return g;
+    }
+
+    // ---- Pin DOM ----
+    function globeGroupEl(g) {
+      var el = document.createElement('div');
+      el.className = 'globe-pin';
+      el.onclick = function() { openGlobeGroup(g); };
+
+      if (g.kind === 'event') {
+        var label = g.events.length === 1 ? g.events[0].year : g.events.length + ' Cups';
+        el.innerHTML =
+          '<div class="globe-event">' +
+            '<div class="globe-event-dot">&#9971;</div>' +
+            '<div class="globe-event-year">' + label + '</div>' +
+          '</div>';
+        el.title = g.events.length === 1
+          ? g.events[0].venue + ' (' + g.events[0].year + ')'
+          : g.events.length + ' Cups played here';
+        el.style.zIndex = '3';
+        return el;
+      }
+
+      var t = GLOBE_TEAM_STYLES[g.dominant] || GLOBE_TEAM_STYLES.alumni;
+      el.style.setProperty('--pin-color', t.color);
+      el.style.setProperty('--pin-bg', t.bg);
+
+      if (g.bros.length === 1) {
+        var b = g.bros[0];
+        el.innerHTML = '<div class="globe-face">' + globeFaceInner(b) + '</div>';
+        el.title = b.name + ' - ' + b.city;
+      } else {
+        el.innerHTML =
+          '<div class="globe-cluster">' + g.bros.length +
+            '<span class="globe-cluster-caret">&#9660;</span>' +
+          '</div>';
+        el.title = g.title + ' - ' + g.bros.length + ' Bros';
+      }
+      return el;
+    }
+
+    function globeFaceInner(b) {
+      return b.photo
+        ? '<img src="' + encodeURI(b.photo) + '" alt="" class="' + (b.photoPos === 'top' ? 'pos-top' : '') + '">'
+        : '<span class="globe-face-initials">' + b.initials + '</span>';
+    }
+
+    // ---- Detail panel ----
+    function openGlobeGroup(g) {
+      if (g.kind === 'event') {
+        if (g.events.length === 1) { openGlobeEvent(g.events[0]); return; }
+        var cupRows = g.events.map(function(e) {
+          return (
+            '<div class="globe-panel-row" onclick="openGlobeEvent(GLOBE_EVENTS_BY_YEAR[\'' + e.year + '\'])">' +
+              '<div class="globe-event-dot">&#9971;</div>' +
+              '<div>' +
+                '<div class="globe-panel-row-name">' + e.year + ' &middot; ' + e.venue + '</div>' +
+                '<div class="globe-panel-row-team">' + e.score + '</div>' +
+              '</div>' +
+              '<div class="globe-panel-row-go">&rsaquo;</div>' +
+            '</div>'
+          );
+        }).join('');
+        globeShowPanel(
+          '<div class="globe-panel-city">Cups played here</div>' +
+          '<div class="globe-panel-sub">' + g.events.length + ' tournaments</div>' + cupRows
+        );
+        return;
+      }
+
+      // A pin with one Bro on it goes straight to his card
+      if (g.bros.length === 1) { openGlobeBro(g.bros[0].pid, ''); return; }
+
+      var multi = g.markers.length > 1;
+      var rows = g.bros.map(function(b) {
+        var t = globeTeamStyle(b);
+        return (
+          '<div class="globe-panel-row" onclick="openGlobeBro(\'' + b.pid + '\',\'' + g.key + '\')">' +
+            '<div class="globe-face" style="--pin-color:' + t.color + ';--pin-bg:' + t.bg + '">' +
+              globeFaceInner(b) +
+            '</div>' +
+            '<div>' +
+              '<div class="globe-panel-row-name">' + b.name + '</div>' +
+              '<div class="globe-panel-row-team">' +
+                globeBroTeamText(b) + (multi ? ' &middot; ' + b.city : '') +
+              '</div>' +
+            '</div>' +
+            '<div class="globe-panel-row-go">&rsaquo;</div>' +
+          '</div>'
+        );
+      }).join('');
+
+      var heading = multi
+        ? g.markers.map(function(m) { return m.city; }).sort().join(' &middot; ')
+        : g.markers[0].city;
+
+      globeShowPanel(
+        '<div class="globe-panel-city">' + (multi ? 'Nearby' : heading) + '</div>' +
+        '<div class="globe-panel-sub">' +
+          g.bros.length + (g.bros.length === 1 ? ' Bro' : ' Bros') +
+          (globeYear !== 'all' ? ' in ' + globeYear : '') +
+          (multi ? '<br>' + heading : '') +
+        '</div>' + rows
+      );
+    }
+
+    // The compact card: small photo, team, handicap and record. Deliberately
+    // NOT the blown-up profile -- tapping a face used to jump straight to the
+    // full-bleed bio photo, which made the profile hard to get out of and hid
+    // the stats. The full profile is one more tap from here.
+    function openGlobeBro(pid, backKey) {
+      var b = globeBroByPid[pid];
+      if (!b) return;
+      var t = globeTeamStyle(b);
+
+      var stats = b.stats.map(function(s) {
+        return '<div class="globe-bro-stat">' +
+                 '<span class="globe-bro-stat-lbl">' + s.label + '</span>' +
+                 '<span class="globe-bro-stat-val">' + s.val + '</span>' +
+               '</div>';
+      }).join('');
+
+      // Every season he has played, so the card still tells the whole story
+      // even while the map is filtered to one year.
+      var seasons = Object.keys(b.teams).sort().reverse().map(function(y) {
+        var st = GLOBE_TEAM_STYLES[b.teams[y]];
+        if (!st) return '';
+        return '<span class="globe-bro-season" style="color:' + st.color +
+               ';border-color:' + st.color + '55;background:' + st.bg + '">' +
+               y + ' &middot; ' + st.label + '</span>';
+      }).join('');
+
+      var back = backKey && globeGroupByKey[backKey]
+        ? '<button class="globe-panel-back" onclick="openGlobeGroup(globeGroupByKey[\'' + backKey + '\'])">' +
+            '&lsaquo; Back' +
+          '</button>'
+        : '';
+
+      globeShowPanel(
+        back +
+        '<div class="globe-bro-head">' +
+          '<div class="globe-bro-face" style="--pin-color:' + t.color + ';--pin-bg:' + t.bg + '">' +
+            globeFaceInner(b) +
+          '</div>' +
+          '<div>' +
+            '<div class="globe-bro-name">' + b.name + (b.captain ? ' &#9733;' : '') + '</div>' +
+            '<div class="globe-bro-team" style="color:' + t.color + '">' + globeBroTeamText(b) + '</div>' +
+            '<div class="globe-bro-town">' + b.city + (b.tier ? ' &middot; ' + b.tier : '') + '</div>' +
+          '</div>' +
+        '</div>' +
+        (stats ? '<div class="globe-bro-stats">' + stats + '</div>' : '') +
+        (seasons ? '<div class="globe-bro-seasons">' + seasons + '</div>' : '') +
+        '<button class="globe-panel-link" onclick="globeGoToBro(\'' + b.pid + '\')">' +
+          'Full profile &rarr;' +
+        '</button>'
+      );
+    }
+
+    function openGlobeEvent(e) {
+      globeShowPanel(
+        '<img class="globe-panel-photo" src="' + encodeURI(e.photo) + '" alt="Group photo, ' + e.year + '">' +
+        '<div class="globe-panel-city">' + e.venue + '</div>' +
+        '<div class="globe-panel-sub">' + e.dates + '</div>' +
+        '<div class="globe-panel-score">' + e.score + '</div>' +
+        '<div class="globe-panel-blurb">' + e.detail + '<br><br>' + e.blurb + '</div>' +
+        '<button class="globe-panel-link" onclick="globeGoToRecap(\'' + e.year + '\')">' +
+          'Read the ' + e.year + ' recap &rarr;' +
+        '</button>'
+      );
+    }
+
+    var GLOBE_EVENTS_BY_YEAR = {};
+    GLOBE_EVENTS.forEach(function(e) { GLOBE_EVENTS_BY_YEAR[e.year] = e; });
+
+    function globeShowPanel(html) {
+      document.getElementById('globePanelBody').innerHTML = html;
+      document.getElementById('globePanel').classList.add('open');
+    }
+
+    function closeGlobePanel() {
+      var p = document.getElementById('globePanel');
+      if (p) p.classList.remove('open');
+    }
+
+    function globeGoToBro(pid) {
+      closeGlobePanel();
+      goToPlayer(pid);
+    }
+
+    function globeGoToRecap(year) {
+      closeGlobePanel();
+      showTab('history', null);
+      setTimeout(function() {
+        var badges = document.querySelectorAll('.hist-year-badge');
+        for (var i = 0; i < badges.length; i++) {
+          if (badges[i].textContent.indexOf(year) !== -1) {
+            var entry = badges[i].closest('.hist-year-entry') || badges[i];
+            entry.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+          }
+        }
+      }, 220);
+    }
+
+    // ---- Legend, rebuilt whenever the year changes ----
+    function buildGlobeLegend(force) {
+      var box = document.getElementById('globeLegend');
+      if (!box) return;
+      if (box.dataset.year === globeYear && !force) return;
+      box.dataset.year = globeYear;
+
+      var yr = GLOBE_YEARS.filter(function(y) { return y.key === globeYear; })[0] || GLOBE_YEARS[0];
+      var html = yr.teams.map(function(k) {
+        var t = GLOBE_TEAM_STYLES[k];
+        return '<span class="globe-legend-item" style="color:' + t.color + '">' +
+                 '<span class="globe-legend-dot"></span>' +
+                 '<span style="color:var(--color-text-muted)">' + t.label + '</span>' +
+               '</span>';
+      }).join('');
+      html += '<span class="globe-legend-item" style="color:var(--color-gold)">' +
+                '<span class="globe-legend-dot"></span>' +
+                '<span style="color:var(--color-text-muted)">' +
+                (globeYear === 'all' ? 'Cup venues' : globeYear + ' venue') +
+                '</span></span>';
+      box.innerHTML = html;
+    }
+
+    // ---- Camera helpers, wired to the on-screen buttons ----
+    function globeZoom(factor) {
+      if (!globeInstance) return;
+      var pov = globeInstance.pointOfView();
+      var alt = Math.max(GLOBE_ALT_MIN, Math.min(GLOBE_ALT_MAX, pov.altitude * factor));
+      globeInstance.pointOfView({ lat: pov.lat, lng: pov.lng, altitude: alt }, 350);
+    }
+
+    function globeResetView() {
+      if (globeInstance) globeInstance.pointOfView(globeHomeView(), 800);
+    }
+
+    function globeShowAll() {
+      if (!globeInstance) return;
+      globeInstance.pointOfView({ lat: 39, lng: -97, altitude: GLOBE_ALT_WIDE }, 900);
+    }
+
+    function globeFlyTo(lat, lng) {
+      if (!globeInstance) return;
+      var pov = globeInstance.pointOfView();
+      globeInstance.pointOfView({ lat: lat, lng: lng, altitude: pov.altitude }, 700);
+    }
+
+    // ---- State borders ----
+    // Satellite imagery shows coastlines but no state lines, which made it hard
+    // to tell which state a pin was actually in. Interior borders only -- the
+    // coast is already obvious from the imagery, and skipping the national
+    // outline avoids dragging in Alaska, Hawaii and every barrier island.
+    function loadGlobeBorders() {
+      function withTopojson(next) {
+        if (window.topojson) { next(); return; }
+        var s = document.createElement('script');
+        s.src = GLOBE_TOPO_URL;
+        s.onload = next;
+        s.onerror = function() { /* borders are a nicety; never block the map */ };
+        document.head.appendChild(s);
+      }
+
+      withTopojson(function() {
+        if (!window.topojson) return;
+        fetch(GLOBE_STATES_URL)
+          .then(function(r) { return r.json(); })
+          .then(function(topo) {
+            if (!globeInstance || !topo.objects || !topo.objects.states) return;
+            var mesh = topojson.mesh(topo, topo.objects.states, function(a, b) { return a !== b; });
+            var paths = mesh.coordinates.map(function(line) {
+              return line.map(function(c) { return [c[1], c[0]]; });   // [lng,lat] -> [lat,lng]
+            });
+            globeInstance
+              .pathsData(paths)
+              .pathPointLat(function(p) { return p[0]; })
+              .pathPointLng(function(p) { return p[1]; })
+              .pathPointAlt(0.004)
+              .pathColor(function() { return 'rgba(255,255,255,0.42)'; })
+              .pathStroke(0.5)
+              .pathTransitionDuration(0);
+          })
+          .catch(function() { /* offline: just no borders */ });
+      });
+    }
+
+    // ---- Overlay + per-frame positioning ----
+    function buildGlobeOverlay(stage) {
+      if (globeOverlay) return;
+      globeOverlay = document.createElement('div');
+      globeOverlay.className = 'globe-overlay';
+      stage.appendChild(globeOverlay);
+
+      globeEdgeLayer = document.createElement('div');
+      globeEdgeLayer.className = 'globe-overlay globe-edge-layer';
+      stage.appendChild(globeEdgeLayer);
+    }
+
+    // Rebuild the pin elements, but ONLY when the grouping actually changed --
+    // otherwise every frame would recreate the <img> tags and the pins flicker.
+    function globeSyncPins() {
+      var groups = globeComputeGroups();
+      var sig = globeYear + '|' + groups.map(function(g) { return g.key; }).sort().join(',');
+      if (sig === globeClusterSig) return;
+      globeClusterSig = sig;
+
+      globeGroupByKey = {};
+      groups.forEach(function(g) { globeGroupByKey[g.key] = g; });
+
+      globeOverlay.innerHTML = '';
+      globePins = groups.map(function(g) {
+        var el = globeGroupEl(g);
+        globeOverlay.appendChild(el);
+        return { el: el, g: g };
+      });
+    }
+
+    // One arrow per MARKER, built once per filter. Deliberately not per
+    // cluster: clustering only ever sees the near half of the globe, so anyone
+    // over the horizon (Seattle, at the Florida framing) would get no arrow at
+    // all and would go missing from the off-screen count.
+    function buildGlobeEdges(force) {
+      if (!globeEdgeLayer) return;
+      if (globeEdges.length && !force) return;
+      globeEdgeLayer.innerHTML = '';
+      globeEdges = globeMarkers.map(function(m) {
+        var isCup = m.kind === 'event';
+        var count = isCup ? 1 : m.bros.length;
+        var el = document.createElement('div');
+        el.className = 'globe-edge' + (isCup ? ' globe-edge-cup' : '');
+        el.innerHTML = '<span class="globe-edge-arrow">&#10148;</span>' +
+                       '<span class="globe-edge-count">' + (isCup ? m.event.year : count) + '</span>';
+        el.title = isCup
+          ? m.event.venue + ' - off screen'
+          : m.city + ' - ' + count + (count === 1 ? ' Bro' : ' Bros') + ' off screen';
+        el.onclick = function() { globeFlyTo(m.lat, m.lng); };
+        el.style.display = 'none';
+        globeEdgeLayer.appendChild(el);
+        return { el: el, m: m };
+      });
+    }
+
+    // Push a gold pin off any hometown pin it would cover.
+    function globeEventNudge(ex, ey, cityPts) {
+      var x = ex, y = ey;
+      for (var iter = 0; iter < 10; iter++) {
+        var nx = 0, ny = 0, hits = 0;
+        for (var i = 0; i < cityPts.length; i++) {
+          var dx = x - cityPts[i].x;
+          var dy = y - cityPts[i].y;
+          var d  = Math.hypot(dx, dy);
+          if (d >= GLOBE_NUDGE_PX) continue;
+          hits++;
+          var push = GLOBE_NUDGE_PX - d;
+          if (d < 0.01) { ny -= push; }
+          else { nx += (dx / d) * push; ny += (dy / d) * push; }
+        }
+        if (!hits) break;
+        ny -= 6;
+        var m = Math.hypot(nx, ny) || 1;
+        var step = Math.min(m, 18);
+        x += (nx / m) * step;
+        y += (ny / m) * step;
+      }
+
+      // Relaxation alone can stall in a local minimum -- a Cup pin wedged
+      // between two towns gets pushed both ways and barely moves, which left
+      // Tampa and the 2-Cups pin clipping on a phone. So finish by shoving it
+      // clear of its NEAREST neighbour outright.
+      var near = null, nd = Infinity;
+      for (var q = 0; q < cityPts.length; q++) {
+        var dd = Math.hypot(x - cityPts[q].x, y - cityPts[q].y);
+        if (dd < nd) { nd = dd; near = cityPts[q]; }
+      }
+      if (near && nd < GLOBE_NUDGE_PX) {
+        var ux = x - near.x, uy = y - near.y, um = nd;
+        if (um < 0.01) { ux = 0; uy = -1; um = 1; }
+        x = near.x + (ux / um) * GLOBE_NUDGE_PX;
+        y = near.y + (uy / um) * GLOBE_NUDGE_PX;
+      }
+
+      return { x: x - ex, y: y - ey };
+    }
+
+    // Park an arrow on the stage edge pointing at something you cannot see.
+    function globePlaceEdge(m, center, w, h) {
+      var rad = Math.PI / 180;
+      var vx = (m.lng - center.lng) * Math.cos(center.lat * rad);
+      var vy = -(m.lat - center.lat);
+      var mag = Math.hypot(vx, vy);
+      if (mag < 1e-6) return null;
+      vx /= mag; vy /= mag;
+
+      var pad = 26;
+      var halfW = Math.max(10, w / 2 - pad);
+      var halfH = Math.max(10, h / 2 - pad);
+      var t = Math.min(
+        Math.abs(vx) > 1e-6 ? halfW / Math.abs(vx) : Infinity,
+        Math.abs(vy) > 1e-6 ? halfH / Math.abs(vy) : Infinity
+      );
+      return { x: w / 2 + vx * t, y: h / 2 + vy * t, angle: Math.atan2(vy, vx) * 180 / Math.PI };
+    }
+
+    function globeTick() {
+      globeRafId = requestAnimationFrame(globeTick);
+      if (!globeInstance || !globeOverlay) return;
+
+      var section = document.getElementById('globe');
+      if (document.hidden || !section || !section.classList.contains('active')) return;
+
+      globeSyncPins();
+
+      var w = globeOverlay.clientWidth;
+      var h = globeOverlay.clientHeight;
+      var cam = globeInstance.camera().position;
+
+      var cityPts = [];
+      var events  = [];
+      var onScreen = {};   // marker identity -> currently rendered on screen
+      for (var i = 0; i < globePins.length; i++) {
+        var p = globePins[i];
+        var c = globeInstance.getCoords(p.g.lat, p.g.lng, GLOBE_PIN_ALT);
+        var s = globeInstance.getScreenCoords(p.g.lat, p.g.lng, GLOBE_PIN_ALT);
+        var vis = globePinVisible(c, cam) && isFinite(s.x) && isFinite(s.y) &&
+                  s.x > -40 && s.y > -40 && s.x < w + 40 && s.y < h + 40;
+        if (!vis) {
+          if (p.el.style.display !== 'none') p.el.style.display = 'none';
+          continue;
+        }
+        p.g.markers.forEach(function(m) {
+          onScreen[m.city || ('cup' + m.event.year)] = true;
+        });
+        if (p.el.style.display === 'none') p.el.style.display = '';
+        if (p.g.kind === 'event') { events.push({ p: p, s: s }); continue; }
+        cityPts.push({ x: s.x, y: s.y });
+        p.el.style.transform =
+          'translate(' + s.x.toFixed(1) + 'px,' + s.y.toFixed(1) + 'px) translate(-50%,-50%)';
+      }
+
+      for (var k = 0; k < events.length; k++) {
+        var e = events[k];
+        var n = globeEventNudge(e.s.x, e.s.y, cityPts);
+        e.p.el.style.transform =
+          'translate(' + (e.s.x + n.x).toFixed(1) + 'px,' + (e.s.y + n.y).toFixed(1) + 'px) ' +
+          'translate(-50%,-50%)';
+      }
+
+      var center = globeViewCenter();
+      var placed = [];
+      var hiddenBros = 0;
+      for (var q = 0; q < globeEdges.length; q++) {
+        var ed = globeEdges[q];
+        var mk = ed.m;
+        if (onScreen[mk.city || ('cup' + mk.event.year)]) {
+          if (ed.el.style.display !== 'none') ed.el.style.display = 'none';
+          continue;
+        }
+        if (mk.kind === 'city') hiddenBros += mk.bros.length;
+
+        var spot = globePlaceEdge(mk, center, w, h);
+        var clash = false;
+        if (spot) {
+          for (var z = 0; z < placed.length; z++) {
+            if (Math.hypot(placed[z].x - spot.x, placed[z].y - spot.y) < GLOBE_EDGE_GAP) { clash = true; break; }
+          }
+        }
+        if (!spot || clash) {
+          if (ed.el.style.display !== 'none') ed.el.style.display = 'none';
+          continue;
+        }
+        placed.push(spot);
+        if (ed.el.style.display === 'none') ed.el.style.display = '';
+        ed.el.style.transform =
+          'translate(' + spot.x.toFixed(1) + 'px,' + spot.y.toFixed(1) + 'px) translate(-50%,-50%)';
+        ed.el.style.setProperty('--edge-angle', spot.angle.toFixed(1) + 'deg');
+      }
+
+      globeUpdateOffscreenNote(hiddenBros);
+    }
+
+    var globeLastNote = -1;
+    function globeUpdateOffscreenNote(n) {
+      if (n === globeLastNote) return;
+      globeLastNote = n;
+      var note = document.getElementById('globeOffscreen');
+      if (!note) return;
+      if (n <= 0) { note.classList.add('hidden'); return; }
+      note.classList.remove('hidden');
+      note.innerHTML = '<span class="globe-offscreen-txt">' + n +
+        ' more ' + (n === 1 ? 'Bro is' : 'Bros are') + ' off screen</span>' +
+        '<span class="globe-offscreen-cta">Zoom out &#8599;</span>';
+    }
+
+    function globeStartTicking() {
+      if (globeRafId === null) globeTick();
+    }
+
+    function globeResize() {
+      if (!globeInstance) return;
+      var stage = document.getElementById('globeStage');
+      if (!stage || !stage.clientWidth) return;
+      globeInstance.width(stage.clientWidth).height(stage.clientHeight);
+      globeClusterSig = '';   // widths changed, so the grouping must be redone
+    }
+    window.addEventListener('resize', globeResize);
+
+    function globeStatus(msg, showRetry) {
+      var s = document.getElementById('globeStatus');
+      if (!s) return;
+      if (msg === null) { s.classList.add('hidden'); return; }
+      s.classList.remove('hidden');
+      s.innerHTML = showRetry
+        ? '<div>' + msg + '</div><button class="globe-status-retry" onclick="initGlobeTab(true)">Try again</button>'
+        : '<div class="globe-status-spinner"></div><div>' + msg + '</div>';
+    }
+
+    // ---- Entry point: called by showTab when the Globe tab opens ----
+    function initGlobeTab(force) {
+      buildGlobeFilters();
+      buildGlobeLegend();
+      if (!globeRoster.length) { buildGlobeRoster(); globeMarkers = buildGlobeMarkers(); }
+      globeUpdateSummary();
+
+      if (globeInstance) { globeResize(); return; }
+
+      if (window.Globe) {
+        globeLoading = true;
+        globeStatus('Spinning up the globe...', false);
+        renderGlobe();
+        return;
+      }
+
+      if (globeLoading && !force) return;
+      globeLoading = true;
+      globeStatus('Spinning up the globe...', false);
+
+      var s = document.createElement('script');
+      s.src = GLOBE_SCRIPT_URL;
+      s.onload = function() { renderGlobe(); };
+      s.onerror = function() {
+        globeLoading = false;
+        globeStatus('Could not load the globe. Check your connection.', true);
+      };
+      document.head.appendChild(s);
+    }
+
+    function renderGlobe() {
+      var stage  = document.getElementById('globeStage');
+      var canvas = document.getElementById('globeCanvas');
+      if (!stage || !canvas || !window.Globe) { globeLoading = false; return; }
+
+      if (!stage.clientWidth) {
+        if (++globeSizeTries > 100) {
+          globeSizeTries = 0;
+          globeLoading = false;
+          globeStatus('The globe could not size itself here.', true);
+          return;
+        }
+        // setTimeout, NOT requestAnimationFrame: rAF is frozen while the page
+        // is backgrounded, so a tab opened just before the phone locks would
+        // never resume and would sit on the spinner forever.
+        setTimeout(renderGlobe, 100);
+        return;
+      }
+      globeSizeTries = 0;
+
+      if (!globeRoster.length) { buildGlobeRoster(); }
+      if (!globeMarkers.length) { globeMarkers = buildGlobeMarkers(); }
+
+      try {
+        globeInstance = Globe()(canvas)
+          .globeImageUrl(GLOBE_TEXTURE)
+          .globeTileEngineUrl(globeTileUrl)
+          .globeTileEngineMaxLevel(GLOBE_TILE_MAXLEVEL)
+          .backgroundColor('rgba(0,0,0,0)')
+          .showAtmosphere(true)
+          .atmosphereColor('#6fb3d2')
+          .atmosphereAltitude(0.18)
+          .width(stage.clientWidth)
+          .height(stage.clientHeight);
+
+        globeInstance.pointOfView(globeHomeView(), 0);
+
+        var c = globeInstance.controls();
+        c.enableZoom  = true;
+        c.autoRotate  = false;
+        c.rotateSpeed = 0.5;
+        c.zoomSpeed   = 2.4;   // scroll wheel was sluggish at the default
+
+        // Lock the view over the US. Azimuth is longitude and polar is
+        // (90 - latitude) in OrbitControls, verified against getCoords().
+        var rad = Math.PI / 180;
+        c.minAzimuthAngle = GLOBE_LNG_MIN * rad;
+        c.maxAzimuthAngle = GLOBE_LNG_MAX * rad;
+        c.minPolarAngle   = (90 - GLOBE_LAT_MAX) * rad;
+        c.maxPolarAngle   = (90 - GLOBE_LAT_MIN) * rad;
+        c.minDistance     = 100 * (1 + GLOBE_ALT_MIN);
+        c.maxDistance     = 100 * (1 + GLOBE_ALT_MAX);
+
+        buildGlobeOverlay(stage);
+        buildGlobeEdges(true);
+        loadGlobeBorders();
+        globeStartTicking();
+        globeStatus(null);
+      } catch (err) {
+        globeStatus('The globe failed to start.', true);
+      }
+      globeLoading = false;
+    }
+
+    // Close the panel on Escape, matching the bio modal's behavior
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeGlobePanel();
     });
 
     // ---- ROTATING FOOTER QUOTES ----
